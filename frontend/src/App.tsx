@@ -12,6 +12,7 @@ import { IndicatorInspector } from './components/IndicatorInspector';
 import { Timeline } from './components/Timeline';
 import { Modal } from './components/Modal';
 import { ActivityHistory, BodyTemperatureDashboard, ExamLogs, HealthHeader, HealthHighlights, SleepDashboard } from './components/SleepDashboard';
+import { BloodGlucoseDashboard, BloodPressureDashboard, HeartRateDashboard, MoodDashboard } from './components/VitalPages';
 import type { MissionMode } from './components/SleepDashboard';
 import { INDICATORS, INDICATOR_BY_ID, SCENARIOS, formatTimestamp } from './data';
 import type { IndicatorGroup } from './data/types';
@@ -78,7 +79,7 @@ function AppContent() {
   const [selectedIndicator, setSelectedIndicator] = useState('D06');
   const [selectedAnatomy, setSelectedAnatomy] = useState<string | null>(null);
   const [inspectionMode, setInspectionMode] = useState<'signal' | 'anatomy'>('signal');
-  const view = route === '/highlights' ? 'highlights' : route === '/highlights/biomarkers/sleep-hours' ? 'sleep' : route === '/highlights/biomarkers/body-temperature' ? 'temperature' : route === '/indicators' ? 'catalog' : 'atlas';
+  const view = route === '/highlights' ? 'highlights' : route === '/highlights/biomarkers/sleep-hours' ? 'sleep' : route === '/highlights/biomarkers/body-temperature' ? 'temperature' : route === '/highlights/biomarkers/heart-rate' ? 'heart-rate' : route === '/highlights/biomarkers/blood-pressure' ? 'blood-pressure' : route === '/highlights/biomarkers/blood-glucose' ? 'blood-glucose' : route === '/highlights/biomarkers/mood' ? 'mood' : route === '/indicators' ? 'catalog' : 'atlas';
   const [healthTheme, setHealthTheme] = useState<'dark' | 'light'>(() => {
     try { return localStorage.getItem('pulse-health-theme') === 'light' ? 'light' : 'dark'; } catch { return 'dark'; }
   });
@@ -105,6 +106,10 @@ function AppContent() {
       '/highlights': locale === 'en' ? 'Highlights | Analytica Pulse' : 'Highlights | Analytica Pulse',
       '/highlights/biomarkers/sleep-hours': locale === 'en' ? 'Sleep Hours | Analytica Pulse' : 'Horas de sono | Analytica Pulse',
       '/highlights/biomarkers/body-temperature': locale === 'en' ? 'Body Temperature | Analytica Pulse' : 'Temperatura corporal | Analytica Pulse',
+      '/highlights/biomarkers/heart-rate': locale === 'en' ? 'Heart Rate | Analytica Pulse' : 'Frequência cardíaca | Analytica Pulse',
+      '/highlights/biomarkers/blood-pressure': locale === 'en' ? 'Blood Pressure | Analytica Pulse' : 'Pressão arterial | Analytica Pulse',
+      '/highlights/biomarkers/blood-glucose': locale === 'en' ? 'Blood Glucose | Analytica Pulse' : 'Glicemia | Analytica Pulse',
+      '/highlights/biomarkers/mood': locale === 'en' ? 'Mood and Well-Being | Analytica Pulse' : 'Humor e bem-estar | Analytica Pulse',
       '/mission-atlas': locale === 'en' ? 'Mission Atlas | Analytica Pulse' : 'Atlas da missão | Analytica Pulse',
       '/indicators': locale === 'en' ? 'Indicators | Analytica Pulse' : 'Indicadores | Analytica Pulse',
       '/data-sources': locale === 'en' ? 'About the data | Analytica Pulse' : 'Sobre os dados | Analytica Pulse',
@@ -114,8 +119,8 @@ function AppContent() {
     document.title = titles[route ?? '/highlights'];
   }, [locale, route]);
 
-  function setView(target: 'atlas' | 'catalog' | 'highlights' | 'sleep' | 'temperature' | 'history' | 'exams') {
-    const paths = { atlas: '/mission-atlas', catalog: '/indicators', highlights: '/highlights', sleep: '/highlights/biomarkers/sleep-hours', temperature: '/highlights/biomarkers/body-temperature', history: '/activity-history', exams: '/exam-logs' };
+  function setView(target: 'atlas' | 'catalog' | 'highlights' | 'sleep' | 'temperature' | 'heart-rate' | 'blood-pressure' | 'blood-glucose' | 'mood' | 'history' | 'exams') {
+    const paths = { atlas: '/mission-atlas', catalog: '/indicators', highlights: '/highlights', sleep: '/highlights/biomarkers/sleep-hours', temperature: '/highlights/biomarkers/body-temperature', 'heart-rate': '/highlights/biomarkers/heart-rate', 'blood-pressure': '/highlights/biomarkers/blood-pressure', 'blood-glucose': '/highlights/biomarkers/blood-glucose', mood: '/highlights/biomarkers/mood', history: '/activity-history', exams: '/exam-logs' };
     navigate(`/${localeToPath(locale)}${paths[target]}`);
   }
   function changeLocale(next: Locale) {
@@ -162,8 +167,12 @@ function AppContent() {
   if (route === '/activity-history') return <ActivityHistory locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} onExamLogs={() => setView('exams')} />;
   if (route === '/exam-logs') return <ExamLogs locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} onExamLogs={() => setView('exams')} onActivityHistory={() => setView('history')} />;
 
+  if (view === 'heart-rate') return <HeartRateDashboard locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onBack={() => setView('highlights')} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} />;
+  if (view === 'blood-pressure') return <BloodPressureDashboard locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onBack={() => setView('highlights')} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} />;
+  if (view === 'blood-glucose') return <BloodGlucoseDashboard locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onBack={() => setView('highlights')} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} />;
+  if (view === 'mood') return <MoodDashboard locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onBack={() => setView('highlights')} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} />;
   if (view === 'highlights' || view === 'sleep' || view === 'temperature') return view === 'highlights'
-    ? <HealthHighlights locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onSleep={() => setView('sleep')} onBodyTemperature={() => setView('temperature')} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} onExamLogs={() => setView('exams')} onActivityHistory={() => setView('history')} />
+    ? <HealthHighlights locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onSleep={() => setView('sleep')} onBodyTemperature={() => setView('temperature')} onHeartRate={() => setView('heart-rate')} onBloodPressure={() => setView('blood-pressure')} onBloodGlucose={() => setView('blood-glucose')} onMood={() => setView('mood')} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} onExamLogs={() => setView('exams')} onActivityHistory={() => setView('history')} />
     : view === 'sleep'
       ? <SleepDashboard locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onBack={() => setView('highlights')} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} />
       : <BodyTemperatureDashboard locale={locale} onLocaleChange={changeLocale} theme={healthTheme} onToggleTheme={toggleHealthTheme} onBack={() => setView('highlights')} onHighlights={() => setView('highlights')} onAtlas={() => setView('atlas')} onIndicators={() => setView('catalog')} onData={() => navigate(`/${localeToPath(locale)}/data-sources`)} />;

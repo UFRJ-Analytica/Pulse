@@ -1,5 +1,5 @@
 export type Locale = 'en' | 'pt-BR';
-export type KnownRoute = '/highlights' | '/highlights/biomarkers/sleep-hours' | '/highlights/biomarkers/body-temperature' | '/mission-atlas' | '/indicators' | '/data-sources' | '/activity-history' | '/exam-logs';
+export type KnownRoute = '/highlights' | '/highlights/biomarkers/sleep-hours' | '/highlights/biomarkers/body-temperature' | '/highlights/biomarkers/heart-rate' | '/highlights/biomarkers/blood-pressure' | '/highlights/biomarkers/blood-glucose' | '/highlights/biomarkers/mood' | '/mission-atlas' | '/indicators' | '/data-sources' | '/activity-history' | '/exam-logs';
 
 export const messages = {
   en: {
@@ -45,7 +45,7 @@ export function routeFromPath(pathname: string): KnownRoute | null {
   const parts = pathname.split('/').filter(Boolean);
   if (parts.length < 2) return null;
   const path = `/${parts.slice(1).join('/')}`;
-  if (path === '/highlights' || path === '/highlights/biomarkers/sleep-hours' || path === '/highlights/biomarkers/body-temperature' || path === '/mission-atlas' || path === '/indicators' || path === '/data-sources' || path === '/activity-history' || path === '/exam-logs') return path;
+  if (path === '/highlights' || path === '/highlights/biomarkers/sleep-hours' || path === '/highlights/biomarkers/body-temperature' || path === '/highlights/biomarkers/heart-rate' || path === '/highlights/biomarkers/blood-pressure' || path === '/highlights/biomarkers/blood-glucose' || path === '/highlights/biomarkers/mood' || path === '/mission-atlas' || path === '/indicators' || path === '/data-sources' || path === '/activity-history' || path === '/exam-logs') return path;
   return null;
 }
 

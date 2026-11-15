@@ -9,12 +9,12 @@ const ESCALATION_LABELS: Record<Escalation, string> = {
   crew: 'Avisar a tripulação',
   'flight-surgeon': 'Informar o flight surgeon',
 };
-const KIND_LABELS: Record<EvidenceKind, string> = {
-  nasa: 'NASA',
-  'peer-reviewed': 'Artigo revisado por pares',
-  'terrestrial-clinical': 'Referência clínica terrestre',
-  'aerospace-regulator': 'Regulador aeroespacial',
-  'project-analysis': 'Análise do projeto',
+const KIND_LABELS: Record<EvidenceKind, { pt: string; en: string }> = {
+  nasa: { pt: 'NASA', en: 'NASA' },
+  'peer-reviewed': { pt: 'Artigo revisado por pares', en: 'Peer-reviewed article' },
+  'terrestrial-clinical': { pt: 'Referência clínica terrestre', en: 'Terrestrial clinical reference' },
+  'aerospace-regulator': { pt: 'Regulador aeroespacial', en: 'Aerospace regulator' },
+  'project-analysis': { pt: 'Análise do projeto', en: 'Project analysis' },
 };
 
 /** Classification, guidance and sources of a vital sign record. */
@@ -41,7 +41,7 @@ export function VitalAssessmentSection({ record }: { record: IndicatorRecord }) 
       const source = VITAL_SOURCES[id];
       const context = 'context' in source ? source.context : undefined;
       return <p key={id} className="tiny">
-        <strong>{KIND_LABELS[source.kind]}:</strong> {'url' in source ? <a className="text-link" href={source.url} target="_blank" rel="noreferrer">{source.title} <ArrowUpRight size={9} /></a> : source.title}
+        <strong>{tx(locale, KIND_LABELS[source.kind].pt, KIND_LABELS[source.kind].en)}:</strong> {'url' in source ? <a className="text-link" href={source.url} target="_blank" rel="noreferrer">{source.title} <ArrowUpRight size={9} /></a> : source.title}
         {context && <> · {context[locale]}</>}
       </p>;
     })}
@@ -115,7 +115,7 @@ export function MoodContext() {
     <h3>Why monitor it</h3><p>Prolonged isolation and confinement can increase anxiety and depression risk, affecting sleep, morale, and decisions. Mood has no universal normal range; changes from the person’s own baseline matter.</p>
     <h3>Mission factors</h3><p>Limited space, monotony, communication delays with Earth, irregular sleep, and heavy workload. NASA uses monthly cognitive testing and compares results with each astronaut’s preflight baseline.</p>
     <h3>Review and response</h3><p>A persistent decline from personal well-being baseline warrants attention, not diagnosis. Documented countermeasures include private behavioral-health consultations, family contact, privacy, windows, plants, and journaling. Any safety concern requires a human response under mission protocol.</p>
-    <h3>Measurement</h3><p>Daily self-report on a 0–10 scale, preferably at the same time. This interface scale is simplified and not a validated psychometric instrument. Access to personal entries must follow mission medical privacy rules.</p>
+    <h3>Measurement</h3><p>Daily morning check-in: well-being, stress, vigor and sleep quality combined into a 1–5 score, preferably at the same time. This interface scale is simplified and not a validated psychometric instrument. Access to personal entries must follow mission medical privacy rules.</p>
   </section>;
   return <section className="inspection-section" aria-label="Contexto do humor e bem-estar">
     <h3>Por que acompanhar</h3>
@@ -125,6 +125,6 @@ export function MoodContext() {
     <h3>Quando revisar e como agir</h3>
     <p>Uma queda persistente do bem-estar em relação ao padrão pessoal justifica atenção, não diagnóstico. As contramedidas documentadas incluem conversas psicológicas privadas com o profissional de saúde comportamental, contato com a família, privacidade, janelas, cultivo de plantas e manter um diário. Qualquer indício de risco à segurança exige resposta humana pelo protocolo da missão.</p>
     <h3>Como medir</h3>
-    <p>Autorrelato diário na escala de 0 a 10, de preferência no mesmo horário. A escala é uma simplificação de interface, não um instrumento psicométrico validado. O registro é pessoal: o acesso a ele deve seguir as regras de privacidade médica da missão.</p>
+    <p>Check-in matinal diário: bem-estar, estresse, vigor e qualidade do sono combinados em uma nota de 1 a 5, de preferência no mesmo horário. A escala é uma simplificação de interface, não um instrumento psicométrico validado. O registro é pessoal: o acesso a ele deve seguir as regras de privacidade médica da missão.</p>
   </section>;
 }
