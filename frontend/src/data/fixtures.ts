@@ -16,6 +16,8 @@ export const DEMO_TIMESTAMP = '2026-11-05T14:00:00.000Z';
 export const DEMO_MISSION_ID = 'demo-ares-01';
 const at = (hoursAgo: number) => new Date(Date.parse(DEMO_TIMESTAMP) - hoursAgo * 3_600_000).toISOString();
 const round = (value: number, decimals = 2) => Math.round(value * 10 ** decimals) / 10 ** decimals;
+// Demo personal pattern for the 1–5 morning check-in composite (V04), shared with the check-in modal.
+export const DEMO_MOOD = { baseline: 4.2, history: [4.0, 4.3] };
 export const DEMO_NOTICE = 'Dados sintéticos para demonstração. Nenhuma medição é de uma pessoa, missão ou evento NASA real.';
 interface ScenarioConfig {
   id: string;
@@ -109,8 +111,9 @@ function buildScenario(config: ScenarioConfig): MissionScenario {
   records.V03 = normalizeVital('blood-glucose', { value: vital(hypo ? 48 : 82), unit: 'mg/dL', measurement: { meal: hypo ? 'random' : 'fasting' } }, context, {
     extra: { detector: hypo ? 'CGM · leitura contínua simulada' : 'Glicosímetro capilar · jejum' },
   });
-  records.V04 = normalizeVital('mood', { value: vital(debt ? 5.5 : 7.5), unit: '0–10' }, context, {
-    baseline: 8, history: (debt ? [6, 5.8] : [8, 7.5]).map(value => ({ value })),
+  // Sleep debt: three check-ins below 80% of the baseline (3.36) make a persistent decline.
+  records.V04 = normalizeVital('mood', { value: vital(debt ? 3.1 : 4.1), unit: '1–5' }, context, {
+    baseline: DEMO_MOOD.baseline, history: (debt ? [3.2, 3.0] : DEMO_MOOD.history).map(value => ({ value })),
   });
   for (const id of ['C01', 'C02', 'C03']) records[id] = normalizeRecord(id, null, context, {
     sampleSize: 0, baseline: null, uncertainty: 'Não estimável sem pares observacionais válidos',

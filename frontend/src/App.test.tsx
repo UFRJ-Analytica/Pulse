@@ -29,11 +29,11 @@ describe('mission workflows', () => {
   it('mantém o tema escolhido entre as telas de saúde e na calibração', async () => {
     localStorage.removeItem('pulse-health-theme');
     const user = userEvent.setup(); render(<App />);
-    await user.click(screen.getByRole('button', { name: /Highlights/ }));
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
     await user.click(screen.getByRole('button', { name: 'Ativar tema claro' }));
     expect(localStorage.getItem('pulse-health-theme')).toBe('light');
     expect(document.querySelector('.health-shell')).toHaveAttribute('data-theme', 'light');
-    await user.click(screen.getByRole('button', { name: /Horas de sono/ }));
+    await user.click(screen.getByRole('button', { name: /Sono total/ }));
     expect(document.querySelector('.health-shell')).toHaveAttribute('data-theme', 'light');
     await user.click(screen.getByRole('button', { name: /Calibrar Actiwatch/ }));
     expect(screen.getByRole('dialog', { name: 'CALIBRAR ACTIWATCH' })).toHaveClass('calibration-light');
@@ -44,10 +44,10 @@ describe('mission workflows', () => {
   });
   it('navigates highlights, explores sleep and opens the simulated calibration', async () => {
     const user = userEvent.setup(); render(<App />);
-    await user.click(screen.getByRole('button', { name: /Highlights/ }));
-    expect(screen.getByRole('heading', { name: 'Highlights' })).toBeVisible();
-    await user.click(screen.getByRole('button', { name: /Horas de sono/ }));
-    expect(screen.getByRole('heading', { name: /Sleep Hours/, level: 1 })).toBeVisible();
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    expect(screen.getByRole('heading', { name: 'Telemetria principal' })).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /Sono total/ }));
+    expect(screen.getByRole('heading', { name: /Horas de sono/, level: 1 })).toBeVisible();
     await user.click(screen.getByRole('button', { name: /Dom, sol 139/ }));
     expect(screen.getByRole('status').textContent).toContain('Sol 139');
     await user.click(screen.getByRole('button', { name: 'Sol (dia)' }));
@@ -61,6 +61,83 @@ describe('mission workflows', () => {
     expect(within(dialog).getByRole('button', { name: /Simulando/ })).toBeDisabled();
     await user.click(within(dialog).getByRole('button', { name: /Cancelar/ }));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('opens the heart rate page from its highlights card and switches the time range', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('button', { name: /Frequência cardíaca/ }));
+    expect(window.location.pathname).toBe('/pt-br/highlights/biomarkers/heart-rate');
+    expect(screen.getByRole('heading', { name: 'Frequência cardíaca', level: 1 })).toBeVisible();
+    expect(document.title).toBe('Frequência cardíaca | Analytica Pulse');
+    expect(screen.getByText(/Baseline 63 bpm · repouso 40–100 bpm/)).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Como o ambiente espacial afeta a frequência cardíaca' })).toBeVisible();
+    await user.click(screen.getByRole('tab', { name: '7d' }));
+    expect(screen.getByRole('tab', { name: '7d' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText('09/11')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
+    expect(screen.getByRole('heading', { name: 'Telemetria principal' })).toBeVisible();
+  });
+
+  it('shows systolic and diastolic bars on the blood pressure page', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('button', { name: /Pressão arterial/ }));
+    expect(window.location.pathname).toBe('/pt-br/highlights/biomarkers/blood-pressure');
+    expect(screen.getByRole('heading', { name: 'Pressão arterial', level: 1 })).toBeVisible();
+    expect(screen.getByText('Diastólica')).toBeVisible();
+    expect(screen.getByText('122/79')).toBeVisible();
+    await user.click(screen.getByRole('tab', { name: '7d' }));
+    expect(screen.getByText('114/74')).toBeVisible();
+  });
+
+  it('labels each glucose reading with its meal context', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('button', { name: /Glicemia/ }));
+    expect(screen.getByRole('heading', { name: 'Glicemia', level: 1 })).toBeVisible();
+    expect(screen.getByText('14:00 · 2 h pós-refeição')).toBeVisible();
+    expect(screen.getByText(/100 mg\/dL · início da glicemia de jejum alterada/)).toBeVisible();
+  });
+
+  it('shows the mood page with only the weekly check-in view', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('button', { name: /Prontidão e humor/ }));
+    expect(screen.getByRole('heading', { name: 'Humor e bem-estar', level: 1 })).toBeVisible();
+    expect(screen.queryByRole('tab', { name: '24h' })).not.toBeInTheDocument();
+    expect(screen.getByText('≥ 3,4')).toBeVisible();
+    expect(screen.getByText('15/11')).toBeVisible();
+  });
+
+  it('shows the same demo values in the highlights cards and the correlation alert', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    expect(screen.getByRole('button', { name: /Sono total/ }).textContent).toContain('6,5');
+    expect(screen.getByRole('button', { name: /Glicemia/ }).textContent).toContain('82');
+    await user.click(screen.getByRole('button', { name: 'Ver evidências e limites' }));
+    const dialog = screen.getByRole('dialog');
+    expect(within(dialog).getByText('82 mg/dL')).toBeVisible();
+    expect(within(dialog).getByText('6,5 h')).toBeVisible();
+  });
+
+  it('classifies a logged glucose result with the vitals layer and its meal context', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('button', { name: 'Registrar resultado do exame' }));
+    const dialog = screen.getByRole('dialog', { name: /REGISTRAR RESULTADO/ });
+    const input = within(dialog).getByLabelText('Valor de glicemia');
+    const save = within(dialog).getByRole('button', { name: /Salvar e atualizar/ });
+    expect(save).toBeDisabled();
+    await user.type(input, '62');
+    expect(within(dialog).getByText('Hipoglicemia nível 1')).toBeVisible();
+    expect(within(dialog).getByText(/regra 15-15/)).toBeVisible();
+    await user.clear(input); await user.type(input, '128');
+    expect(within(dialog).getByText('Glicemia de jejum na faixa diagnóstica de diabetes')).toBeVisible();
+    await user.click(within(dialog).getByRole('button', { name: /Post-Meal/ }));
+    expect(within(dialog).getByText('Normal')).toBeVisible();
+    await user.clear(input); await user.type(input, '900');
+    expect(save).toBeDisabled();
   });
   it('shows the temperature context and illustrative atlas only when selected', async () => {
     const user = userEvent.setup(); render(<App />);
@@ -79,7 +156,7 @@ describe('mission workflows', () => {
     expect(within(score).getByText('DONKI')).toBeVisible();
     expect(within(score).getByText('05/11, 14:00 UTC')).toBeVisible();
     expect(within(score).getByText(/sem calibração probabilística/)).toBeVisible();
-    expect(screen.getByText('DEMONSTRAÇÃO')).toBeVisible();
+    expect(screen.getByText('DADOS SINTÉTICOS')).toBeVisible();
   });
   it('keeps high-energy detection separate from missing measured dose', async () => {
     const user = userEvent.setup(); render(<App />);
@@ -120,7 +197,7 @@ describe('mission workflows', () => {
   });
   it('exposes all 30 indicators and blocks unvalidated total dose', async () => {
     const user = userEvent.setup(); render(<App />);
-    await user.click(screen.getByRole('button', { name: 'Indicadores' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Todos os biomarcadores' }));
     expect(document.querySelectorAll('.catalog-grid .indicator-card')).toHaveLength(30);
     await user.type(screen.getByLabelText('Filtrar indicadores'), 'R03');
     expect(document.querySelectorAll('.catalog-grid .indicator-card')).toHaveLength(1);
@@ -191,7 +268,7 @@ describe('mission workflows', () => {
   });
   it('discloses source licensing and limitations in a dismissible dialog', async () => {
     const user = userEvent.setup(); render(<App />);
-    await user.click(screen.getByRole('button', { name: 'Sobre os dados' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Sobre os dados' }));
     const dialog = screen.getByRole('dialog');
     expect(within(dialog).getByRole('link', { name: 'Creative Commons Attribution 4.0' })).toHaveAttribute('href', 'https://creativecommons.org/licenses/by/4.0/');
     expect(within(dialog).getByText(/Não há estômago ou malhas celulares/)).toBeVisible();

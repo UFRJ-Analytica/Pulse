@@ -183,8 +183,8 @@ export const VITAL_REFERENCES: Record<VitalId, VitalReference> = {
     sources: ['ochmo-tb-041-sleep'],
   },
   mood: {
-    unit: '0–10',
-    reference: t('No universal normal range. Compared only with the crew member’s own pattern.', 'Não há faixa normal universal. A comparação é só com o padrão do próprio tripulante.'),
+    unit: '1–5',
+    reference: t('Morning check-in composite from 1 to 5 (well-being, stress, vigor and sleep quality). No universal normal range: compared only with the crew member’s own pattern.', 'Composto do check-in matinal de 1 a 5 (bem-estar, estresse, vigor e qualidade do sono). Não há faixa normal universal: a comparação é só com o padrão do próprio tripulante.'),
     sources: ['project-analysis', 'ochmo-tb-016-behavioral'],
   },
 };
@@ -200,7 +200,7 @@ const SPACE_FEVER_DAYS = 75;
 
 const LIMITS: Record<VitalId, [number, number]> = {
   'heart-rate': [20, 250], 'blood-pressure': [50, 260], 'core-temperature': [25, 45],
-  'blood-glucose': [10, 600], 'sleep-hours': [0, 24], mood: [0, 10],
+  'blood-glucose': [10, 600], 'sleep-hours': [0, 24], mood: [1, 5],
 };
 const DIASTOLIC_LIMITS: [number, number] = [30, 160];
 const SEVERITY: Record<SignalState, number> = { 'no-data': -1, normal: 0, observation: 1, attention: 2, critical: 3 };
@@ -324,7 +324,7 @@ function coreTemperature(value: number, context: MeasurementContext, baseline: n
     recheck: recheck15, escalation: 'flight-surgeon', sources,
   });
   else if (value >= 38.3 && value < 39.3) findings.push({
-    state: 'critical', label: t('Loss of dexterity and judgment range', 'Faixa de queda de destreza e julgamento'),
+    state: 'critical', label: t('Impaired dexterity and judgment range', 'Faixa de queda de destreza e julgamento'),
     action: t('Avoid critical tasks and report to the flight surgeon.', 'Evite tarefas críticas e informe o flight surgeon.'),
     recheck: recheck15, escalation: 'flight-surgeon', sources,
   });
@@ -364,12 +364,12 @@ function bloodGlucose(value: number, context: MeasurementContext, series: (numbe
   const high: VitalFinding = {
     state: 'attention', label: t('200 mg/dL or more', '200 mg/dL ou mais'),
     action: t('Report to the flight surgeon, especially with thirst, frequent urination or fatigue.', 'Informe o flight surgeon, principalmente se houver sede, urina frequente ou cansaço.'),
-    recheck: t('Repeat fasting on the next morning.', 'Repita em jejum na manhã seguinte.'), escalation: 'flight-surgeon', sources: ['ada-2025-diagnosis'],
+    recheck: t('Repeat with a fasting test the next morning.', 'Repita em jejum na manhã seguinte.'), escalation: 'flight-surgeon', sources: ['ada-2025-diagnosis'],
   };
   const aboveExpected: VitalFinding = {
     state: 'observation', label: t('Above 140 mg/dL', 'Acima de 140 mg/dL'),
     action: t('Above the expected range outside fasting. Record what was eaten and confirm with a fasting reading.', 'Acima do esperado fora do jejum. Registre a refeição e confirme com uma medição em jejum.'),
-    recheck: t('Repeat fasting on the next morning.', 'Repita em jejum na manhã seguinte.'), escalation: 'none', sources: ['ada-2025-hospital', 'ada-2025-diagnosis'],
+    recheck: t('Repeat with a fasting test the next morning.', 'Repita em jejum na manhã seguinte.'), escalation: 'none', sources: ['ada-2025-hospital', 'ada-2025-diagnosis'],
   };
   if (context.meal !== 'fasting') {
     if (value >= 200) return [high];
@@ -381,12 +381,12 @@ function bloodGlucose(value: number, context: MeasurementContext, series: (numbe
   if (value >= 126) findings.push({
     state: 'attention', label: t('Fasting glucose in the diabetes diagnostic range', 'Glicemia de jejum na faixa diagnóstica de diabetes'),
     action: t('Needs confirmation by repeated testing. Report to the flight surgeon.', 'Precisa de confirmação com novo exame. Informe o flight surgeon.'),
-    recheck: t('Repeat fasting on another day.', 'Repita em jejum em outro dia.'), escalation: 'flight-surgeon', sources: ['ada-2025-diagnosis'],
+    recheck: t('Repeat a fasting test on another day.', 'Repita em jejum em outro dia.'), escalation: 'flight-surgeon', sources: ['ada-2025-diagnosis'],
   });
   else if (value >= 100) findings.push({
     state: 'observation', label: t('Impaired fasting glucose', 'Glicemia de jejum alterada'),
     action: t('Track the trend. Astronaut fasting glucose usually stays near 77 mg/dL in flight.', 'Acompanhe a tendência. A glicemia de jejum de astronautas costuma ficar perto de 77 mg/dL em voo.'),
-    recheck: t('Repeat fasting on another day.', 'Repita em jejum em outro dia.'), escalation: 'none', sources: ['ada-2025-diagnosis', 'hughson-2016'],
+    recheck: t('Repeat a fasting test on another day.', 'Repita em jejum em outro dia.'), escalation: 'none', sources: ['ada-2025-diagnosis', 'hughson-2016'],
   });
   if (baseline !== null && persistent(series, v => v > baseline * (1 + BASELINE_PERCENT / 100))) findings.push({
     state: 'observation', label: t('Fasting glucose persistently above personal baseline', 'Glicemia de jejum persistentemente acima da linha de base pessoal'),

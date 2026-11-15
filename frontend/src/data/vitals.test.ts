@@ -146,10 +146,12 @@ describe('sono', () => {
 
 describe('humor', () => {
   it('só avalia em relação ao padrão pessoal e nunca passa de observação', () => {
+    // 1–5 check-in composite: with baseline 4, the observation threshold is 3.2.
     expect(assessVital('mood', { value: 3 })).toMatchObject({ state: 'no-data', reason: 'insufficient-context' });
-    expect(assessVital('mood', { value: 5 }, { history: readings([5, 5]), baseline: 8 })).toMatchObject({ state: 'observation', escalation: 'none' });
-    expect(assessVital('mood', { value: 5 }, { history: readings([8, 7]), baseline: 8 }).state).toBe('normal');
-    expect(assessVital('mood', { value: 6.5 }, { history: readings([6.5, 6.5]), baseline: 8 }).state).toBe('normal');
+    expect(assessVital('mood', { value: 3 }, { history: readings([3, 3]), baseline: 4 })).toMatchObject({ state: 'observation', escalation: 'none' });
+    expect(assessVital('mood', { value: 3 }, { history: readings([4, 3.8]), baseline: 4 }).state).toBe('normal');
+    expect(assessVital('mood', { value: 3.4 }, { history: readings([3.4, 3.4]), baseline: 4 }).state).toBe('normal');
+    expect(assessVital('mood', { value: 7 }, { baseline: 4 })).toMatchObject({ state: 'no-data', reason: 'invalid' });
   });
 });
 
@@ -194,7 +196,7 @@ describe('adaptador de sinais vitais', () => {
 
   it('rejeita unidade incompatível e preserva ausência', () => {
     expect(normalizeVital('heart-rate', { value: 72, unit: 'bpm/min', measurement: { activity: 'rest' } }, context)).toMatchObject({ value: null, status: 'invalid', state: 'no-data' });
-    expect(normalizeVital('mood', { value: null, unit: '0–10' }, context)).toMatchObject({ value: null, status: 'missing', state: 'no-data' });
+    expect(normalizeVital('mood', { value: null, unit: '1–5' }, context)).toMatchObject({ value: null, status: 'missing', state: 'no-data' });
   });
 
   it('respeita fonte atrasada', () => {
