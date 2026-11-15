@@ -69,7 +69,7 @@ describe('mission workflows', () => {
     await user.click(screen.getByRole('button', { name: /Frequência cardíaca/ }));
     expect(window.location.pathname).toBe('/pt-br/highlights/biomarkers/heart-rate');
     expect(screen.getByRole('heading', { name: 'Frequência cardíaca', level: 1 })).toBeVisible();
-    expect(document.title).toBe('Frequência cardíaca | Analytica Pulse');
+    expect(document.title).toBe('Frequência cardíaca | Pulse Health');
     expect(screen.getByText(/Baseline 63 bpm · repouso 40–100 bpm/)).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Como o ambiente espacial afeta a frequência cardíaca' })).toBeVisible();
     await user.click(screen.getByRole('tab', { name: '7d' }));
