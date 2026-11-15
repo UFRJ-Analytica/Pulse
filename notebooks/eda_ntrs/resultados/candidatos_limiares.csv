@@ -1,0 +1,212 @@
+id,titulo,ano,tipo,indicadores,trechos,n_valores_resumo,tem_texto,link_texto,pontuacao,sujeito
+20150021474,Pilot Field Test: Use of a Compression Garment During a Stand Test After Long-Duration Space Flight,2016,ABSTRACT,"frequência cardíaca, pressão arterial",0.8 mmHg | 15 bpm | 14 bpm | 38 bpm | 7.4 bpm | 25.0 bpm | 16.0 bpm,7,True,https://ntrs.nasa.gov/api/citations/20150021474/downloads/20150021474.txt,9,humano
+20040100724,Biological Response to SPE Exposures,2004,OTHER,radiação,2.2 Sv | 1.8 Sv | 1.6 Gy | 1.3 Gy,4,True,https://ntrs.nasa.gov/api/citations/20040100724/downloads/20040100724.txt,8,misto
+20000057301,Effect of In-Flight Exercise and Extravehicular Activity on Postflight Stand Tests,2000,TECHNICAL_MEMORANDUM,frequência cardíaca,5 bpm | 1bpm | 2 bpm,3,True,https://ntrs.nasa.gov/api/citations/20000057301/downloads/20000057301.txt,8,humano
+20110014835,Compression Stockings May Ameliorate Orthostatic Intolerance in Astronauts After Short-Duration Space Flight,2011,PRESENTATION,"frequência cardíaca, pressão arterial",15 mmHg | 2 mmHg | 4 beats/min,3,True,https://ntrs.nasa.gov/api/citations/20110014835/downloads/20110014835.txt,7,humano
+20040088399,Baroreflex buffering and susceptibility to vasoactive drugs,2002,REPRINT,pressão arterial,1.6 mm Hg | 1.1 mm Hg | 3.9 mm Hg | 3.4 mm Hg | 3.4 mm Hg,5,False,,7,humano
+20040088407,Water drinking as a treatment for orthostatic syndromes,2002,REPRINT,"frequência cardíaca, pressão arterial",3.4 mm Hg | 13 mm Hg | 5 mm Hg | 23 beats per minute | 21 beats per minute,5,False,,7,humano
+20040088508,Selective norepinephrine reuptake inhibition as a human model of orthostatic intolerance,2002,REPRINT,"frequência cardíaca, pressão arterial",2 mm Hg | 2 mm Hg | 3 mm Hg | 2 bpm | 3 bpm | 4 bpm,6,False,,7,humano
+19950012725,"Drink composition and cycle-ergometer endurance in men: Carbohydrate, Na(+), osmolality",1994,TECHNICAL_MEMORANDUM,glicemia,"416 mg/dL | 2,049 mg/dL | 854 mg/dL | 0.5 mg/dL",4,True,https://ntrs.nasa.gov/api/citations/19950012725/downloads/19950012725.txt,7,humano
+20150023508,Plasma Glucose Levels for Red Drum Sciaenops Ocellatus in a Florida Estuarine Fisheries Reserve,2015,PREPRINT,glicemia,38.23 mg / dL | 17 - 69 mg / dL,2,True,https://ntrs.nasa.gov/api/citations/20150023508/downloads/20150023508.txt,6,animal
+20110020797,Expression of Enzymes that Metabolize Medications,2011,ABSTRACT,radiação,50 mGy | 6Gy,2,True,https://ntrs.nasa.gov/api/citations/20110020797/downloads/20110020797.txt,6,misto
+20100038346,Custom Gradient Compression Stockings May Prevent Orthostatic Intolerance in Astronauts After Space Flight,2010,ABSTRACT,"frequência cardíaca, pressão arterial",15 mmHg | 6.8 bpm,2,True,https://ntrs.nasa.gov/api/citations/20100038346/downloads/20100038346.txt,6,humano
+20100042138,Maximum Oxygen Uptake During Long-Duration Space Flight: Preliminary Results,2010,ABSTRACT,frequência cardíaca,8 beats/min | 6 beats/min,2,True,https://ntrs.nasa.gov/api/citations/20100042138/downloads/20100042138.txt,6,humano
+20080014237,Thoracic Impedance as a Potential Indicator of Gz-induced Presyncope,2008,CONFERENCE_PAPER,frequência cardíaca,44 bpm | 50 bpm,2,True,https://ntrs.nasa.gov/api/citations/20080014237/downloads/20080014237.txt,6,humano
+20070010701,Hypovolemia Induced Orthostatic Hypotension in Presyncopal Astronauts and Normal Subjects Relates to Hypo-Sympathetic Responsiveness,2007,CONFERENCE_PAPER,frequência cardíaca,5 bpm | 3 bpm,2,True,https://ntrs.nasa.gov/api/citations/20070010701/downloads/20070010701.txt,6,humano
+20060054401,WISE-2005: Integrative Cardiovascular Responses with LBNP during 60-Day Bed Rest in Women,2005,REPRINT,frequência cardíaca,2.8 bpm | 5.0 bpm | 5.4 bpm | 3.6 bpm,4,False,,6,humano
+20030018923,Use of a Slick-Plate as a Contingency Exercise Surface for the Treadmill With Vibration Isolation System,2003,TECHNICAL_MEMORANDUM,frequência cardíaca,170 bpm,1,True,https://ntrs.nasa.gov/api/citations/20030018923/downloads/20030018923.txt,6,humano
+20030068220,Influence of Microgravity on Arterial Baroreflex Responses Triggered by Valsalva's Maneuver,2003,OTHER,pressão arterial,49 mmHg | 27 mmHg,2,True,https://ntrs.nasa.gov/api/citations/20030068220/downloads/20030068220.txt,6,humano
+20040087871,Strength training reduces arterial blood pressure but not sympathetic neural activity in young normotensive subjects,2003,REPRINT,"frequência cardíaca, pressão arterial",2 mmHg | 2 mmHg | 2 mmHg | 3 beats/min,4,False,,6,humano
+20040141478,Isometric handgrip training reduces arterial pressure at rest without changes in sympathetic nerve activity,2000,REPRINT,"frequência cardíaca, pressão arterial",1 mmHg | 1 mmHg | 2 mmHg | 4 beats/min,4,False,,6,humano
+20260002939,Evidence Report: Risk of Ionizing Radiation Carcinogenesis,2026,CONTRIBUTION_TO_LARGER_WORK,radiação,50 to 2000 millisieverts,1,True,https://ntrs.nasa.gov/api/citations/20260002939/downloads/Cancer%20Evidence%20Book-3_10_26%20JZ_MY%201.pdf.txt,5,humano
+20230016649,Core Body Temperature Predictions Using Metabolic Energy Expenditure and Heart Rate During Simulated Extravehicular Activity ,2024,ABSTRACT,temperatura corporal,0.2±0.15 °C,1,True,https://ntrs.nasa.gov/api/citations/20230016649/downloads/H3PO_CSRM_Thermal_ICES_2024_Hoffmann.pdf.txt,5,humano
+20240006717,Development of optic disc edema during 30 days of hypercapnic head down tilt bed rest is associated with short sleep duration and blunted temperature amplitude,2024,ACCEPTED_MANUSCRIPT,temperatura corporal,0.1°C,1,True,https://ntrs.nasa.gov/api/citations/20240006717/downloads/1680315154.pdf.txt,5,humano
+20230001734,Female Astronauts Exhibit Greater Reductions in Aerobic Peak Power Following Long-Duration Space Flight than Males,2023,CONFERENCE_PAPER,frequência cardíaca,173.0±10.8 beats/min,1,True,https://ntrs.nasa.gov/api/citations/20230001734/downloads/Strock_ACSM%202023%20Abstract_12.2.2022_v3.pdf.txt,5,humano
+20190033142,NASA GeneLab Platform Utilized for Space Radiation Dosimetry Biological Response Compared to Radiation Ground Studies,2019,PRESENTATION,radiação,0.1 mGy,1,True,https://ntrs.nasa.gov/api/citations/20190033142/downloads/20190033142.txt,5,misto
+20180004708,Potential Dietary Countermeasure Against Spaceflight-Induced Bone Loss,2018,CONFERENCE_PAPER,radiação,2 Gy,1,True,https://ntrs.nasa.gov/api/citations/20180004708/downloads/20180004708.txt,5,misto
+20170004342,Determination of the Risk of Radiation-Associated Circulatory and Cancer Disease Mortality in a NASA Early Astronaut Cohort ,2017,ABSTRACT,radiação,0-74.1 milligrays,1,True,https://ntrs.nasa.gov/api/citations/20170004342/downloads/20170004342.txt,5,misto
+20150020969,Bluetooth(Registered Trademark) Heart Rate Monitors for Spaceflight,2016,ABSTRACT,frequência cardíaca,5bpm,1,True,https://ntrs.nasa.gov/api/citations/20150020969/downloads/20150020969.txt,5,humano
+20150021215,Bluetooth Heart Rate Monitors For Spaceflight,2016,ABSTRACT,frequência cardíaca,5bpm,1,True,https://ntrs.nasa.gov/api/citations/20150021215/downloads/20150021215.txt,5,humano
+20150021765,Heart Rate Responses to Unaided Orion Side Hatch Egress in the Neutral Buoyancy Laboratory,2016,ABSTRACT,frequência cardíaca,153 bpm,1,True,https://ntrs.nasa.gov/api/citations/20150021765/downloads/20150021765.txt,5,humano
+20140017006,Computational Analysis of Artificial Gravity as a Possible Countermeasure to Spaceflight Induced Bone Loss,2015,ABSTRACT,osso e músculo,2% a month,1,True,https://ntrs.nasa.gov/api/citations/20140017006/downloads/20140017006.txt,5,humano
+20150002704,Development of Bone Remodeling Model for Spaceflight Bone Physiology Analysis,2015,PRESENTATION,osso e músculo,1-2% a month,1,True,https://ntrs.nasa.gov/api/citations/20150002704/downloads/20150002704.txt,5,humano
+20150011647,Modeling the Effects of Spaceflight on the Posterior Eye in VIIP,2015,PRESENTATION,pressão arterial,30 mmHg,1,True,https://ntrs.nasa.gov/api/citations/20150011647/downloads/20150011647.txt,5,humano
+20140003569,Modeling of Blood Lead Levels in Astronauts Exposed to Lead from Microgravity-Accelerated Bone Loss,2014,PRESENTATION,osso e músculo,0.5% per month,1,True,https://ntrs.nasa.gov/api/citations/20140003569/downloads/20140003569.txt,5,humano
+20140006747,The Digital Astronaut Project Bone Remodeling Model,2014,CONFERENCE_PAPER,osso e músculo,2% a month,1,True,https://ntrs.nasa.gov/api/citations/20140006747/downloads/20140006747.txt,5,humano
+20140003236,The Digital Astronaut Project Computational Bone Remodeling Model (Beta Version) Bone Summit Summary Report,2013,CONFERENCE_PAPER,osso e músculo,2% a month,1,True,https://ntrs.nasa.gov/api/citations/20140003236/downloads/20140003236.txt,5,humano
+20110015001,Inadequate Loading Stimulus on ISS Results in Bone and Muscle Loss,2011,EXTENDED_ABSTRACT,osso e músculo,0.21% per month,1,True,https://ntrs.nasa.gov/api/citations/20110015001/downloads/20110015001.txt,5,humano
+20110023087,Nutrition Coupled with High-Load Traditional or Low-Load Blood Flow Restricted Exercise During Human Limb Suspension,2011,CONFERENCE_PAPER,pressão arterial,4 mmHg,1,True,https://ntrs.nasa.gov/api/citations/20110023087/downloads/20110023087.txt,5,humano
+20110011099,Bone Density Following Three Years of Recovery from Long-Duration Space Flight,2011,PRESENTATION,osso e músculo,0.5-1.0% per month,1,True,https://ntrs.nasa.gov/api/citations/20110011099/downloads/20110011099.txt,5,humano
+20110023185,Retrospective Study of Serum Sclerostin Measurements in Bed Rest Subjects,2011,ABSTRACT,osso e músculo,1-2% per month,1,True,https://ntrs.nasa.gov/api/citations/20110023185/downloads/20110023185.txt,5,misto
+20130012963,Bone Remodeling Monitor,2009,OTHER,osso e músculo,2% per month,1,True,https://ntrs.nasa.gov/api/citations/20130012963/downloads/20130012963.txt,5,humano
+20070023306,Preliminary Assessment of Artificial Gravity Impacts to Deep-Space Vehicle Design,2007,OTHER,osso e músculo,1% per month,1,True,https://ntrs.nasa.gov/api/citations/20070023306/downloads/20070023306.txt,5,humano
+20070031843,Foods for a Mission to Mars: Investigations of Low-Dose Gamma Radiation Effects,2007,PREPRINT,radiação,3 Gy,1,True,https://ntrs.nasa.gov/api/citations/20070031843/downloads/20070031843.txt,5,humano
+20060020135,Cerebral Hypoperfusion Precedes Nausea During Centrifugation,2004,PREPRINT,pressão arterial,3 mmHg,1,True,https://ntrs.nasa.gov/api/citations/20060020135/downloads/20060020135.txt,5,humano
+20040084147,Biophotonics and Bone Biology,2004,CONFERENCE_PAPER,osso e músculo,1.2% per month,1,True,https://ntrs.nasa.gov/api/citations/20040084147/downloads/20040084147.txt,5,células
+20040142388,Biophotonics and Bone Biology,2004,CONFERENCE_PAPER,osso e músculo,1.2% per month,1,True,https://ntrs.nasa.gov/api/citations/20040142388/downloads/20040142388.txt,5,humano
+20110011285,Loading Configurations and Ground Reaction Forces During Treadmill Running in Weightlessness,2003,EXTENDED_ABSTRACT,osso e músculo,1-2% per month,1,True,https://ntrs.nasa.gov/api/citations/20110011285/downloads/20110011285.txt,5,humano
+20040088547,Influence of microgravity on astronauts' sympathetic and vagal responses to Valsalva's manoeuvre,2002,REPRINT,pressão arterial,30 mmHg | 27 mmHg | 49 mmHg,3,False,,5,humano
+20040112417,Ischemia causes muscle fatigue,2001,REPRINT,pressão arterial,60 mm Hg | 9.8 mm Hg | 12.8 mm Hg,3,False,,5,humano
+19980211649,Effect of Blockade of Nitric Oxide Synthesis on the Renin Secretory Response to Frusemide in Conscious Rabbits,1995,REPRINT,"frequência cardíaca, pressão arterial",3 mm Hg | 9 mm Hg | 10 beats/min,3,True,https://ntrs.nasa.gov/api/citations/19980211649/downloads/19980211649.txt,5,animal
+20050000435,A diminished aortic-cardiac reflex during hypotension in aerobically fit young men,1993,REPRINT,"frequência cardíaca, pressão arterial",1.0 mm Hg | 1.1 mm Hg | 3 bpm | 1 bpm | 2 bpm | 2 bpm | 0.2 bpm | 0.2 bpm | 0.1 bpm,9,False,,5,humano
+19950010339,Changes in left ventricular function as determined by the multi-wire gamma camera at near presyncopal levels of lower body negative pressure,1992,CONFERENCE_PAPER,"frequência cardíaca, pressão arterial",3 mmHg | 3 mmHg | 3 beats per minute,3,True,https://ntrs.nasa.gov/api/citations/19950010339/downloads/19950010339.txt,5,humano
+20050000916,Radiation protection guidelines for space missions,1988,REPRINT,radiação,4.0 Sv | 1.0 Sv | 4.0 Sv | 4.0 Sv | 6.0 Sv | 4.0 Sv,6,False,,5,humano
+19870011297,Radiation protection guidelines for space missions,1986,CONFERENCE_PAPER,radiação,4.0Sv | 4.0 Sv | 6.0 to 4.0 Sv,3,True,https://ntrs.nasa.gov/api/citations/19870011297/downloads/19870011297.txt,5,humano
+20040087555,Improvement in diastolic intraventricular pressure gradients in patients with HOCM after ethanol septal reduction,2003,REPRINT,pressão arterial,0.45 mmHg | 5 mmHg,2,False,,4,humano
+20040088032,New insights into differential baroreflex control of heart rate in humans,2003,REPRINT,frequência cardíaca,2 beats/min | 1 beats/min,2,False,,4,humano
+20040088217,Interactive effect of hypoxia and otolith organ engagement on cardiovascular regulation in humans,2002,REPRINT,frequência cardíaca,1 beats/min | 2 beats/min,2,False,,4,humano
+20040088050,Vestibulosympathetic reflex during orthostatic challenge in aging humans,2002,REPRINT,pressão arterial,2 mmHg | 2 mmHg,2,False,,4,humano
+20040088441,Aging attenuates the vestibulosympathetic reflex in humans,2002,REPRINT,pressão arterial,1 mm Hg | 1 mm Hg,2,False,,4,humano
+20040088118,Vestibulosympathetic reflex during mental stress,2002,REPRINT,pressão arterial,2 mmHg | 3 mmHg,2,False,,4,humano
+20040088451,Ageing and water homeostasis,2002,REPRINT,pressão arterial,11 mmHg | 75 mmHg,2,False,,4,humano
+20040088609,Sequential modulation of cardiac autonomic control induced by cardiopulmonary and arterial baroreflex mechanisms,2001,REPRINT,pressão arterial,40 mm Hg | 15 mm Hg,2,False,,4,humano
+20040088728,Absence of arterial baroreflex modulation of skin sympathetic activity and sweat rate during whole-body heating in humans,2001,REPRINT,pressão arterial,8 mmHg | 13 mmHg,2,False,,4,humano
+20040112642,Interaction between vestibulosympathetic and skeletal muscle reflexes on sympathetic activity in humans,2001,REPRINT,pressão arterial,2 mmHg | 2 mmHg,2,False,,4,misto
+20040112578,Cutaneous interstitial nitric oxide concentration does not increase during heat stress in humans,2001,REPRINT,"frequência cardíaca, temperatura corporal",5 beats/min | 0.2 degrees C,2,False,,4,humano
+20040088727,Space radiation and cataracts in astronauts,2001,REPRINT,radiação,8 mSv | 8 mSv,2,False,,4,humano
+20010096254,Bed Rest and Orthostatic-Hypotensive Intolerance,2000,OTHER,"frequência cardíaca, pressão arterial",70 mmHg | 15 beats/min,2,False,,4,humano
+20040141494,"Treatment of hypertension with perindopril reduces plasma atrial natriuretic peptide levels, left ventricular mass, and improves echocardiographic parameters of diastolic function",2000,REPRINT,pressão arterial,7.8 mmHg | 6.7 mmHg,2,False,,4,humano
+20040112743,Effect of gender on vestibular sympathoexcitation,2000,REPRINT,frequência cardíaca,1 beats/min | 1 beats/min,2,False,,4,humano
+20040112706,Dose limits for astronauts,2000,REPRINT,radiação,4 Sv | 1 to 4 Sv,2,False,,4,humano
+20040112737,Carotid baroreflex responsiveness in heat-stressed humans,2000,REPRINT,"frequência cardíaca, pressão arterial",2 mmHg | 3 beats/min,2,False,,4,humano
+20040112668,Effective dose equivalent on the ninth Shuttle--Mir mission (STS-91),2000,REPRINT,radiação,3.4 to 5.2 mSv | 1.7 to 2.7 mGy,2,False,,4,humano
+20040141679,The pressor response to water drinking in humans : a sympathetic reflex?,2000,REPRINT,pressão arterial,5 mm Hg | 2.4 mm Hg,2,False,,4,humano
+20000029495,Sustained Partial Sleep Deprivation: Effects on Immune Modulation and Growth Factors,1999,OTHER,sono,4- 6.5 hours per night | 4.2 hour per night | 8.2 hour per night | 4 hours per night,4,False,,4,humano
+20040141968,Effects of standing on cerebrovascular resistance in patients with idiopathic orthostatic intolerance,1999,REPRINT,pressão arterial,11 mm Hg | 11 mm Hg | 7 mm Hg | 11 mm Hg,4,False,,4,humano
+20040141947,Effects of immersion in cool water on lung-exhaled nitric oxide at rest and during exercise,1999,REPRINT,temperatura corporal,35 degrees C | 30 degrees C | 20 degrees C | 0.05 degrees C,4,False,,4,humano
+20040172696,Distribution and observed associations of orthostatic blood pressure changes in elderly general medicine outpatients,1998,REPRINT,pressão arterial,4 mm Hg | 15 mm Hg | 2 mm Hg | 11 mm Hg,4,False,,4,humano
+20040173094,Higher sympathetic nerve activity during ventricular (VVI) than during dual-chamber (DDD) pacing,1996,REPRINT,"frequência cardíaca, pressão arterial",2 mm Hg | 2 mm Hg | 100 beats/min | 60 beats/min,4,False,,4,humano
+20010124103,Mechanism of Headward Fluid Shift During Exposure To Microgravity,1994,ABSTRACT,pressão arterial,200 mm Hg | 100 mm Hg | 28 to 34 mm Hg | 22 to 18 mm Hg,4,False,,4,humano
+19940020875,Non-invasive optical detection of glucose in cell culture nutrient medium,1993,CONFERENCE_PAPER,glicemia,108 mg/dl | 10 mg/dl,2,True,https://ntrs.nasa.gov/api/citations/19940020875/downloads/19940020875.txt,4,células
+19800024574,A microprocessor-based cardiotachometer,1979,CONTRACTOR_REPORT,frequência cardíaca,30 to 250 beats/min,1,True,https://ntrs.nasa.gov/api/citations/19800024574/downloads/19800024574.txt,4,humano
+19760015801,Program to study optimal protocol for cardiovascular and muscular efficiency,1975,CONTRACTOR_REPORT,frequência cardíaca,160 beats per minute,1,True,https://ntrs.nasa.gov/api/citations/19760015801/downloads/19760015801.txt,4,humano
+19700080308,Methods of Achieving and Maintaining Physical Fitness for Prolonged Space Flight,1969,CONTRACTOR_REPORT,frequência cardíaca,160 beats per minute,1,True,https://ntrs.nasa.gov/api/citations/19700080308/downloads/19700080308.txt,4,humano
+20220009964,A Preliminary Assessment of Physical Demand during Simulated Lunar Surface Extravehicular Activities,,CONFERENCE_PAPER,frequência cardíaca,150 BPM | 177 BPM,2,True,https://ntrs.nasa.gov/api/citations/20220009964/downloads/IEEE_aerospace2023_met%20rate%20study_schlotman%20v3.pdf.txt,4,humano
+20170004598,Risk Of Early Onset Osteoporosis Due To Spaceflight,2017,OTHER,osso e músculo,1.5% per month,1,False,,3,humano
+20140003150,Radiation Engineering Analysis of Shielding Materials to Assess Their Ability to Protect Astronauts in Deep Space From Energetic Particle Radiation,2013,REPRINT,radiação,150 mSv,1,False,,3,humano
+20100008967,Equivalent Dipole Vector Analysis for Detecting Pulmonary Hypertension,2010,ABSTRACT,pressão arterial,35 mmHg,1,False,,3,humano
+20090038744,Effect of Pharmacologically-Induced Hypovolemia on Aerobic Capacity,2009,ABSTRACT,frequência cardíaca,5 bpm,1,False,,3,humano
+20080043912,Graded Compression Stockings Prevent Post-spaceflight Orthostatic Hypotension,2008,ABSTRACT,pressão arterial,25 mmHg,1,False,,3,humano
+20080014097,Exercise Increases the Cardiovascular Stimulus Provided by Artificial Gravity,2008,ABSTRACT,frequência cardíaca,44 bpm,1,False,,3,humano
+20070022658,WISE-2005: Adrenergic Responses Before and After 60 Days of 6 Degree Head-Down Bed-Rest in Women,2006,REPRINT,frequência cardíaca,13 beats/min,1,False,,3,humano
+20080026122,Current ISS Exercise Countermeasures: Where are we now?,2006,ABSTRACT,osso e músculo,1.5% per month,1,False,,3,humano
+20080026201,Effects of gamma-Radiation on Select Lipids and Antioxidants,2006,ABSTRACT,radiação,3 Sieverts,1,False,,3,humano
+20050162174,"Strategies for Small Volume Resuscitation: Hyperosmotic-Hyperoncotic Solutions, Hemoglobin Based Oxygen Carriers and Closed-Loop Resuscitation",2004,CONFERENCE_PAPER,pressão arterial,70 mmHg,1,False,,3,misto
+20040087547,Sympathetic responses to Valsalva's manoeuvre following bed rest,2003,REPRINT,pressão arterial,40 mmHg,1,False,,3,humano
+20040087752,The cumulative cost of additional wakefulness: dose-response effects on neurobehavioral functions and sleep physiology from chronic sleep restriction and total sleep deprivation,2003,REPRINT,sono,6 h per night,1,False,,3,humano
+20040087753,Evidence for altered alpha-adrenoreceptor responsiveness after a single bout of maximal exercise,2003,REPRINT,pressão arterial,2.1 mmHg,1,False,,3,humano
+20040087558,Ventricular filling slows epicardial conduction and increases action potential duration in an optical mapping study of the isolated rabbit heart,2003,REPRINT,pressão arterial,0 to 30 mmHg,1,False,,3,animal
+20040087669,Baroreflex-mediated heart rate and vascular resistance responses 24 h after maximal exercise,2003,REPRINT,pressão arterial,20 mm Hg,1,False,,3,humano
+20040088139,Lower-body negative-pressure exercise and bed-rest-mediated orthostatic intolerance,2002,REPRINT,pressão arterial,50 mm Hg,1,False,,3,humano
+20040088546,Human muscle sympathetic nerve activity and plasma noradrenaline kinetics in space,2002,REPRINT,pressão arterial,30 mmHg,1,False,,3,humano
+20040088512,Increased sympathetic activation in idiopathic orthostatic intolerance: role of systemic adrenoreceptor sensitivity,2002,REPRINT,pressão arterial,3.0 mm Hg,1,False,,3,humano
+20040108960,Peripheral vascular responses to heat stress after hindlimb suspension,2002,REPRINT,pressão arterial,80 mm Hg,1,False,,3,animal
+20040088045,Effect of morphine on sympathetic nerve activity in humans,2002,REPRINT,pressão arterial,2 mmHg,1,False,,3,humano
+20040088218,Effect of whole-body and local heating on cutaneous vasoconstrictor responses in humans,2002,REPRINT,temperatura corporal,34 degrees C,1,False,,3,misto
+20040088025,Acetylcholine released from cholinergic nerves contributes to cutaneous vasodilation during heat stress,2002,REPRINT,temperatura corporal,0.1 degrees C,1,False,,3,humano
+20040088044,"Cardiovascular and sympathetic neural responses to handgrip and cold pressor stimuli in humans before, during and after spaceflight",2002,REPRINT,pressão arterial,5 mmHg,1,False,,3,humano
+20040088123,"Vector-averaged gravity-induced changes in cell signaling and vitamin D receptor activity in MG-63 cells are reversed by a 1,25-(OH)2D3 analog, EB1089",2002,REPRINT,osso e músculo,2% per month,1,False,,3,misto
+20040088535,Comparison of chromosome aberration frequencies in pre- and post-flight astronaut lymphocytes irradiated in vitro with gamma rays,2001,REPRINT,radiação,0 to 3 Gy,1,False,,3,misto
+20040112407,Animal model of neuropathic tachycardia syndrome,2001,REPRINT,pressão arterial,20 mm Hg,1,False,,3,animal
+20040112582,Carotid baroreflex regulation of sympathetic nerve activity during dynamic exercise in humans,2001,REPRINT,pressão arterial,3.6 mmHg,1,False,,3,humano
+20040112399,Stimulated single fiber electromyography in the mouse: techniques and normative data,2001,REPRINT,temperatura corporal,30 degrees C,1,False,,3,misto
+20040087458,Relationship between systolic and diastolic function with improvements in forward stroke volume following reduction in mitral regurgitation,2001,REPRINT,pressão arterial,7.3-24.2 mmHg,1,False,,3,indefinido
+20040112583,Mitral inertance in humans: critical factor in Doppler estimation of transvalvular pressure gradients,2001,REPRINT,pressão arterial,1.1 mmHg,1,False,,3,humano
+20040112685,Relationship of echocardiographic indices to pulmonary capillary wedge pressures in healthy volunteers,2000,REPRINT,pressão arterial,2.2 to 23.5 mm Hg,1,False,,3,humano
+20040112702,Muscle pain perception and sympathetic nerve activity to exercise during opioid modulation,2000,REPRINT,pressão arterial,4 mmHg,1,False,,3,humano
+20040141640,"Interstitial pH, K(+), lactate, and phosphate determined with MSNA during exercise in humans",2000,REPRINT,pressão arterial,2 mmHg,1,False,,3,humano
+20040142010,Abnormal norepinephrine clearance and adrenergic receptor sensitivity in idiopathic orthostatic intolerance,1999,REPRINT,"frequência cardíaca, pressão arterial",25 mm Hg | 30 bpm | 25 bpm,3,False,,3,humano
+20040141726,Inflight exercise affects stand test responses after space flight,1999,REPRINT,frequência cardíaca,5 bpm | 1 bpm | 2 bpm,3,False,,3,humano
+20040142086,Hypertrophic response to hemodynamic overload: role of load vs. renin-angiotensin system activation,1999,REPRINT,pressão arterial,3 mmHg | 4 mmHg | 5 mmHg,3,False,,3,indefinido
+20040142210,Raised cerebrovascular resistance in idiopathic orthostatic intolerance: evidence for sympathetic vasoconstriction,1998,REPRINT,frequência cardíaca,3.4 bpm | 3.7 bpm | 5 bpm,3,False,,3,humano
+20040172859,The hypertension of autonomic failure and its treatment,1997,REPRINT,pressão arterial,90 mm Hg | 2 mm Hg | 7 mm Hg,3,False,,3,humano
+20040172882,Changes in skeletal muscle biochemistry and histology relative to fiber type in rats with heart failure,1997,REPRINT,pressão arterial,1 mmHg | 1 mmHg | 1 mmHg,3,False,,3,animal
+19950010331,Heat stress and a countermeasure in the Shuttle rescueman's suit,1992,CONFERENCE_PAPER,temperatura corporal,38.28 degrees C,1,True,https://ntrs.nasa.gov/api/citations/19950010331/downloads/19950010331.txt,3,humano
+19950010340,"Comparisons of three anti-G suit configurations during long duration, low onset, +Gz",1992,CONFERENCE_PAPER,pressão arterial,70 mmHg,1,True,https://ntrs.nasa.gov/api/citations/19950010340/downloads/19950010340.txt,3,humano
+20230006008,Cardiovascular Responses to Daily Use of Lower Body Negative Pressure During 30 Days of Strict Head-Down Tilt Bedrest,,POSTER,pressão arterial,25 mmHg,1,True,https://ntrs.nasa.gov/api/citations/20230006008/downloads/Lytle_APS_Poster_V2.pdf.txt,3,humano
+20240001141,The Effect of a SEP Event on Astronauts Doing a Spacewalk As Computed By the Nowcast of Aerospace Ionizing Radiation System (NAIRAS),,PRESENTATION,radiação,1 mSv,1,True,https://ntrs.nasa.gov/api/citations/20240001141/downloads/PrezNAIRAS0129.pdf.txt,3,humano
+20260006505,Incorporating Senotherapeutics into a Cellular Automata Model of Breast Cancer: An Initial Sensitivity Study,,PRESENTATION,radiação,600 millisieverts,1,True,https://ntrs.nasa.gov/api/citations/20260006505/downloads/Werneth_COSPAR_2026_branch_review.pdf.txt,3,humano
+20230012405,Biological Space Radiation Countermeasures to Enable Long Duration Exploration Missions,,POSTER,radiação,600 mSv,1,True,https://ntrs.nasa.gov/api/citations/20230012405/downloads/ICRR%202023.pdf.txt,3,humano
+20230005246,Biological Space Radiation Countermeasures to Enable Long Duration Exploration Missions,,PRESENTATION,radiação,600 mSv,1,True,https://ntrs.nasa.gov/api/citations/20230005246/downloads/ICRR%202023%20Final%20to%20Pubpress.docx.txt,3,humano
+20230010550,Artemis 1 Radiation Modeling and Analysis Using Operational Methods,,CONFERENCE_PAPER,radiação,22.3 mSv,1,True,https://ntrs.nasa.gov/api/citations/20230010550/downloads/WRMISS%20ABSTRACT.pdf.txt,3,humano
+20250006168,Moon 2 Mars Space Radiation Protection “Buying Down” Risks to Crew,,CONFERENCE_PAPER,radiação,600 mSv,1,True,https://ntrs.nasa.gov/api/citations/20250006168/downloads/ASCEND%20Simonsen%20draft%201.pdf.txt,3,humano
+20000101013,"Ethnic Differences in Physical Fitness, Blood Pressure and Blood Chemistry in Women (AGES 20-63)",1999,ABSTRACT,"glicemia, pressão arterial",8.05 mmHg | 37.21 mg/dl,2,False,,2,humano
+20040141995,A large blood pressure-raising effect of nitric oxide synthase inhibition in humans,1999,REPRINT,pressão arterial,2 mm Hg | 2 mm Hg,2,False,,2,misto
+20040141972,Sympathetic adaptations to one-legged training,1999,REPRINT,frequência cardíaca,6 beats/min | 5 beats/min,2,False,,2,humano
+20040141713,Application of real-time radiation dosimetry using a new silicon LET sensor,1999,REPRINT,radiação,0.998 mSv | 0.611 mGy,2,False,,2,indefinido
+20040141822,Physiologic and thermal responses of male and female patients with multiple sclerosis to head and neck cooling,1999,REPRINT,temperatura corporal,0.3 degrees C | 0.2 degrees C,2,False,,2,humano
+20040141895,Effects of chronic lesions of the anteroventral third ventricle region on baroreceptor reflex function in conscious rats,1999,REPRINT,frequência cardíaca,0.45 bpm | 0.42 bpm,2,False,,2,animal
+20040142109,Contrasting effects of vasodilators on blood pressure and sodium balance in the hypertension of autonomic failure,1999,REPRINT,pressão arterial,10 mmHg | 7 mmHg,2,False,,2,humano
+20040172632,Cardiovascular function following reduced aerobic activity,1998,REPRINT,frequência cardíaca,0.14 bpm | 0.10 bpm,2,False,,2,humano
+20040172775,Sympathetic discharge and vascular resistance after bed rest,1998,REPRINT,frequência cardíaca,2 beats/min | 2 beats/min,2,False,,2,humano
+19990014463,Central Methysergide Prevents Renal Sympathoinhibition and Bradycardia during Hypotensive Hemorrhage,1998,REPRINT,frequência cardíaca,7 beats/min | 40 beats/min,2,False,,2,animal
+20040172620,Uncoupling of the baroreflex by N(N)-cholinergic blockade in dissecting the components of cardiovascular regulation,1998,REPRINT,"frequência cardíaca, pressão arterial",12.5 mm Hg | 12.5 bpm,2,False,,2,humano
+20040172932,Effects of volume loading and pressor agents in idiopathic orthostatic tachycardia,1997,REPRINT,"frequência cardíaca, pressão arterial",2 mm Hg | 30 bpm,2,False,,2,humano
+20040172983,Effect of fluid ingestion on orthostatic responses following acute exercise,1997,REPRINT,"frequência cardíaca, pressão arterial",2.3 mmHg | 7 bpm,2,False,,2,humano
+20040172905,T wave alternans during exercise and atrial pacing in humans,1997,REPRINT,frequência cardíaca,14 beats/min | 9 beats/min,2,False,,2,humano
+20040173304,Pre-exercise glycerol hydration improves cycling endurance time,1996,REPRINT,frequência cardíaca,0.4 beats/min | 1.1 beats/min,2,False,,2,humano
+20050000347,Supine exercise during lower body negative pressure effectively simulates upright exercise in normal gravity,1994,REPRINT,frequência cardíaca,5 beats/min | 3 beats/min,2,False,,2,humano
+20010117724,"Fluid Redistribution and Heart Rate in Humans During Whole-Body Tilting, G(z) Centrifugation, and Lower Body Negative Pressure",1994,ABSTRACT,frequência cardíaca,2 beats/min | 2 beats/min,2,False,,2,humano
+19940029149,Comparative performance of a modified Space Shuttle Reentry Anti-G Suit (REAGS) with and without pressure socks,1994,ABSTRACT,pressão arterial,60 mm Hg | 60 mm Hg,2,False,,2,humano
+19970032264,Effects of Local Compression on Peroneal Nerve Function in Humans,1993,REPRINT,pressão arterial,35-40 mm Hg | 40 mm Hg,2,False,,2,humano
+19930048784,Enhanced carotid-cardiac baroreflex response and elimination of orthostatic hypotension 24 hours after acute exercise in paraplegics,1992,REPRINT,frequência cardíaca,7 bpm | 4 bpm,2,False,,2,humano
+20050000580,Blood pressure responses to LBNP in nontrained and trained hypertensive rats,1992,REPRINT,pressão arterial,2.5-10.0 mm Hg | 5.0 mm Hg,2,False,,2,animal
+20050000801,Spectral analysis of heart rate dynamics in elderly persons with postprandial hypotension,1992,REPRINT,pressão arterial,8 mm Hg | 8 mm Hg,2,False,,2,humano
+20050000805,Vasopressin responses to unloading arterial baroreceptors during cardiac nerve blockade in conscious dogs,1992,REPRINT,pressão arterial,3 mmHg | 3 mmHg,2,False,,2,animal
+20050000578,Glomerular hemodynamic alterations during acute hyperinsulinemia in normal and diabetic rats,1992,REPRINT,glicemia,80 to 120 mg/dl | 6 mg/dl,2,False,,2,animal
+20040089837,"Core temperature is regulated, although at a lower temperature, in rats exposed to hypergravic fields",1988,REPRINT,temperatura corporal,23 degrees C | 5 degrees C,2,False,,2,animal
+19870036872,Atropine unmasks bed-rest effect - A spectral analysis of cardiac interbeat intervals,1986,REPRINT,frequência cardíaca,12.4 beats/min | 18.9 beats/min,2,False,,2,humano
+19860045722,Homeostasis and biological rhythms in the rat during spaceflight,1985,REPRINT,frequência cardíaca,3.3 bpm | 2.4 bpm,2,False,,2,animal
+19820057206,Antiorthostatic hypokinesia and circulation in the rat,1982,REPRINT,pressão arterial,0 mm Hg | 118 to 100 mm Hg,2,False,,2,misto
+19770028248,Cerebellar pressor response in the dog,1976,REPRINT,"frequência cardíaca, pressão arterial",150 mmHg | 190 beats/min,2,False,,2,animal
+19750060288,Cardiorespiratory responses to orthostasis and the effects of propranolol,1975,REPRINT,frequência cardíaca,10 bpm | 20 bpm,2,False,,2,humano
+20000020532,Exercise Countermeasures for Bone Loss During Space Flight: A Method for the Study of Ground Reaction Forces and their Implications for Bone Strain,1999,CONFERENCE_PAPER,osso e músculo,1.58% per month,1,False,,1,humano
+20000029468,Countermeasures to Neurobehavioral Deficits from Cumulative Partial Sleep Deprivation During Space Flight,1999,OTHER,sono,4 - 6 hr per night,1,False,,1,humano
+20000118210,Low LBNP Tolerance in Men is Associated With Attenuated Activation of The Renin-Angiotensin System,1999,ABSTRACT,pressão arterial,5-6 mmHg,1,False,,1,humano
+20000109958,Low LBNP Tolerance in Men is Associated With Attenuated Activation of Renin-Angiotensin System,1999,ABSTRACT,pressão arterial,5-6 mmHg,1,False,,1,humano
+20040141831,Patterning of somatosympathetic reflexes,1999,REPRINT,pressão arterial,150 mmHg,1,False,,1,animal
+20040141712,Combined effects of space flight factors and radiation on humans,1999,REPRINT,radiação,1 Gy,1,False,,1,humano
+20040141842,Circadian variation of EEG power spectra in NREM and REM sleep in humans: dissociation from body temperature,1999,REPRINT,temperatura corporal,36.72 degrees C,1,False,,1,humano
+20040141973,Endogenous thermoregulatory rhythms of squirrel monkeys in thermoneutrality and cold,1999,REPRINT,temperatura corporal,27 degrees C,1,False,,1,animal
+20040141943,Role of the anterior region of the third ventricle in the cardiovascular responses produced by systemic injection of a nitric oxide synthase inhibitor,1999,REPRINT,frequência cardíaca,8 bpm,1,False,,1,animal
+20040142042,Alterations in endogenous circadian rhythm of core temperature in senescent Fischer 344 rats,1999,REPRINT,temperatura corporal,24-26 degrees C,1,False,,1,animal
+20040172563,"Current concepts in the pathophysiology, evaluation, and diagnosis of compartment syndrome",1998,REPRINT,pressão arterial,35 to 40 mm Hg,1,False,,1,humano
+20040172808,Reduced levels of skeletal muscle Na+K+ -ATPase in McArdle disease,1998,REPRINT,frequência cardíaca,12 bpm,1,False,,1,humano
+20040172797,Efficacy of compression of different capacitance beds in the amelioration of orthostatic hypotension,1997,REPRINT,pressão arterial,7.4 mmHg,1,False,,1,humano
+20040172857,Dietary calcium attenuates platelet aggregation and intracellular Ca2+ mobilization in spontaneously hypertensive rats,1997,REPRINT,pressão arterial,9 mm Hg,1,False,,1,animal
+20040173081,Postural tachycardia syndrome: time frequency mapping,1996,REPRINT,frequência cardíaca,130 bpm,1,False,,1,humano
+20040173165,Contribution of oxygen-sensitive neurons of the rostral ventrolateral medulla to hypoxic cerebral vasodilatation in the rat,1996,REPRINT,pressão arterial,8 mmHg,1,False,,1,animal
+20040173232,Fundamental relations between short-term RR interval and arterial pressure oscillations in humans,1996,REPRINT,pressão arterial,0.6 mm Hg,1,False,,1,humano
+20020039734,Daily Supine LBNP Treadmill Exercise Maintains Upright Exercise Capacity During 14 Days of Bed Rest,1996,ABSTRACT,frequência cardíaca,11 bpm,1,False,,1,humano
+20040173129,Cutaneous microvascular flow in the foot during simulated variable gravities,1996,REPRINT,pressão arterial,87 mmHg,1,False,,1,humano
+20040173100,Hemodynamic and thermal responses to head and neck cooling in men and women,1996,REPRINT,temperatura corporal,0.2-0.6 degrees C,1,False,,1,humano
+20050000154,A single bout of exhaustive exercise affects integrated baroreflex function after 16 days of head-down tilt,1995,REPRINT,pressão arterial,30 mmHg,1,False,,1,humano
+20050000311,Cardiovascular regulation in humans in response to oscillatory lower body negative pressure,1994,REPRINT,pressão arterial,0-50 mmHg,1,False,,1,humano
+19940029131,Response to graded Lower Body Negative Pressure (LBNP) after space flight,1994,ABSTRACT,pressão arterial,60 mmHg,1,False,,1,humano
+20050000344,Comparing the effects of two in-flight aerobic exercise protocols on standing heart rates and VO(2peak) before and after space flight,1994,REPRINT,frequência cardíaca,71-89 beats/min,1,False,,1,humano
+19970019355,Autogenic-Feedback Training: A Potential Treatment for Orthostatic Intolerance in Aerospace Crews,1994,REPRINT,pressão arterial,50 mm Hg,1,False,,1,humano
+20050000394,Recent bed rest results and countermeasure development at NASA,1994,REPRINT,pressão arterial,28 to 34 mm Hg,1,False,,1,humano
+19930057122,Orthostatic intolerance during a 13-day bed rest does not result from increased leg compliance,1993,REPRINT,pressão arterial,80 mmHg,1,False,,1,humano
+20040199395,"Neurogenic orthostatic hypotension: a double-blind, placebo-controlled study with midodrine",1993,REPRINT,pressão arterial,22 mm Hg,1,False,,1,humano
+19920038276,Radiation issues for piloted Mars mission,1992,REPRINT,radiação,0.73 Sv,1,False,,1,humano
+19930044699,Carotid-cardiac baroreflex response and LBNP tolerance following resistance training,1992,REPRINT,pressão arterial,6 mm Hg,1,False,,1,humano
+19920073078,An evaluation of the lower coverage anti-G suit without an abdominal bladder after 3 days of 7 deg head down tilt,1992,CONFERENCE_PAPER,pressão arterial,70 mmHg,1,False,,1,humano
+20050000667,Alterations in left ventricular diastolic function in conscious dogs with pacing-induced heart failure,1992,REPRINT,pressão arterial,105 mmHg,1,False,,1,animal
+20050000585,Mechanisms of alpha 1-adrenergic vascular desensitization in conscious dogs,1992,REPRINT,pressão arterial,5 mm Hg,1,False,,1,misto
+19920052807,An evaluation of three anti-G suit concepts for shuttle reentry,1992,CONFERENCE_PAPER,pressão arterial,70 mmHg,1,False,,1,humano
+19910066015,A comparison between computer-controlled and set work rate exercise based on target heart rate,1991,REPRINT,frequência cardíaca,5 bpm,1,False,,1,indefinido
+19930049030,Alanine increases blood pressure during hypotension,1990,REPRINT,pressão arterial,9.4 mmhg,1,False,,1,animal
+19900040348,Radiological health risks,1989,CONFERENCE_PAPER,radiação,0.7 Sv,1,False,,1,humano
+19990116342,Paraventricular Stimulation with Glutamate Elicits Bradycardia and Pituitary Responses,1989,REPRINT,frequência cardíaca,80 beats/min,1,False,,1,animal
+19880037316,Leg vascular responsiveness during acute orthostasis following simulated weightlessness,1988,REPRINT,pressão arterial,30 mm Hg,1,False,,1,humano
+19890041951,Radiation safety in commercial air traffic - A need for further study,1988,REPRINT,radiação,47-75 Sv,1,False,,1,humano
+19930074625,Effects of hemorrhagic hypotension on tyrosine concentrations in rat spinal cord and plasma,1988,REPRINT,pressão arterial,50 mmHg,1,False,,1,animal
+20040112105,Endocrine regulation of carbohydrate metabolism in hypometabolic animals,1988,REPRINT,temperatura corporal,15 degrees C,1,False,,1,animal
+19810054441,Hemodynamic changes during whole body surface cooling and lower body negative pressure,1981,REPRINT,frequência cardíaca,8 beats/min,1,False,,1,humano
+19810060772,"Exercise training hypotension - Implications for plasma volume, renin, and vasopressin",1981,REPRINT,pressão arterial,9 mm Hg,1,False,,1,humano
+19770055184,Left ventricular function during lower body negative pressure,1977,REPRINT,pressão arterial,40 mm Hg,1,False,,1,humano
+19790027934,Comparison of circadian rhythms in male and female humans,1977,REPRINT,frequência cardíaca,30 beats/min,1,False,,1,humano
+19760045937,Pre- and postflight systolic time intervals during LBNP - The second manned Skylab mission,1976,REPRINT,pressão arterial,50 mm Hg,1,False,,1,humano
+19750047082,Physiological response to exercise after space flight - Apollo 14 through Apollo 17,1975,REPRINT,frequência cardíaca,160 beats/min,1,False,,1,humano
+19750050739,Comparison of techniques for measuring +Gz tolerance in man,1975,REPRINT,pressão arterial,1 mm Hg,1,False,,1,humano
+19750033593,Influences of physical training on the heart of dogs,1974,REPRINT,frequência cardíaca,194 beats/min,1,False,,1,animal

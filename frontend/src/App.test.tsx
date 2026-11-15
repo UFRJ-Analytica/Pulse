@@ -1,0 +1,201 @@
+import { useEffect } from 'react';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { cleanup, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import App from './App';
+
+// WebGL geometry is validated separately with the real local GLB. Here we test
+// React interactions with the renderer boundary replaced by a loaded scene.
+vi.mock('./components/AnatomyScene', () => ({
+  AnatomyScene: ({ onLoaded }: { onLoaded: (count: number) => void }) => {
+    useEffect(() => { onLoaded(46); }, [onLoaded]);
+    return <div aria-label="Cena WebGL substituída no teste de interação" />;
+  },
+}));
+vi.mock('recharts', async (importOriginal) => {
+  const original = await importOriginal<typeof import('recharts')>();
+  return { ...original, ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div style={{ width: 800, height: 150 }}>{children}</div> };
+});
+beforeAll(() => {
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
+  HTMLElement.prototype.scrollIntoView = vi.fn();
+});
+beforeEach(() => { window.history.replaceState({}, '', '/pt-br/mission-atlas'); });
+afterEach(() => { cleanup(); });
+const inspector = () => screen.getByRole('complementary', { name: 'Inspeção' });
+
+describe('mission workflows', () => {
+  it('mantém o tema escolhido entre as telas de saúde e na calibração', async () => {
+    localStorage.removeItem('pulse-health-theme');
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('button', { name: /Highlights/ }));
+    await user.click(screen.getByRole('button', { name: 'Ativar tema claro' }));
+    expect(localStorage.getItem('pulse-health-theme')).toBe('light');
+    expect(document.querySelector('.health-shell')).toHaveAttribute('data-theme', 'light');
+    await user.click(screen.getByRole('button', { name: /Horas de sono/ }));
+    expect(document.querySelector('.health-shell')).toHaveAttribute('data-theme', 'light');
+    await user.click(screen.getByRole('button', { name: /Calibrar Actiwatch/ }));
+    expect(screen.getByRole('dialog', { name: 'CALIBRAR ACTIWATCH' })).toHaveClass('calibration-light');
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: /Cancelar/ }));
+    await user.click(screen.getByRole('button', { name: 'Ativar tema escuro' }));
+    expect(document.querySelector('.health-shell')).toHaveAttribute('data-theme', 'dark');
+    localStorage.removeItem('pulse-health-theme');
+  });
+  it('navigates highlights, explores sleep and opens the simulated calibration', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('button', { name: /Highlights/ }));
+    expect(screen.getByRole('heading', { name: 'Highlights' })).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /Horas de sono/ }));
+    expect(screen.getByRole('heading', { name: /Sleep Hours/, level: 1 })).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /Dom, sol 139/ }));
+    expect(screen.getByRole('status').textContent).toContain('Sol 139');
+    await user.click(screen.getByRole('button', { name: 'Sol (dia)' }));
+    expect(screen.queryByRole('button', { name: /Dom, sol 139/ })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /Calibrar Actiwatch/ }));
+    const dialog = screen.getByRole('dialog', { name: 'CALIBRAR ACTIWATCH' });
+    expect(within(dialog).getByText(/SEM DISPOSITIVO CONECTADO/)).toBeVisible();
+    await user.click(within(dialog).getByRole('button', { name: 'Dominante' }));
+    expect(within(dialog).getByRole('button', { name: 'Dominante' })).toHaveAttribute('aria-pressed', 'true');
+    await user.click(within(dialog).getByRole('button', { name: /Simular calibração/ }));
+    expect(within(dialog).getByRole('button', { name: /Simulando/ })).toBeDisabled();
+    await user.click(within(dialog).getByRole('button', { name: /Cancelar/ }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+  it('shows the temperature context and illustrative atlas only when selected', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('button', { name: 'T01 Temperatura corporal central' }));
+    expect(within(inspector()).getByText('37,4')).toBeVisible();
+    expect(within(inspector()).getByText(/não há série temporal de temperatura/i)).toBeVisible();
+    expect(screen.getByText(/Cor uniforme ilustrativa/)).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'D06 Score ambiental SEP' }));
+    expect(screen.queryByText(/Cor uniforme ilustrativa/)).not.toBeInTheDocument();
+  });
+  it('exposes a source, units and synthetic nature before any interaction', () => {
+    render(<App />);
+    const score = screen.getByRole('button', { name: 'D06 Score ambiental SEP' });
+    expect(within(score).getByText('44')).toBeVisible();
+    expect(within(score).getByText('/100')).toBeVisible();
+    expect(within(score).getByText('DONKI')).toBeVisible();
+    expect(within(score).getByText('05/11, 14:00 UTC')).toBeVisible();
+    expect(within(score).getByText(/sem calibração probabilística/)).toBeVisible();
+    expect(screen.getByText('DEMONSTRAÇÃO')).toBeVisible();
+  });
+  it('keeps high-energy detection separate from missing measured dose', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.selectOptions(screen.getByLabelText('Cenário de demonstração'), 'high-energy');
+    await user.click(screen.getByRole('button', { name: 'R01 Dose B' }));
+    expect(within(inspector()).getByRole('heading', { name: 'Dose B' })).toBeVisible();
+    expect(within(inspector()).getAllByText('Sem dado').length).toBeGreaterThan(0);
+    expect(within(inspector()).getByText('—')).toBeVisible();
+    expect(within(inspector()).getByText(/Alta energia sozinha não permite estimar a dose/)).toBeVisible();
+  });
+  it('opens the glucose reading with its classification in the hypoglycemia scenario', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.selectOptions(screen.getByLabelText('Cenário de demonstração'), 'hypoglycemia');
+    expect(within(inspector()).getByRole('heading', { name: 'Glicemia' })).toBeVisible();
+    expect(within(inspector()).getByText('48')).toBeVisible();
+    expect(within(inspector()).getByText('Crítico', { exact: true })).toBeVisible();
+    expect(within(inspector()).getByText(/Hipoglicemia nível 2/)).toBeVisible();
+    expect(within(inspector()).getByText('Informar o flight surgeon')).toBeVisible();
+    expect(within(inspector()).getByText('Repita em 15 minutos.')).toBeVisible();
+    expect(within(inspector()).getByRole('link', { name: /Glycemic Goals and Hypoglycemia/ })).toHaveAttribute('href', expect.stringContaining('pubmed'));
+    expect(within(inspector()).getByText(/regra 15-15 da ADA orienta/)).toBeVisible();
+  });
+  it('explains that mood is only compared with the personal pattern', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.selectOptions(screen.getByLabelText('Cenário de demonstração'), 'sleep-debt');
+    await user.click(screen.getByRole('button', { name: 'Todos os sinais' }));
+    await user.click(screen.getByRole('button', { name: 'V04 Humor e bem-estar' }));
+    expect(within(inspector()).getByText(/Bem-estar persistentemente abaixo do padrão pessoal/)).toBeVisible();
+    expect(within(inspector()).getByText(/não um instrumento psicométrico validado/)).toBeVisible();
+  });
+  it('renders critical scenario with protocol, units and visible uncertainty', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.selectOptions(screen.getByLabelText('Cenário de demonstração'), 'critical');
+    expect(within(inspector()).getByText('100')).toBeVisible();
+    expect(within(inspector()).getByText('Crítico', { exact: true })).toBeVisible();
+    expect(within(inspector()).getByText(/Priorizar o protocolo aprovado/)).toBeVisible();
+    expect(within(inspector()).getByText('Pesos demonstrativos; sem calibração probabilística')).toBeVisible();
+  });
+  it('exposes all 30 indicators and blocks unvalidated total dose', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Indicadores' }));
+    expect(document.querySelectorAll('.catalog-grid .indicator-card')).toHaveLength(30);
+    await user.type(screen.getByLabelText('Filtrar indicadores'), 'R03');
+    expect(document.querySelectorAll('.catalog-grid .indicator-card')).toHaveLength(1);
+    await user.click(screen.getByRole('button', { name: 'R03 Dose física total' }));
+    expect(within(inspector()).getByText('—')).toBeVisible();
+    expect(within(inspector()).getByText(/B \+ E bloqueada|Canais B\/E não validados|complementaridade/i)).toBeVisible();
+  });
+  it('connects a real HRA identifier search to hierarchy and provenance', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.type(screen.getByLabelText('Buscar estrutura ou indicador'), 'UBERON:0000948');
+    const results = screen.getByRole('region', { name: 'Resultados da busca' });
+    await user.click(within(results).getByRole('button', { name: /Coração/ }));
+    expect(within(inspector()).getByRole('heading', { name: 'Coração' })).toBeVisible();
+    expect(within(inspector()).getByText('CC BY 4.0')).toBeVisible();
+    expect(within(inspector()).getByText('UBERON:0000948')).toBeVisible();
+    expect(within(inspector()).getByText('Geometria real de referência')).toBeVisible();
+  });
+  it('isolates, hides, undoes and restores actual visibility state', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.type(screen.getByLabelText('Buscar estrutura ou indicador'), 'Coração');
+    await user.click(within(screen.getByRole('region', { name: 'Resultados da busca' })).getByRole('button', { name: /Coração/ }));
+    await user.click(screen.getByRole('button', { name: 'Isolar Coração' }));
+    expect(screen.getByText('1 estruturas visíveis')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Ocultar estrutura selecionada Coração' }));
+    expect(screen.getByText('45 estruturas visíveis')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Desfazer alteração do atlas' }));
+    expect(screen.getByText('1 estruturas visíveis')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Restaurar atlas' }));
+    expect(screen.getByText('46 estruturas visíveis')).toBeVisible();
+  });
+  it('leaves isolation when a global indicator is selected', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.type(screen.getByLabelText('Buscar estrutura ou indicador'), 'Coração');
+    await user.click(within(screen.getByRole('region', { name: 'Resultados da busca' })).getByRole('button', { name: /Coração/ }));
+    await user.click(screen.getByRole('button', { name: 'Isolar Coração' }));
+    await user.click(screen.getByRole('button', { name: 'R01 Dose B' }));
+    expect(screen.getByText('46 estruturas visíveis')).toBeVisible();
+    expect(screen.getByText('Exposição medida no ponto do dosímetro; não é dose específica do órgão.')).toBeVisible();
+  });
+  it('changes clipping and allows undo without discarding the selected structure', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Cortes de visualização' }));
+    await user.selectOptions(screen.getByLabelText('Plano de corte'), 'axial');
+    expect(screen.getByLabelText('Posição do corte')).toBeEnabled();
+    await user.click(screen.getByRole('button', { name: 'Desfazer alteração do atlas' }));
+    expect(screen.getByLabelText('Plano de corte')).toHaveValue('none');
+    expect(screen.getByText(/Não são tomografia/)).toBeVisible();
+  });
+  it('offers a textual time-aligned series and changes the temporal window', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Ver tabela da linha do tempo' }));
+    const table = screen.getByRole('table');
+    expect(within(table).getAllByRole('row')).toHaveLength(14);
+    await user.selectOptions(screen.getByLabelText('Janela temporal'), '48');
+    expect(within(table).getAllByRole('row')).toHaveLength(26);
+    await user.click(screen.getByRole('button', { name: 'Coleta de biomarcadores, 20:00 UTC' }));
+    expect(within(inspector()).getByRole('heading', { name: 'Dano de DNA' })).toBeVisible();
+    expect(within(inspector()).getByText('Baseline individual')).toBeVisible();
+  });
+  it('completes the five-step narrative without inventing a correlation', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Exploração guiada' }));
+    for (let i = 0; i < 4; i++) await user.click(screen.getByRole('button', { name: 'Próximo' }));
+    expect(within(inspector()).getByText('Correlação não implica causalidade')).toBeVisible();
+    expect(within(inspector()).getByText(/n = 0 pares válidos/)).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Concluir' }));
+    expect(screen.queryByText('EXPLORAÇÃO GUIADA')).not.toBeInTheDocument();
+  });
+  it('discloses source licensing and limitations in a dismissible dialog', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Sobre os dados' }));
+    const dialog = screen.getByRole('dialog');
+    expect(within(dialog).getByRole('link', { name: 'Creative Commons Attribution 4.0' })).toHaveAttribute('href', 'https://creativecommons.org/licenses/by/4.0/');
+    expect(within(dialog).getByText(/Não há estômago ou malhas celulares/)).toBeVisible();
+    await user.click(within(dialog).getByRole('button', { name: 'Fechar diálogo' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+});

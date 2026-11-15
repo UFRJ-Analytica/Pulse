@@ -1,0 +1,473 @@
+{
+  "gerado_em": "2026-11-01T17:35:21",
+  "n_estudos_total": 641,
+  "n_amostras_total": 51369,
+  "pesos_score": {
+    "humano": 4.0,
+    "mamifero_modelo": 2.0,
+    "outro_animal": 1.0,
+    "hazard_cada": 1.5,
+    "hazard_max": 3,
+    "sistema_cada": 1.0,
+    "sistema_max": 3,
+    "dados_quantitativos": 2.0,
+    "amostra_nao_invasiva": 2.0
+  },
+  "corte_relevancia": 6.0,
+  "matriz_sistema_hazard_todos": {
+    "Radiação espacial": {
+      "Musculoesquelético": 3,
+      "Cardiovascular": 7,
+      "Imune / hematológico": 28,
+      "Renal / urinário": 3,
+      "Hepático / metabólico": 4,
+      "Visão (olho/retina)": 1,
+      "Neurológico": 10,
+      "Pele / cabelo": 9,
+      "Gastrointestinal": 4,
+      "Endócrino / reprodutivo": 2,
+      "Respiratório": 11
+    },
+    "Gravidade (micro/hiper/simulada)": {
+      "Musculoesquelético": 68,
+      "Cardiovascular": 16,
+      "Imune / hematológico": 63,
+      "Renal / urinário": 15,
+      "Hepático / metabólico": 26,
+      "Visão (olho/retina)": 16,
+      "Neurológico": 34,
+      "Pele / cabelo": 16,
+      "Gastrointestinal": 17,
+      "Endócrino / reprodutivo": 4,
+      "Respiratório": 4
+    },
+    "Isolamento e confinamento": {
+      "Musculoesquelético": 4,
+      "Cardiovascular": 0,
+      "Imune / hematológico": 3,
+      "Renal / urinário": 0,
+      "Hepático / metabólico": 0,
+      "Visão (olho/retina)": 0,
+      "Neurológico": 0,
+      "Pele / cabelo": 0,
+      "Gastrointestinal": 0,
+      "Endócrino / reprodutivo": 0,
+      "Respiratório": 0
+    },
+    "Ambiente hostil/fechado": {
+      "Musculoesquelético": 3,
+      "Cardiovascular": 0,
+      "Imune / hematológico": 0,
+      "Renal / urinário": 0,
+      "Hepático / metabólico": 1,
+      "Visão (olho/retina)": 1,
+      "Neurológico": 0,
+      "Pele / cabelo": 0,
+      "Gastrointestinal": 0,
+      "Endócrino / reprodutivo": 0,
+      "Respiratório": 0
+    },
+    "Distância da Terra / duração (proxy)": {
+      "Musculoesquelético": 5,
+      "Cardiovascular": 0,
+      "Imune / hematológico": 12,
+      "Renal / urinário": 3,
+      "Hepático / metabólico": 2,
+      "Visão (olho/retina)": 1,
+      "Neurológico": 1,
+      "Pele / cabelo": 5,
+      "Gastrointestinal": 4,
+      "Endócrino / reprodutivo": 0,
+      "Respiratório": 1
+    }
+  },
+  "matriz_sistema_hazard_mamiferos": {
+    "Radiação espacial": {
+      "Musculoesquelético": 3,
+      "Cardiovascular": 7,
+      "Imune / hematológico": 28,
+      "Renal / urinário": 3,
+      "Hepático / metabólico": 4,
+      "Visão (olho/retina)": 1,
+      "Neurológico": 10,
+      "Pele / cabelo": 9,
+      "Gastrointestinal": 1,
+      "Endócrino / reprodutivo": 2,
+      "Respiratório": 11
+    },
+    "Gravidade (micro/hiper/simulada)": {
+      "Musculoesquelético": 68,
+      "Cardiovascular": 15,
+      "Imune / hematológico": 62,
+      "Renal / urinário": 15,
+      "Hepático / metabólico": 25,
+      "Visão (olho/retina)": 15,
+      "Neurológico": 32,
+      "Pele / cabelo": 15,
+      "Gastrointestinal": 6,
+      "Endócrino / reprodutivo": 3,
+      "Respiratório": 4
+    },
+    "Isolamento e confinamento": {
+      "Musculoesquelético": 4,
+      "Cardiovascular": 0,
+      "Imune / hematológico": 3,
+      "Renal / urinário": 0,
+      "Hepático / metabólico": 0,
+      "Visão (olho/retina)": 0,
+      "Neurológico": 0,
+      "Pele / cabelo": 0,
+      "Gastrointestinal": 0,
+      "Endócrino / reprodutivo": 0,
+      "Respiratório": 0
+    },
+    "Ambiente hostil/fechado": {
+      "Musculoesquelético": 3,
+      "Cardiovascular": 0,
+      "Imune / hematológico": 0,
+      "Renal / urinário": 0,
+      "Hepático / metabólico": 1,
+      "Visão (olho/retina)": 1,
+      "Neurológico": 0,
+      "Pele / cabelo": 0,
+      "Gastrointestinal": 0,
+      "Endócrino / reprodutivo": 0,
+      "Respiratório": 0
+    },
+    "Distância da Terra / duração (proxy)": {
+      "Musculoesquelético": 5,
+      "Cardiovascular": 0,
+      "Imune / hematológico": 12,
+      "Renal / urinário": 3,
+      "Hepático / metabólico": 2,
+      "Visão (olho/retina)": 1,
+      "Neurológico": 1,
+      "Pele / cabelo": 5,
+      "Gastrointestinal": 1,
+      "Endócrino / reprodutivo": 0,
+      "Respiratório": 1
+    }
+  },
+  "estudos_por_grupo_organismo": {
+    "Camundongo": 246,
+    "Humano": 114,
+    "Micro-organismo": 102,
+    "Planta": 73,
+    "Outro": 36,
+    "Rato": 36,
+    "Outros animais": 34
+  },
+  "tipos_de_dado": {
+    "raw reads": 297,
+    "differential expression contrasts": 242,
+    "differential expression table": 242,
+    "sample table": 240,
+    "alignment": 203,
+    "trimmed reads": 194,
+    "raw multiqc data": 188,
+    "unnormalized counts": 183,
+    "unnormalized counts - supplementary": 179,
+    "trimmed multiqc data": 173,
+    "normalized counts": 171,
+    "differential expression table - supplementary": 164,
+    "normalized counts - supplementary": 163,
+    "pca": 81,
+    "raw multiqc report": 11,
+    "raw fastqc report": 6,
+    "raw fastqc data": 6,
+    "differential expression contrasts - supplementary": 5,
+    "differential methylation tiles": 4,
+    "differential methylation bases": 4,
+    "trimmed fastqc report": 4,
+    "trimmed fastqc data": 4,
+    "trimmed multiqc report": 4,
+    "visualization table": 3,
+    "differential abundance table": 1,
+    "differential abundance table - supplementary": 1,
+    "pca - supplementary": 1,
+    "visualization table - supplementary": 1
+  },
+  "biomarcadores_estudos": {
+    "Temperatura / termorregulação": 36,
+    "Nutrição": 29,
+    "Estresse / humor / sono": 20,
+    "Glicose / metabolismo": 17,
+    "Cardiovascular (PA/FC)": 14,
+    "Osso / músculo": 11,
+    "Imunidade / inflamação": 5,
+    "Dano de DNA / radiação": 4,
+    "Hematologia": 0
+  },
+  "top_estudos": [
+    {
+      "accession": "OSD-129",
+      "score": 12.0,
+      "org_group": "Humano",
+      "n_samples": 20,
+      "tissues": "human peripheral blood lymphocytes (pbl)",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-155",
+      "score": 10.5,
+      "org_group": "Humano",
+      "n_samples": 95,
+      "tissues": "whole blood",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-157",
+      "score": 10.5,
+      "org_group": "Humano",
+      "n_samples": 75,
+      "tissues": "whole blood",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-152",
+      "score": 10.5,
+      "org_group": "Humano",
+      "n_samples": 50,
+      "tissues": "peripheral blood cell",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-542",
+      "score": 10.5,
+      "org_group": "Humano",
+      "n_samples": 30,
+      "tissues": "whole blood",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-689",
+      "score": 10.5,
+      "org_group": "Humano",
+      "n_samples": 20,
+      "tissues": "isolated cells",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-71",
+      "score": 10.5,
+      "org_group": "Humano",
+      "n_samples": 16,
+      "tissues": "blood, isolated leukocytes",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-182",
+      "score": 10.5,
+      "org_group": "Humano",
+      "n_samples": 12,
+      "tissues": "cells",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-571",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 140,
+      "tissues": "plasma",
+      "measurements": "genome sequencing, metabolite profiling, protein expression profiling, transcrip",
+      "title": ""
+    },
+    {
+      "accession": "OSD-530",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 128,
+      "tissues": "plasma",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-569",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 117,
+      "tissues": "whole blood, rbc pellet",
+      "measurements": "complete blood count, genome sequencing, targeted genome sequencing, transcripti",
+      "title": ""
+    },
+    {
+      "accession": "OSD-574",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 113,
+      "tissues": "skin biopsy, swab, not applicable",
+      "measurements": "metagenomic sequencing, metatranscriptome sequencing assay, transcription profil",
+      "title": ""
+    },
+    {
+      "accession": "OSD-575",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 111,
+      "tissues": "serum",
+      "measurements": "analytical chemistry, immunoassay",
+      "title": ""
+    },
+    {
+      "accession": "OSD-254",
+      "score": 10.0,
+      "org_group": "Camundongo",
+      "n_samples": 80,
+      "tissues": "dorsal skin",
+      "measurements": "transcription profiling",
+      "title": "Rodent Research-7"
+    },
+    {
+      "accession": "OSD-570",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 80,
+      "tissues": "peripheral blood mononuclear cell",
+      "measurements": "chromatin accessibility, transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-128",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 72,
+      "tissues": "human peripheral blood lymphocytes (pbl)",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-174",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 60,
+      "tissues": "hair follicle",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-243",
+      "score": 10.0,
+      "org_group": "Camundongo",
+      "n_samples": 53,
+      "tissues": "dorsal skin",
+      "measurements": "transcription profiling",
+      "title": "Rodent Research-6"
+    },
+    {
+      "accession": "OSD-353",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 46,
+      "tissues": "blood plasma",
+      "measurements": "protein expression profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-483",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 42,
+      "tissues": "peripheral blood",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-316",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 33,
+      "tissues": "whole blood",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-936",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 31,
+      "tissues": "cultured cells",
+      "measurements": "transcription profiling, translation profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-656",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 22,
+      "tissues": "urine",
+      "measurements": "immunoassay",
+      "title": ""
+    },
+    {
+      "accession": "OSD-237",
+      "score": 10.0,
+      "org_group": "Camundongo",
+      "n_samples": 21,
+      "tissues": "dorsal skin",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-481",
+      "score": 10.0,
+      "org_group": "Humano",
+      "n_samples": 6,
+      "tissues": "peripheral blood",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-640",
+      "score": 9.5,
+      "org_group": "Camundongo",
+      "n_samples": 232,
+      "tissues": "blood",
+      "measurements": "flow cytometry",
+      "title": ""
+    },
+    {
+      "accession": "OSD-118",
+      "score": 9.5,
+      "org_group": "Humano",
+      "n_samples": 32,
+      "tissues": "cells",
+      "measurements": "transcription profiling",
+      "title": "miRNA Expression Profiles in Cultured Human Fibroblasts in Space"
+    },
+    {
+      "accession": "OSD-117",
+      "score": 9.5,
+      "org_group": "Camundongo",
+      "n_samples": 15,
+      "tissues": "murine left ventricular cardiomyocytes",
+      "measurements": "transcription profiling",
+      "title": "Evaluation of Space Radiation-induced Myocardial and BM-derived EPC Damage and Assessment of Associated Long-term Degenerative Cardiovascula"
+    },
+    {
+      "accession": "OSD-546",
+      "score": 9.5,
+      "org_group": "Humano",
+      "n_samples": 13,
+      "tissues": "cells",
+      "measurements": "transcription profiling",
+      "title": ""
+    },
+    {
+      "accession": "OSD-431",
+      "score": 9.5,
+      "org_group": "Humano",
+      "n_samples": 8,
+      "tissues": "cells",
+      "measurements": "transcription profiling",
+      "title": ""
+    }
+  ]
+}

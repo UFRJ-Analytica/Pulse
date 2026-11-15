@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+temp/
+docs/
+.DS_Store
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
