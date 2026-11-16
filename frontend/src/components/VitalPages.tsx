@@ -5,6 +5,7 @@ import { BLOOD_GLUCOSE_BASELINE, BLOOD_GLUCOSE_SERIES, BLOOD_PRESSURE_SERIES, HE
 import type { SeriesLabel, VitalSeries } from '../data/vitalSeries';
 import { DEMO_MOOD } from '../data/fixtures';
 import { moodAssessInput, moodWeek, readCheckInScore } from '../data/checkIn';
+import { DEFAULT_SCENARIO_ID, scenarioReadings, scenarioVitals } from '../data/scenarioVitals';
 import { GLUCOSE_CONTEXT_LABELS, glucoseLogContext, glucoseLogReading, readGlucoseLog } from '../data/glucoseLog';
 import type { VitalReading } from '../data/vitals';
 import { VitalStatusPanel } from './VitalStatusPanel';
@@ -26,6 +27,8 @@ export type VitalPageConfig = {
   sources: string;
   // Latest reading of the series, classified by the vitals layer on the page.
   latest: LatestReading;
+  // Range opened first; scenarios open the week, where their readings are.
+  initialView?: TemperatureView;
 };
 type PageProps = {
   onBack: () => void; onAtlas: () => void; onHighlights: () => void; onIndicators: () => void; onData: () => void;
@@ -38,9 +41,30 @@ const text = (locale: Locale, pt: string, en: string) => locale === 'en' ? en : 
 const lastOfWeek = (values: number[] = []) => values[values.length - 1];
 const weekHistory = (values: number[] = [], context?: VitalReading['context']) => values.slice(0, -1).map(value => ({ value, context }));
 
+type ScenarioProps = { scenarioId?: string };
+const pt = (value: number) => String(value).replace('.', ',');
+// Week of a demo scenario on a vital page. When the scenario has no readings, the last day (15/11) is left out.
+function scenarioPage(base: VitalPageConfig, week: { values: number[]; secondary?: number[] }, latest: LatestReading, missing: boolean): VitalPageConfig {
+  const trim = (values: number[]) => missing ? values.slice(0, -1) : values;
+  const labels = base.series.labels['7d'] ?? [];
+  return {
+    ...base,
+    initialView: '7d',
+    series: {
+      ...base.series,
+      values: { ...base.series.values, '7d': trim(week.values) },
+      ...(week.secondary ? { secondary: { ...base.series.secondary, '7d': trim(week.secondary) } } : {}),
+      labels: { ...base.series.labels, '7d': missing ? labels.slice(0, -1) : labels },
+    },
+    latest: missing
+      ? { ...latest, label: { pt: 'Sem leitura em 15/11 · fonte indisponível neste cenário', en: 'No reading on 15/11 · source unavailable in this scenario' }, reading: { value: null } }
+      : latest,
+  };
+}
+
 // Generic vital page with the same structure and CSS classes as the body temperature page.
 export function VitalDashboard({ config, onBack, onAtlas, onHighlights, onIndicators, onData, theme, onToggleTheme, locale, onLocaleChange }: PageProps & { config: VitalPageConfig }) {
-  const [view, setView] = useState<TemperatureView>(config.chart.views?.[0] ?? '24h');
+  const [view, setView] = useState<TemperatureView>(config.initialView ?? config.chart.views?.[0] ?? '24h');
   const tr = (value: Text) => text(locale, value.pt, value.en);
   const label = (value: SeriesLabel) => typeof value === 'string' ? value : tr(value);
   return <div className="health-shell temperature-page" data-theme={theme}><HealthHeader activePage="sleep" onHighlights={onHighlights} onAtlas={onAtlas} onIndicators={onIndicators} onData={onData} theme={theme} onToggleTheme={onToggleTheme} locale={locale} onLocaleChange={onLocaleChange}/><main className="health-main sleep-main"><section className="sleep-heading health-panel"><div><button className="sleep-back" onClick={onBack}><ArrowLeft size={13}/> {text(locale, 'VOLTAR À VISÃO GERAL', 'BACK TO OVERVIEW')}</button><h1>{tr(config.title)}</h1></div></section>
@@ -99,8 +123,16 @@ const HEART_RATE_PAGE: VitalPageConfig = {
   },
 };
 
-export function HeartRateDashboard(props: PageProps) {
-  return <VitalDashboard {...props} config={HEART_RATE_PAGE}/>;
+export function HeartRateDashboard({ scenarioId = DEFAULT_SCENARIO_ID, ...props }: PageProps & ScenarioProps) {
+  const vitals = scenarioVitals(scenarioId);
+  if (!vitals.vitalScenario && !vitals.missing) return <VitalDashboard {...props} config={HEART_RATE_PAGE}/>;
+  const { week, context } = vitals.heartRate;
+  const value = week[week.length - 1];
+  const symptoms = context.symptomatic ? { pt: ' · com sintomas', en: ' · with symptoms' } : { pt: '', en: '' };
+  return <VitalDashboard {...props} config={scenarioPage(HEART_RATE_PAGE, { values: week }, {
+    vitalId: 'heart-rate', label: { pt: `${value} bpm · repouso${symptoms.pt} · 15/11`, en: `${value} bpm · resting${symptoms.en} · 15/11` },
+    ...scenarioReadings(vitals).heartRate,
+  }, vitals.missing)}/>;
 }
 
 const BLOOD_PRESSURE_PAGE: VitalPageConfig = {
@@ -247,13 +279,32 @@ const MOOD_PAGE: VitalPageConfig = {
   },
 };
 
-export function BloodPressureDashboard(props: PageProps) {
-  return <VitalDashboard {...props} config={BLOOD_PRESSURE_PAGE}/>;
+export function BloodPressureDashboard({ scenarioId = DEFAULT_SCENARIO_ID, ...props }: PageProps & ScenarioProps) {
+  const vitals = scenarioVitals(scenarioId);
+  if (!vitals.vitalScenario && !vitals.missing) return <VitalDashboard {...props} config={BLOOD_PRESSURE_PAGE}/>;
+  const { systolic, diastolic, context } = vitals.bloodPressure;
+  const [sys, dia] = [systolic[systolic.length - 1], diastolic[diastolic.length - 1]];
+  const symptoms = context.symptomatic ? { pt: ' · com sintomas', en: ' · with symptoms' } : { pt: '', en: '' };
+  return <VitalDashboard {...props} config={scenarioPage(BLOOD_PRESSURE_PAGE, { values: systolic, secondary: diastolic }, {
+    vitalId: 'blood-pressure', label: { pt: `${sys}/${dia} mmHg · leitura matinal${symptoms.pt} · 15/11`, en: `${sys}/${dia} mmHg · morning reading${symptoms.en} · 15/11` },
+    ...scenarioReadings(vitals).bloodPressure,
+  }, vitals.missing)}/>;
 }
 
-export function BloodGlucoseDashboard(props: PageProps) {
-  // A result logged from the Highlights modal is the latest reading, as on the Highlights card.
+export function BloodGlucoseDashboard({ scenarioId = DEFAULT_SCENARIO_ID, ...props }: PageProps & ScenarioProps) {
+  // A result logged from the Highlights modal is the latest reading, as on the Highlights card,
+  // except in scenarios that set their own readings.
   const [log] = useState(readGlucoseLog);
+  const vitals = scenarioVitals(scenarioId);
+  if (vitals.vitalScenario || vitals.missing) {
+    const { week, source } = vitals.glucose;
+    const value = week[week.length - 1];
+    const how = source === 'cgm' ? { pt: 'CGM', en: 'CGM' } : { pt: 'jejum matinal', en: 'morning fasting' };
+    return <VitalDashboard {...props} config={scenarioPage(BLOOD_GLUCOSE_PAGE, { values: week }, {
+      vitalId: 'blood-glucose', label: { pt: `${value} mg/dL · ${how.pt} · 15/11`, en: `${value} mg/dL · ${how.en} · 15/11` },
+      ...scenarioReadings(vitals).glucose,
+    }, vitals.missing)}/>;
+  }
   if (!log) return <VitalDashboard {...props} config={BLOOD_GLUCOSE_PAGE}/>;
   const context = GLUCOSE_CONTEXT_LABELS[glucoseLogContext(log)].short;
   const value = Math.round(log.value);
@@ -266,9 +317,19 @@ export function BloodGlucoseDashboard(props: PageProps) {
   return <VitalDashboard {...props} config={{ ...BLOOD_GLUCOSE_PAGE, latest }}/>;
 }
 
-export function MoodDashboard(props: PageProps) {
-  // Today's check-in replaces the demo value for 15/11 in the chart and the classification.
+export function MoodDashboard({ scenarioId = DEFAULT_SCENARIO_ID, ...props }: PageProps & ScenarioProps) {
+  // Today's check-in replaces the demo value for 15/11 in the chart and the classification,
+  // except in scenarios that set their own readings.
   const [score] = useState(readCheckInScore);
+  const vitals = scenarioVitals(scenarioId);
+  if (vitals.vitalScenario || vitals.missing) {
+    const week = vitals.mood.week;
+    const value = week[week.length - 1];
+    return <VitalDashboard {...props} config={scenarioPage(MOOD_PAGE, { values: week }, {
+      ...MOOD_PAGE.latest, ...scenarioReadings(vitals).mood,
+      label: { pt: `${pt(value)} / 5 · check-in · 15/11`, en: `${value} / 5 · check-in · 15/11` },
+    }, vitals.missing)}/>;
+  }
   if (score === null) return <VitalDashboard {...props} config={MOOD_PAGE}/>;
   const week = moodWeek(score);
   const latest = {
