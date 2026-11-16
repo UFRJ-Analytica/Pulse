@@ -92,6 +92,19 @@ describe('mission workflows', () => {
     expect(within(screen.getByRole('region', { name: 'Classificação da última leitura' })).getByText('4,1 / 5 · check-in matinal · 15/11')).toBeVisible();
   });
 
+  it('classifies the latest sleep and temperature readings on their pages', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    expect(screen.getByRole('button', { name: /Temperatura corporal/ }).textContent).toContain('36,80');
+    await user.click(screen.getByRole('button', { name: /Sono total/ }));
+    const sleepPanel = screen.getByRole('region', { name: 'Classificação da última leitura' });
+    expect(within(sleepPanel).getByText('7,2 h · noite do Sol 142')).toBeVisible();
+    expect(within(sleepPanel).getByText('Normal')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
+    await user.click(screen.getByRole('button', { name: /Temperatura corporal/ }));
+    expect(within(screen.getByRole('region', { name: 'Classificação da última leitura' })).getByText('36,80 °C · repouso · 23:00')).toBeVisible();
+  });
+
   it('shows systolic and diastolic bars on the blood pressure page', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
@@ -152,12 +165,12 @@ describe('mission workflows', () => {
   it('shows the same demo values in the highlights cards and the correlation alert', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
-    expect(screen.getByRole('button', { name: /Sono total/ }).textContent).toContain('6,5');
+    expect(screen.getByRole('button', { name: /Sono total/ }).textContent).toContain('7,2');
     expect(screen.getByRole('button', { name: /Glicemia/ }).textContent).toContain('82');
     await user.click(screen.getByRole('button', { name: 'Ver evidências e limites' }));
     const dialog = screen.getByRole('dialog');
     expect(within(dialog).getByText('82 mg/dL')).toBeVisible();
-    expect(within(dialog).getByText('6,5 h')).toBeVisible();
+    expect(within(dialog).getByText('7,2 h')).toBeVisible();
   });
 
   it('keeps the selected mission across pages', async () => {
