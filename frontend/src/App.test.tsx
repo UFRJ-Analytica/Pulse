@@ -174,6 +174,17 @@ describe('mission workflows', () => {
     }
   });
 
+  it('opens the simulated response workflow from the header on any page', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('button', { name: /Pressão arterial/ }));
+    await user.click(screen.getByRole('button', { name: /FLUXO DE RESPOSTA · DEMO/ }));
+    const dialog = screen.getByRole('dialog', { name: /FLUXO DE RESPOSTA · ALERTA DEMONSTRATIVO/ });
+    expect(within(dialog).getByText(/Nenhum alerta foi transmitido/)).toBeVisible();
+    await user.click(within(dialog).getByRole('button', { name: 'Fechar' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   it('classifies a logged glucose result with the vitals layer and its meal context', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));

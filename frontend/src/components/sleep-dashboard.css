@@ -143,3 +143,5 @@
 .health-shell[data-theme=light] .temperature-bar-value,.health-shell[data-theme=light] .temperature-bar-label{color:#315d6a}.health-shell[data-theme=light] .temperature-view-tabs button{background:#f5f9fa;border-color:#c8dbe1;color:#335967}.health-shell[data-theme=light] .temperature-view-tabs button:hover,.health-shell[data-theme=light] .temperature-view-tabs button.active{background:#dff3f8;border-color:#2b9fbe;color:#0b5f74}.health-shell[data-theme=light] .sleep-stats div{border-color:#d7e6ea}
 /* Brand and mission telemetry on the light theme. */
 .health-legacy-name .health-telemetry{margin-top:4px}.health-shell[data-theme=light] .health-legacy-name{color:#17323d}.health-shell[data-theme=light] .health-legacy-name b{color:#0f7f6c}.health-shell[data-theme=light] .health-legacy-mark{background:#d9f0ea;color:#14594f}.health-shell[data-theme=light] .health-telemetry{color:#3d6f6c}.health-shell[data-theme=light] .health-telemetry b{color:#8aa3a8}.health-shell[data-theme=light] .health-telemetry .muted{color:#536f7c}
+/* The response-flow badge is a button that opens the simulated workflow. */
+.health-header-right .emergency-button{cursor:pointer}
