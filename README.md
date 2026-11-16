@@ -1,28 +1,138 @@
-# Pulse Health
+# PulseHealth
 
-Atlas anatômico 3D e painel de evidências para o NASA Space Apps 2026. Os indicadores estão definidos em [src/data/catalog.ts](./src/data/catalog.ts); a exploração das fontes NASA que os fundamenta está em [research/](./research).
+### Mission health evidence explorer
 
-## Estrutura
+**NASA Space Apps Challenge 2026 · UFRJ Analytica**
 
-```text
-/             aplicação web (React + Vite): src/, public/, index.html, package.json
-research/     notebooks de exploração das fontes NASA (DONKI, NTRS, OSDR, RAD, NLSP), em inglês
-```
+**Live demo:** [pulse-production-d2524aac.up.railway.app](https://pulse-production-d2524aac.up.railway.app/)
 
-React 19 + TypeScript + Vite + Three.js + Recharts. A demonstração é estática, funciona sem credenciais e não requer backend. Os dados de missão são **sintéticos**; as geometrias anatômicas são reais, do Human Reference Atlas / HuBMAP.
+PulseHealth is an interactive prototype for exploring how mission context, measured exposure, and biological observations can be reviewed together. It gives reviewers a shared place to inspect indicators, timelines, source context, and an anatomical reference while keeping missing data and scientific limits visible.
 
-## Executar
+> **Demo status:** The interface is a research and presentation prototype. Its mission readings and scenarios are synthetic. It is not connected to a spacecraft, a wearable, a medical team, or a live NASA data feed. It does not diagnose, prescribe, or send operational alerts.
 
-Requisitos: Node.js 22.12 ou superior; npm 11 recomendado.
+## The problem
+
+Space-mission health analysis involves information with different meanings and time scales: space-environment events, measurements from exposure instruments, and biological observations collected in studies. Looking at these signals side by side can be useful, but treating them as synchronized evidence without checking source, timing, baseline, and missing data can suggest relationships that have not been established.
+
+PulseHealth makes that evidence journey explicit:
+
+1. **Environment** — What mission context or space-environment event is being explored?
+2. **Exposure** — What did an instrument measure, when, and with what limitations?
+3. **Biological response** — What biological observation is available, and how does it compare with its stated context or baseline?
+
+The prototype organizes these layers for exploration. It does not claim that one caused another.
+
+## What the prototype demonstrates
+
+- **Highlights dashboard:** A mission overview, simulated biomarker readings, activity examples, and clearly labeled alert demonstrations.
+- **Mission Atlas:** An interactive 3D anatomy reference alongside mission signals, evidence, and a timeline. Anatomy is for orientation; it does not map radiation dose or temperature to individual organs.
+- **Indicator library:** 30 indicator definitions spanning environment, exposure, radiation quality, biological response, vital signs, and correlations. Each indicator has a source, unit, interpretation, and limitation.
+- **Evidence states:** Missing, invalid, estimated, and unavailable observations are kept distinct; gaps are not silently treated as zero.
+- **Dedicated biomarker pages:** Sleep-hours and body-temperature views show example time series and their context.
+- **Presentation controls:** English and Brazilian Portuguese, dark and light themes, and 11 deterministic demonstration scenarios in the Mission Atlas.
+
+## Suggested jury walkthrough
+
+The most direct way to review the prototype is to follow the same sequence as the evidence model:
+
+1. **Highlights** (`/en/highlights`) — Start with the three evidence layers and the synthetic-data notice. Review the example biomarker cards and alert explanations.
+2. **Indicators** (`/en/indicators`) — Open the catalog and inspect how source, units, quality, and limitations accompany a signal.
+3. **Mission Atlas** (`/en/mission-atlas`) — Choose a demonstration scenario, select a signal, and explore its context in the timeline and anatomy view.
+4. **Sleep Hours** (`/en/highlights/biomarkers/sleep-hours`) or **Body Temperature** (`/en/highlights/biomarkers/body-temperature`) — Review an example longitudinal biomarker series. Total sleep duration is not treated as a sleep-stage measurement.
+5. **About the data** (`/en/data-sources`) — Review the provenance, assumptions, and limitations behind the demonstration.
+
+The same pages are available in Brazilian Portuguese by changing the language control.
+
+## Screenshots
+
+Store PNG captures in `screenshots/`. Each slot below names the route, the recommended framing, and the filename; the captures below show the English interface in its demonstration state.
+
+### 1. Highlights overview
+
+**Capture:** `/en/highlights`, at the top of the page, showing the evidence journey, anatomy reference, and core biomarker cards.
+
+**Save as:** `screenshots/01-highlights-overview.png`
+
+![PulseHealth Highlights overview](screenshots/01-highlights-overview.png)
+
+### 2. Simulated response flow
+
+**Capture:** `/en/highlights`, with **View simulated response flow** open on the critical example. Keep the synthetic-scenario and no-notification explanation visible.
+
+**Save as:** `screenshots/02-simulated-response-flow.png`
+
+![Simulated response flow](screenshots/02-simulated-response-flow.png)
+
+### 3. Mission Atlas
+
+**Capture:** `/en/mission-atlas`, showing a selected signal, its evidence inspector, and the timeline. Choose a state that makes source and uncertainty legible.
+
+**Save as:** `screenshots/03-mission-atlas.png`
+
+![PulseHealth Mission Atlas](screenshots/03-mission-atlas.png)
+
+### 4. Indicator library
+
+**Capture:** `/en/indicators`, with the indicator categories and cards visible. Include source and status details if the viewport allows.
+
+**Save as:** `screenshots/04-indicator-library.png`
+
+![PulseHealth indicator library](screenshots/04-indicator-library.png)
+
+### 5. Sleep Hours
+
+**Capture:** `/en/highlights/biomarkers/sleep-hours`, with the time-series chart, period, and reference visible.
+
+**Save as:** `screenshots/05-sleep-hours.png`
+
+![PulseHealth Sleep Hours](screenshots/05-sleep-hours.png)
+
+### 6. Body Temperature
+
+**Capture:** `/en/highlights/biomarkers/body-temperature`, showing the example temperature series and its explanatory context.
+
+**Save as:** `screenshots/06-body-temperature.png`
+
+![PulseHealth Body Temperature](screenshots/06-body-temperature.png)
+
+### 7. Data sources and limitations
+
+**Capture:** `/en/data-sources`, showing source provenance and the scientific limitations of the prototype.
+
+**Save as:** `screenshots/07-data-sources.png`
+
+![PulseHealth data sources and limitations](screenshots/07-data-sources.png)
+
+## Demo video
+
+> **Video slot:** Add the public demo-video link here when the video is ready.
+
+## Data, methods, and scientific limits
+
+The application uses deterministic synthetic fixtures for the mission scenarios and biomarker readings. NASA and research datasets inform source semantics and adapter designs; their live records are not presented as real-time astronaut telemetry in this demo.
+
+- **[NASA DONKI](https://ccmc.gsfc.nasa.gov/tools/DONKI/)** describes space-weather events. An event count or high-energy channel is not a measurement of a crew member's dose.
+- **[NASA RAD](https://science.nasa.gov/mission/msl-curiosity/science-instruments/)** is a rover instrument reference for radiation exposure. It is not an astronaut-worn dosimeter, and rover measurements are not presented as personal crew exposure.
+- **[NASA OSDR](https://osdr.nasa.gov/bio/repo/)** provides biological research data. Study samples are not live clinical monitoring.
+- **[HRA / HuBMAP](https://humanatlas.io/3d-reference-library)** supplies the anatomical reference geometry used in the viewer. The mesh is not an individual astronaut model and has partial skeletal and muscular coverage.
+- **Correlations are unavailable** when observations are not genuinely paired across the same mission or study with compatible timestamps, baselines, and relevant context. The demo does not invent a correlation or infer causality.
+- **Exploratory scores and thresholds** are product demonstrations, not official NASA indices or validated clinical limits. Proxy dose calculations remain explicitly labeled and guarded.
+
+Further implementation detail and source notes are available in [`frontend/README.md`](frontend/README.md), [`frontend/src/data/README.md`](frontend/src/data/README.md), [`frontend/Design.md`](frontend/Design.md), and [`frontend/ATTRIBUTION.md`](frontend/ATTRIBUTION.md).
+
+## Run the demo locally
+
+Requirements: Node.js 22.12 or later and npm. The frontend runs without API credentials or a backend service.
 
 ```bash
+cd frontend
 npm ci
 npm run dev
 ```
 
-Abra a URL mostrada pelo Vite, normalmente `http://127.0.0.1:5173`. Todos os recursos necessários, incluindo a anatomia de 11 MB, são servidos localmente. Os links de referência externos são opcionais. Não há fontes remotas, chaves de API, telemetria ou requisições de dados de missão na demonstração.
+Open the local URL printed by Vite, usually `http://127.0.0.1:5173/en/highlights`.
 
-Se o npm 10 apresentar o erro interno `Cannot read properties of null (reading 'edgesOut')` ao resolver peers, use `npx --yes npm@11.6.2 ci`. O lockfile é versionado.
+Optional project checks:
 
 ```bash
 npm run lint
@@ -30,123 +140,13 @@ npm run typecheck
 npm test
 npm run test:interaction
 npm run build
-npm run preview
 ```
 
-`dist/` contém o site de produção e todos os assets locais. Sirva essa pasta por HTTP; abrir o HTML diretamente com `file://` não carrega módulos ou GLB corretamente. O endereço padrão do preview é `http://127.0.0.1:4173`.
+## Anatomy attribution
 
-## Rotas
+The 3D anatomy reference is adapted from the **Human Reference Atlas / HuBMAP United Male v1.5** by Kristen Browne and Heidi Schlehlein (2023; [DOI 10.48539/HBM646.RKKC.257](https://doi.org/10.48539/HBM646.RKKC.257)), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The interface consolidates source meshes into selectable groups and applies its own display colors and controls. Those visual treatments do not encode dose, damage, diagnosis, or organ-specific exposure. See [`frontend/ATTRIBUTION.md`](frontend/ATTRIBUTION.md) for full attribution and adaptation details.
 
-Todas as rotas começam com o idioma: `/pt-br/...` ou `/en/...`. O roteamento é feito no navegador (React Router); em produção, o servidor deve devolver o `index.html` para qualquer caminho fora de `/api`.
+## Project code
 
-| Rota | Página |
-|---|---|
-| `/highlights` | Visão geral |
-| `/highlights/biomarkers/heart-rate` | Frequência cardíaca |
-| `/highlights/biomarkers/blood-pressure` | Pressão arterial |
-| `/highlights/biomarkers/blood-glucose` | Glicemia |
-| `/highlights/biomarkers/mood` | Humor e bem-estar |
-| `/highlights/biomarkers/sleep-hours` | Horas de sono |
-| `/highlights/biomarkers/body-temperature` | Temperatura corporal |
-| `/indicators` | Todos os biomarcadores |
-| `/mission-atlas` | Atlas da missão |
-| `/activity-history` | Histórico de atividades |
-| `/exam-logs` | Registros de exames |
-| `/sensors` | Wearables e sensores |
-| `/data-sources` | Sobre os dados (abre sobre o atlas) |
+The frontend is built with React, TypeScript, Vite, Three.js, and Recharts. The current demo reads local fixtures and does not require the NestJS backend; that service currently exposes a health-check endpoint only.
 
-## Experiência
-
-- Layout com sinais à esquerda, anatomia ao centro, inspeção à direita e linha do tempo abaixo.
-- Busca por nome, código de indicador ou identificador HRA / UBERON / FMA. `Cmd/Ctrl+K` foca a busca.
-- 25 indicadores: D01–D06, R01–R09, O01–O07 e C01–C03. A biblioteca “Indicadores” e a aba “Todos os sinais” dão acesso ao catálogo inteiro.
-- Nove cenários: rotina, SEP moderado, alta energia com dose ausente, tendência persistente de dose, mesma dose com LET diferente, coleta tardia, ausência de pares, fonte atrasada/inválida e protocolo crítico.
-- Tour de cinco etapas: ambiente → dosimetria → qualidade → resposta → confirmação da evidência.
-- Em mobile, sinais abrem em painel lateral e a inspeção em bottom sheet. A anatomia selecionada permanece enquadrada na região superior.
-- Datas dos sinais são apresentadas explicitamente em UTC. As janelas de 12, 24 e 48 horas filtram a série disponível; a tabela fornece alternativa textual ao gráfico.
-
-### Controles do atlas
-
-| Ação | Controle |
-|---|---|
-| Girar | Arraste ou use setas com o explorador focado |
-| Pan | Botão direito / gesto de dois dedos; Alt + setas |
-| Zoom | Roda / pinça; `+` e `−`; botões da barra |
-| Câmera | Frontal, posterior, lateral, superior, inferior e foco anatômico |
-| Selecionar | Clique na malha, label, árvore de camadas ou resultado de busca |
-| Isolar / ocultar | Botões da seleção; `I` / `H` com o explorador focado |
-| Visibilidade | Checkbox por sistema e botão por estrutura; atalho “Somente órgãos” |
-| Montar / separar | “Montado” / “Explodido”; slider e animação em Aparência |
-| Material | Anatômico, porcelana, wireframe, transparente ou destaque |
-| Corte | Axial, sagital ou coronal, posição e sentido reversível |
-| Desfazer | Botão ou `Cmd/Ctrl+Z` no explorador |
-| Restaurar | Botão ou `Home` no explorador |
-| Apresentação | Rotação opcional, fullscreen e exportação PNG |
-
-Os planos produzem cortes abertos de visualização; não são tomografia. O layout totalmente separado usa células sem sobreposição no plano frontal. A posição original é preservada ao remontar. Os rótulos são limitados e filtrados por colisão e clipping. Preferência por movimento reduzido é respeitada; o desenho WebGL só é atualizado quando necessário, com DPR limitado.
-
-## Anatomia e atribuição
-
-HRA / HuBMAP **United Male v1.5 (2023)**, **CC BY 4.0**, de Kristen Browne e Heidi Schlehlein. Foram preservadas 849 estruturas de origem, agrupadas em **46 grupos 3D selecionáveis**, totalizando 456.876 triângulos. Esqueleto e musculatura têm cobertura parcial; não há estômago ou malha celular nesta seleção. Não é um modelo individual de astronauta.
-
-- [ATTRIBUTION.md](./ATTRIBUTION.md): créditos, licenças, adaptações e fontes oficiais.
-- [Catálogo](./src/anatomy/catalog.ts): hierarquia navegável, IDs, regiões, conceitos e limitações.
-- [Manifesto](./public/anatomy/manifest.json): relações originais, buffers, contagens e SHA-256.
-- [Dados locais de anatomia](./public/anatomy): GLB, metadados e script de preparação reproduzível.
-
-Não foi usado BodyParts3D. Cores anatômicas identificam estruturas, nunca dose, diagnóstico ou dano. O halo de exposição significa exclusivamente “exposição medida no ponto do dosímetro; não é dose específica do órgão”.
-
-## Contratos e integração
-
-```text
-src/
-  App.tsx                      coordenação de navegação e seleção
-  components/
-    AtlasViewer.tsx             controles e histórico do atlas
-    AnatomyScene.tsx            ciclo Three.js, picking, clipping e labels
-    IndicatorInspector.tsx     explicação, evidência e limitações
-    Timeline.tsx                séries, eventos e tabela acessível
-    SignalUI.tsx                cards e estados
-  anatomy/                     catálogo, layout e visibilidade
-  data/
-    types.ts                   contratos IndicatorRecord / MissionScenario
-    catalog.ts                 25 definições e documentação oficial
-    formulas.ts                cálculos puros e guardas de qualidade
-    fixtures.ts                cenários determinísticos sintéticos
-    adapters/{donki,rad,osdr}.ts normalização por fonte
-  i18n/pt-BR.ts                 fronteira inicial do dicionário de interface
-```
-
-A interface consome contratos normalizados; a normalização e as fórmulas não dependem dos componentes. Para integrar uma API, obtenha os dados fora da camada visual e passe-os aos adaptadores. Consulte [src/data/README.md](./src/data/README.md) para os formatos e regras. Complete um `MissionScenario` com `records`, `timeline` e `events`; substitua o provedor local de cenários na composição da aplicação. Preserve `null` para ausências e mantenha o timestamp do instrumento, não o horário do fetch.
-
-As fontes têm semânticas diferentes: DONKI descreve ambiente; RAD mede a exposição no rover e não pode ser apresentado como dosímetro humano; OSDR é evidência de experimentos, não telemetria clínica. A fixture usa um dosímetro hipotético de habitat no **esquema** do RAD, sem transferir medições reais de Marte para uma pessoa.
-
-Integrações autenticadas futuras devem usar um backend (por exemplo NestJS/TypeScript), sem inserir segredos em variáveis `VITE_*`. Nenhum backend foi necessário para este escopo. A versão inicial é em português; textos de catálogo estão separados dos componentes e há um dicionário inicial para expansão de locale. Uma tradução completa ainda precisa extrair os textos de apresentação restantes.
-
-### Limites científicos deliberados
-
-- Pesos do score ambiental são **demonstrativos**, explicitados e versionados. Não constituem índice oficial NASA.
-- R03 e R07 permanecem sem valor porque a complementaridade B/E não foi validada. O adaptador exige uma opção explícita para habilitar a soma.
-- Q(LET) é provisório. O produto Dose × Q mantém a unidade **proxy µSv/h**, nunca sievert oficial ou dose clínica.
-- R08 integra somente o canal B nas **48 horas disponíveis**, sem extrapolar o início da missão. Só há contexto de habitat; outras fases não têm dosimetria segmentada.
-- R09 requer persistência em três amostras; um ponto isolado não gera alarme de tendência.
-- O01–O07 mostram um ensaio/medição exemplificativo por categoria, coleta, baseline e confundidores. Ensaios restantes e latência causal são explicitamente ausentes ou não estabelecidos.
-- C01–C03 têm `n = 0` pares observacionais reais, sem Pearson/Spearman inventados. Dados sintéticos não se tornam evidência clínica.
-- Versões: `pulse-exploratory-v1` e `pulse-demo-thresholds-v1`.
-
-## Validação
-
-Os testes Vitest verificam fórmulas, normalização, ausências, qualidade, contratos dos nove cenários e proteção contra soma/correlação indevidas. Os testes de geometria leem o **GLB real**, validando buffers finitos, índices, bounding boxes, hierarquia e contagens. O teste do layout explodido usa os limites dos 46 grupos reais.
-
-Os testes de interação montam a aplicação com Testing Library e substituem somente a cena WebGL por uma fronteira carregada, para exercitar os fluxos de interface sem simular suporte gráfico do JSDOM. Eles cobrem seleção por identificador, contexto de órgãos, isolamento/ocultação/undo/reset, troca de indicador após isolamento, clipping, filtro do catálogo, cenários, tabela temporal, fonte/licença e tour completo. O renderizador real requer a revisão no navegador abaixo.
-
-Revisão manual com Chrome em desktop e emulação iPhone 16 (393 × 852): anatomia carregada, busca/seleção e zoom do coração, isolamento, painel mobile, cenário crítico, fonte inválida, clipping axial e inversão, camadas, visualização explodida, timeline e reset. Após carga limpa, console sem erros ou avisos da aplicação. A emulação não substitui teste de desempenho em um aparelho físico.
-
-Para repetir a revisão visual:
-
-1. Abra a página, espere “46 estruturas visíveis” e selecione coração; confira o enquadramento e a fonte HRA.
-2. Isole, oculte, desfaça e restaure. Troque sistemas, material, câmera e corte; inverta o sentido.
-3. Separe a anatomia, ajuste o slider e remonte. Verifique que não há sobreposição no layout frontal totalmente separado.
-4. Alterne os nove cenários. Verifique unidades, qualidade, incertezas, data UTC e ausência de dose/pares onde aplicável.
-5. Use a timeline e sua tabela, execute as cinco etapas do tour e abra as atribuições.
-6. Repita em 393 px, navegue com teclado, confira os painéis e inspecione console/overflow.
