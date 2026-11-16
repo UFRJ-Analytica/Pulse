@@ -69,7 +69,7 @@ describe('mission workflows', () => {
     await user.click(screen.getByRole('button', { name: /Frequência cardíaca/ }));
     expect(window.location.pathname).toBe('/pt-br/highlights/biomarkers/heart-rate');
     expect(screen.getByRole('heading', { name: 'Frequência cardíaca', level: 1 })).toBeVisible();
-    expect(document.title).toBe('Frequência cardíaca | Analytica Pulse');
+    expect(document.title).toBe('Frequência cardíaca | Pulse Health');
     expect(screen.getByText(/Baseline 63 bpm · repouso 40–100 bpm/)).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Como o ambiente espacial afeta a frequência cardíaca' })).toBeVisible();
     await user.click(screen.getByRole('tab', { name: '7d' }));
@@ -77,6 +77,19 @@ describe('mission workflows', () => {
     expect(screen.getByText('09/11')).toBeVisible();
     await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
     expect(screen.getByRole('heading', { name: 'Telemetria principal' })).toBeVisible();
+  });
+
+  it('classifies the latest reading on each vital page with the vitals layer', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('button', { name: /Frequência cardíaca/ }));
+    const panel = screen.getByRole('region', { name: 'Classificação da última leitura' });
+    expect(within(panel).getByText('64 bpm · repouso ao acordar · 15/11')).toBeVisible();
+    expect(within(panel).getByText('Normal')).toBeVisible();
+    expect(within(panel).getByText('Não é necessário escalar')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
+    await user.click(screen.getByRole('button', { name: /Prontidão e humor/ }));
+    expect(within(screen.getByRole('region', { name: 'Classificação da última leitura' })).getByText('4,1 / 5 · check-in matinal · 15/11')).toBeVisible();
   });
 
   it('shows systolic and diastolic bars on the blood pressure page', async () => {
@@ -108,6 +121,32 @@ describe('mission workflows', () => {
     expect(screen.queryByRole('tab', { name: '24h' })).not.toBeInTheDocument();
     expect(screen.getByText('≥ 3,4')).toBeVisible();
     expect(screen.getByText('15/11')).toBeVisible();
+  });
+
+  it('saves the glucose context and shows the logged classification in highlights and exam logs', async () => {
+    const user = userEvent.setup(); render(<App />);
+    try {
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: 'Registrar resultado do exame' }));
+      const dialog = screen.getByRole('dialog', { name: /GLICEMIA CAPILAR/ });
+      await user.type(within(dialog).getByLabelText('Valor de glicemia'), '62');
+      await user.click(within(dialog).getByRole('button', { name: /Post-Meal/ }));
+      await user.click(within(dialog).getByRole('button', { name: /Salvar e atualizar/ }));
+      const card = await screen.findByRole('button', { name: /Glicemia.*Registrado/ }, { timeout: 2000 });
+      expect(card.textContent).toContain('62');
+      expect(card.textContent).toContain('pós-refeição');
+      expect(card.textContent).toContain('Hipoglicemia nível 1');
+      await user.click(screen.getByRole('menuitem', { name: 'Registros de exames' }));
+      expect(screen.getByRole('heading', { name: 'Glicemia pós-refeição' })).toBeVisible();
+      expect(screen.getByText('Hipoglicemia nível 1')).toBeVisible();
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: /Glicemia.*Registrado/ }));
+      const panel = screen.getByRole('region', { name: 'Classificação da última leitura' });
+      expect(within(panel).getByText(/62 mg\/dL · pós-refeição · registro manual/)).toBeVisible();
+      expect(within(panel).getByText('Atenção')).toBeVisible();
+    } finally {
+      localStorage.removeItem('pulse-health-glucose-result');
+    }
   });
 
   it('shows the same demo values in the highlights cards and the correlation alert', async () => {

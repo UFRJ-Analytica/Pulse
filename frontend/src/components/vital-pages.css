@@ -1,0 +1,31 @@
+/* Classification panel of the vital pages; follows the temperature page panels. */
+.vital-status-panel{padding:24px}
+.vital-status-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.vital-status-heading h2{margin-top:6px;font-size:20px}
+.vital-status-badge{flex-shrink:0;padding:6px 12px;border:1px solid;border-radius:999px;font:600 12px ui-monospace,monospace;letter-spacing:.5px;text-transform:uppercase}
+.vital-status-badge.normal{border-color:#1f6b52;background:#0c2a22;color:#4ade9a}
+.vital-status-badge.observation{border-color:#735317;background:#231b08;color:#f5b932}
+.vital-status-badge.attention{border-color:#8a4a17;background:#2b1708;color:#fb9a4b}
+.vital-status-badge.critical{border-color:#9f1239;background:#3b0718;color:#fda4af}
+.vital-status-badge.no-data{border-color:#334155;background:#111a27;color:#94a3b8}
+.vital-status-findings p{color:#c5d3e1;font-size:15px;line-height:1.6}
+.vital-status-findings p+p{margin-top:8px}
+.vital-status-findings strong{color:#e6eef7}
+.vital-status-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:18px 0 0}
+.vital-status-facts div{padding:12px;background:#101a29;border:1px solid #202c3b;border-radius:8px}
+.vital-status-facts dt{color:#8495aa;font:11px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.5px}
+.vital-status-facts dd{margin:6px 0 0;color:#c5d3e1;font-size:13px;line-height:1.55}
+.vital-status-sources,.vital-status-note{margin-top:16px;color:#91a1b0;font:12px/1.6 ui-monospace,monospace}
+.vital-status-note{margin-top:6px}
+.vital-status-sources a{color:#57d2ee}
+.health-shell[data-theme=light] .vital-status-findings p,.health-shell[data-theme=light] .vital-status-facts dd{color:#40606c}
+.health-shell[data-theme=light] .vital-status-findings strong{color:#294854}
+.health-shell[data-theme=light] .vital-status-facts div{background:#eaf3f6;border-color:#d7e6ea}
+.health-shell[data-theme=light] .vital-status-facts dt,.health-shell[data-theme=light] .vital-status-sources,.health-shell[data-theme=light] .vital-status-note{color:#536f7c}
+.health-shell[data-theme=light] .vital-status-sources a{color:#08748b}
+.health-shell[data-theme=light] .vital-status-badge.normal{border-color:#9fd8bf;background:#e3f6ee;color:#17724f}
+.health-shell[data-theme=light] .vital-status-badge.observation{border-color:#e7d29c;background:#fff6dc;color:#86640e}
+.health-shell[data-theme=light] .vital-status-badge.attention{border-color:#f0c19a;background:#fdeadb;color:#9a4a0c}
+.health-shell[data-theme=light] .vital-status-badge.critical{border-color:#e9a3b0;background:#fde2e6;color:#a61e37}
+.health-shell[data-theme=light] .vital-status-badge.no-data{border-color:#cfd8dc;background:#eef2f4;color:#536f7c}
+@media(max-width:700px){.vital-status-panel{padding:16px}.vital-status-heading{flex-direction:column;gap:10px}}
