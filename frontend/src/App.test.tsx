@@ -185,6 +185,17 @@ describe('mission workflows', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
+  it('lists the assumed sensors as not connected and opens their signals', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Wearables e sensores' }));
+    expect(window.location.pathname).toBe('/pt-br/sensors');
+    expect(screen.getByRole('heading', { name: 'Wearables e sensores', level: 1 })).toBeVisible();
+    expect(screen.getAllByText('Não conectado · dados sintéticos')).toHaveLength(6);
+    await user.click(screen.getByRole('button', { name: /Abrir sinal: Glicosímetro/ }));
+    expect(screen.getByRole('heading', { name: 'Glicemia', level: 1 })).toBeVisible();
+  });
+
   it('classifies a logged glucose result with the vitals layer and its meal context', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
