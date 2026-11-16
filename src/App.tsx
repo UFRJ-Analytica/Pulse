@@ -159,7 +159,7 @@ function AppContent() {
 
   function card(id: string, compact = false) {
     const sparkline = id === 'D06' ? scenario.timeline.map(t => t.score) : id === 'R01' ? scenario.timeline.map(t => t.dose) : id === 'R04' ? scenario.timeline.map(t => t.let) : id === 'R08' ? scenario.timeline.map(t => t.accumulated) : undefined;
-    return <IndicatorCard key={id} definition={INDICATOR_BY_ID[id]} record={scenario.records[id]} selected={selectedIndicator === id && inspectionMode === 'signal'} onSelect={() => selectIndicator(id)} sparkline={sparkline} compact={compact} />;
+    return <IndicatorCard key={id} definition={localizeIndicator(INDICATOR_BY_ID[id], locale)} record={scenario.records[id]} selected={selectedIndicator === id && inspectionMode === 'signal'} onSelect={() => selectIndicator(id)} sparkline={sparkline} compact={compact} />;
   }
 
   function toggleHealthTheme() {
