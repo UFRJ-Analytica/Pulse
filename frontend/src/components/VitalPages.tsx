@@ -4,6 +4,7 @@ import type { Locale } from '../i18n/messages';
 import { BLOOD_GLUCOSE_BASELINE, BLOOD_GLUCOSE_SERIES, BLOOD_PRESSURE_SERIES, HEART_RATE_BASELINE, HEART_RATE_SERIES, MOOD_SERIES } from '../data/vitalSeries';
 import type { SeriesLabel, VitalSeries } from '../data/vitalSeries';
 import { DEMO_MOOD } from '../data/fixtures';
+import { moodAssessInput, moodWeek, readCheckInScore } from '../data/checkIn';
 import { GLUCOSE_CONTEXT_LABELS, glucoseLogContext, glucoseLogReading, readGlucoseLog } from '../data/glucoseLog';
 import { assessVital, VITAL_REFERENCES, VITAL_SOURCES } from '../data/vitals';
 import type { AssessOptions, Escalation, VitalId, VitalReading } from '../data/vitals';
@@ -296,5 +297,14 @@ export function BloodGlucoseDashboard(props: PageProps) {
 }
 
 export function MoodDashboard(props: PageProps) {
-  return <VitalDashboard {...props} config={MOOD_PAGE}/>;
+  // Today's check-in replaces the demo value for 15/11 in the chart and the classification.
+  const [score] = useState(readCheckInScore);
+  if (score === null) return <VitalDashboard {...props} config={MOOD_PAGE}/>;
+  const week = moodWeek(score);
+  const latest = {
+    ...MOOD_PAGE.latest,
+    ...moodAssessInput(week),
+    label: { pt: `${String(score).replace('.', ',')} / 5 · check-in de hoje · 15/11`, en: `${score} / 5 · today’s check-in · 15/11` },
+  };
+  return <VitalDashboard {...props} config={{ ...MOOD_PAGE, series: { ...MOOD_PAGE.series, values: { '7d': week } }, latest }}/>;
 }

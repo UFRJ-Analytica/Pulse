@@ -196,6 +196,29 @@ describe('mission workflows', () => {
     expect(screen.getByRole('heading', { name: 'Glicemia', level: 1 })).toBeVisible();
   });
 
+  it('saves the check-in score and shows it in highlights, activity history and the mood page', async () => {
+    const user = userEvent.setup(); render(<App />);
+    try {
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: 'Iniciar check-in' }));
+      const dialog = screen.getByRole('dialog', { name: 'CHECK-IN MATINAL' });
+      const groups = within(dialog).getAllByRole('group');
+      await user.click(within(groups[0]).getByRole('button', { name: '2' }));
+      await user.click(within(groups[1]).getByRole('button', { name: '8' }));
+      await user.click(within(groups[2]).getByRole('button', { name: '2' }));
+      await user.click(within(groups[3]).getByRole('button', { name: 'Não restaurador' }));
+      await user.click(within(dialog).getByRole('button', { name: 'Concluir check-in' }));
+      expect(screen.getByRole('button', { name: /Prontidão e humor.*Registrado/ }).textContent).toContain('1,6');
+      await user.click(screen.getByRole('menuitem', { name: 'Histórico de atividades' }));
+      expect(screen.getByText('Score composto 1,6 / 5,0')).toBeVisible();
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: /Prontidão e humor/ }));
+      expect(within(screen.getByRole('region', { name: 'Classificação da última leitura' })).getByText('1,6 / 5 · check-in de hoje · 15/11')).toBeVisible();
+    } finally {
+      for (const key of ['pulse-health-readiness-score', 'pulse-health-readiness-completed', 'pulse-health-readiness-completed-at']) localStorage.removeItem(key);
+    }
+  });
+
   it('classifies a logged glucose result with the vitals layer and its meal context', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
