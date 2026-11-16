@@ -9,7 +9,7 @@ import { assessVital, VITAL_REFERENCES, VITAL_SOURCES } from '../data/vitals';
 import type { AssessOptions, Escalation, VitalId, VitalReading } from '../data/vitals';
 import type { SignalState } from '../data/types';
 import { HealthHeader, TemperatureContext, TemperatureSleepStyleChart } from './SleepDashboard';
-import type { MissionMode, SleepStyleChartConfig, TemperatureView } from './SleepDashboard';
+import type { SleepStyleChartConfig, TemperatureView } from './SleepDashboard';
 import './sleep-dashboard.css';
 import './vital-pages.css';
 
@@ -30,7 +30,6 @@ export type VitalPageConfig = {
 type PageProps = {
   onBack: () => void; onAtlas: () => void; onHighlights: () => void; onIndicators: () => void; onData: () => void;
   theme: 'dark' | 'light'; onToggleTheme: () => void; locale: Locale; onLocaleChange: (locale: Locale) => void;
-  missionMode?: MissionMode; onMissionModeChange?: (mode: MissionMode) => void;
 };
 
 const text = (locale: Locale, pt: string, en: string) => locale === 'en' ? en : pt;
@@ -77,11 +76,11 @@ const lastOfWeek = (values: number[] = []) => values[values.length - 1];
 const weekHistory = (values: number[] = [], context?: VitalReading['context']) => values.slice(0, -1).map(value => ({ value, context }));
 
 // Generic vital page with the same structure and CSS classes as the body temperature page.
-export function VitalDashboard({ config, onBack, onAtlas, onHighlights, onIndicators, onData, theme, onToggleTheme, locale, onLocaleChange, missionMode, onMissionModeChange }: PageProps & { config: VitalPageConfig }) {
+export function VitalDashboard({ config, onBack, onAtlas, onHighlights, onIndicators, onData, theme, onToggleTheme, locale, onLocaleChange }: PageProps & { config: VitalPageConfig }) {
   const [view, setView] = useState<TemperatureView>(config.chart.views?.[0] ?? '24h');
   const tr = (value: Text) => text(locale, value.pt, value.en);
   const label = (value: SeriesLabel) => typeof value === 'string' ? value : tr(value);
-  return <div className="health-shell temperature-page" data-theme={theme}><HealthHeader activePage="sleep" onHighlights={onHighlights} onAtlas={onAtlas} onIndicators={onIndicators} onData={onData} theme={theme} onToggleTheme={onToggleTheme} locale={locale} onLocaleChange={onLocaleChange} missionMode={missionMode ?? 'ISS'} onMissionModeChange={onMissionModeChange ?? (() => {})}/><main className="health-main sleep-main"><section className="sleep-heading health-panel"><div><button className="sleep-back" onClick={onBack}><ArrowLeft size={13}/> {text(locale, 'VOLTAR À VISÃO GERAL', 'BACK TO OVERVIEW')}</button><h1>{tr(config.title)}</h1></div></section>
+  return <div className="health-shell temperature-page" data-theme={theme}><HealthHeader activePage="sleep" onHighlights={onHighlights} onAtlas={onAtlas} onIndicators={onIndicators} onData={onData} theme={theme} onToggleTheme={onToggleTheme} locale={locale} onLocaleChange={onLocaleChange}/><main className="health-main sleep-main"><section className="sleep-heading health-panel"><div><button className="sleep-back" onClick={onBack}><ArrowLeft size={13}/> {text(locale, 'VOLTAR À VISÃO GERAL', 'BACK TO OVERVIEW')}</button><h1>{tr(config.title)}</h1></div></section>
   <TemperatureSleepStyleChart values={config.series.values[view] ?? []} secondaryValues={config.series.secondary?.[view]} view={view} labels={(config.series.labels[view] ?? []).map(label)} locale={locale} onViewChange={setView} config={config.chart}/>
   <VitalStatusPanel latest={config.latest} locale={locale}/>
   <section className="health-panel temperature-about"><div className="sleep-section-heading"><h2>{tr(config.aboutTitle)}</h2></div><p>{tr(config.about)}</p></section>

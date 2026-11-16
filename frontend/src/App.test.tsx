@@ -160,6 +160,20 @@ describe('mission workflows', () => {
     expect(within(dialog).getByText('6,5 h')).toBeVisible();
   });
 
+  it('keeps the selected mission across pages', async () => {
+    const user = userEvent.setup(); render(<App />);
+    try {
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('tab', { name: /Base Lunar/ }));
+      expect(screen.getByText(/Gravidade: 0,16g/)).toBeVisible();
+      await user.click(screen.getByRole('button', { name: /Frequência cardíaca/ }));
+      expect(screen.getByRole('tab', { name: /Base Lunar/ })).toHaveAttribute('aria-selected', 'true');
+      expect(screen.getByText(/Gravidade: 0,16g/)).toBeVisible();
+    } finally {
+      await user.click(screen.getByRole('tab', { name: /ISS/ }));
+    }
+  });
+
   it('classifies a logged glucose result with the vitals layer and its meal context', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
