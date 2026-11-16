@@ -149,3 +149,9 @@
 @media(max-width:700px){.temperature-summary-controls{flex-wrap:wrap}.temperature-summary-controls .sleep-stats{width:100%;grid-template-columns:repeat(2,minmax(0,1fr))}.temperature-sleep-chart .sleep-stats div:nth-child(2n){border-right:0}.temperature-sleep-chart .sleep-stats div:nth-child(-n+2){border-bottom:1px solid #1c2a39}}
 @media(max-width:1600px){.health-header{gap:18px}.health-brand{flex:0 1 auto}.health-legacy-name{min-width:0}.health-telemetry{max-width:340px}.health-header-right .health-astronaut{display:none}.health-header-right .health-connection{white-space:nowrap}}
 @media(max-width:1400px){.health-header-right .health-connection{display:none}.health-telemetry{max-width:260px}}
+/* Demo scenario selector in the Highlights evidence journey. */
+.hl-scenario-select{display:flex;flex-direction:column;gap:5px;margin-top:14px;max-width:340px}.hl-scenario-select span{color:#8aa0b4;font:10px ui-monospace,monospace;letter-spacing:1px}.hl-scenario-select select{padding:8px 10px;border:1px solid #27364a;border-radius:6px;background:#121d2e;color:#dce6f4;font-size:12px}.health-shell[data-theme=light] .hl-scenario-select span{color:#536f7c}.health-shell[data-theme=light] .hl-scenario-select select{background:#f5f9fa;border-color:#c8dbe1;color:#203944}
+/* Highlights sections: more room above each heading and between its note and the cards. */
+.highlights-content>h2{margin:36px 0 14px}.highlights-content>h2:first-child{margin-top:0}.highlights-content>.hl-section-note{margin:-6px 0 18px;color:#9fb0c2;font-size:13px;line-height:1.5}.health-shell[data-theme=light] .highlights-content>.hl-section-note{color:#536f7c}
+/* Alert footers: the note takes its own line when the button needs the width. */
+.hl-alerts .hl-alert-footer{flex-wrap:wrap}.hl-alerts .hl-alert-footer>span{flex:1 1 220px}

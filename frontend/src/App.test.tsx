@@ -239,6 +239,40 @@ describe('mission workflows', () => {
     }
   });
 
+  it('shows the selected demo scenario on highlights and vital pages and keeps it in the URL', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    expect(screen.getByText(/Missão selecionada: ISS/)).toBeVisible();
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Cenário de demonstração' }), 'hypoglycemia');
+    expect(window.location.search).toBe('?scenario=hypoglycemia');
+    const card = screen.getByRole('button', { name: /Glicemia/ });
+    expect(card.textContent).toContain('48');
+    expect(card.textContent).toContain('Crítico');
+    expect(screen.queryByText(/CENÁRIO DE EMERGÊNCIA SIMULADO/)).not.toBeInTheDocument();
+    await user.click(card);
+    expect(window.location.search).toBe('?scenario=hypoglycemia');
+    const panel = screen.getByRole('region', { name: 'Classificação da última leitura' });
+    expect(within(panel).getByText('48 mg/dL · CGM · 15/11')).toBeVisible();
+    expect(within(panel).getByText(/Hipoglicemia nível 2/)).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Cenário de demonstração' }), 'sep-moderate');
+    expect(window.location.search).toBe('');
+    expect(screen.getByText(/CENÁRIO DE EMERGÊNCIA SIMULADO/)).toBeVisible();
+  });
+
+  it('adds the selected mission latency to the distance hazard card', async () => {
+    const user = userEvent.setup(); render(<App />);
+    try {
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: /Frequência cardíaca/ }));
+      expect(screen.getByText(/latência com a Terra é de cerca de 0,24 s/)).toBeVisible();
+      await user.click(screen.getByRole('tab', { name: /Trânsito a Marte/ }));
+      expect(screen.getByText(/latência chega a 3–22 min/)).toBeVisible();
+    } finally {
+      await user.click(screen.getByRole('tab', { name: /ISS/ }));
+    }
+  });
+
   it('classifies a logged glucose result with the vitals layer and its meal context', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
@@ -260,7 +294,7 @@ describe('mission workflows', () => {
   it('shows the temperature context and illustrative atlas only when selected', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('button', { name: 'T01 Temperatura corporal central' }));
-    expect(within(inspector()).getByText('37,4')).toBeVisible();
+    expect(within(inspector()).getByText('36,8')).toBeVisible();
     expect(within(inspector()).getByText(/não há série temporal de temperatura/i)).toBeVisible();
     expect(screen.getByText(/Cor uniforme ilustrativa/)).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'D06 Score ambiental SEP' }));

@@ -98,7 +98,8 @@ function buildScenario(config: ScenarioConfig): MissionScenario {
   }));
   Object.assign(records, normalizeOsdr(bioSamples, context));
   // Demo day 42 at rest: the nominal limit is about 37.67 °C, so 37.4 °C stays within the reference.
-  records.T01 = normalizeTemperature(config.invalid ? null : 37.4, '°C', context, { activity: 'rest', missionDay: 42 });
+  // Matches the last reading of the body temperature page series (23:00).
+  records.T01 = normalizeTemperature(config.invalid ? null : 36.8, '°C', context, { activity: 'rest', missionDay: 42 });
   // Vital signs: normal readings by default, absent when sources fail, altered only in the two vital scenarios.
   const rest = { activity: 'rest' as const, missionDay: 42 };
   const hypo = config.vitals === 'hypoglycemia';

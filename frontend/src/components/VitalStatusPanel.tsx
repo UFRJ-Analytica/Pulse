@@ -33,7 +33,9 @@ export function VitalStatusPanel({ latest, locale }: { latest: LatestReading; lo
   const sourceIds = [...new Set([...assessment.sources, ...reference.sources])];
   return <section className="health-panel vital-status-panel" aria-label={text(locale, 'Classificação da última leitura', 'Latest reading classification')}>
     <div className="vital-status-heading"><div><span className="sleep-eyebrow">{text(locale, 'CLASSIFICAÇÃO DA ÚLTIMA LEITURA', 'LATEST READING CLASSIFICATION')}</span><h2>{tr(latest.label)}</h2></div><span className={`vital-status-badge ${assessment.state}`}>{tr(STATE_LABELS[assessment.state])}</span></div>
-    <div className="vital-status-findings">{assessment.reason === 'insufficient-context'
+    <div className="vital-status-findings">{assessment.reason === 'missing' || assessment.reason === 'invalid'
+      ? <p>{text(locale, 'Leitura indisponível: a fonte está atrasada ou inválida. Ausência de dado não é um resultado normal.', 'Reading unavailable: the source is delayed or invalid. Missing data is not a normal result.')}</p>
+      : assessment.reason === 'insufficient-context'
       ? <p>{text(locale, 'Interpretação indisponível: a leitura precisa de contexto (atividade, jejum ou linha de base) para ser classificada.', 'Interpretation unavailable: this reading needs context (activity, fasting, or baseline) before it can be classified.')}</p>
       : assessment.findings.length === 0
         ? <p>{text(locale, 'Dentro da referência para o contexto informado.', 'Within the reference range for the reported context.')}</p>
