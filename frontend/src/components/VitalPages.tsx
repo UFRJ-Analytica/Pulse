@@ -9,6 +9,8 @@ import { DEFAULT_SCENARIO_ID, scenarioReadings, scenarioVitals } from '../data/s
 import { GLUCOSE_CONTEXT_LABELS, glucoseLogContext, glucoseLogReading, readGlucoseLog } from '../data/glucoseLog';
 import type { VitalReading } from '../data/vitals';
 import { VitalStatusPanel } from './VitalStatusPanel';
+import { useMissionMode } from './missionMode';
+import type { MissionMode } from './missionMode';
 import type { LatestReading } from './VitalStatusPanel';
 import { HealthHeader, TemperatureContext, TemperatureSleepStyleChart } from './SleepDashboard';
 import type { SleepStyleChartConfig, TemperatureView } from './SleepDashboard';
@@ -36,6 +38,14 @@ type PageProps = {
 };
 
 const text = (locale: Locale, pt: string, en: string) => locale === 'en' ? en : pt;
+
+// Communication latency of the selected mission, added to the "Distance from Earth" card (same values as the header telemetry).
+const MISSION_LATENCY: Record<MissionMode, Text> = {
+  ISS: { pt: 'Na ISS, a latência com a Terra é de cerca de 0,24 s (ida): o suporte médico em solo responde praticamente em tempo real.', en: 'On the ISS, latency to Earth is about 0.24 s one way: ground medical support responds almost in real time.' },
+  'Lunar Base': { pt: 'Na base lunar, a latência é de cerca de 1,3 s (ida): a conversa com o solo funciona, com um pequeno atraso.', en: 'At a lunar base, latency is about 1.3 s one way: conversations with the ground work, with a short delay.' },
+  'Mars Transit': { pt: 'Em trânsito a Marte, a latência chega a 3–22 min (ida): a tripulação precisa decidir sem resposta imediata da Terra.', en: 'In Mars transit, latency reaches 3–22 min one way: the crew must decide without an immediate answer from Earth.' },
+};
+const DISTANCE_TITLES = ['Distância da Terra', 'Distance from Earth'];
 
 // Last value of the weekly series as the current reading; the earlier days are its history.
 const lastOfWeek = (values: number[] = []) => values[values.length - 1];
@@ -67,11 +77,13 @@ export function VitalDashboard({ config, onBack, onAtlas, onHighlights, onIndica
   const [view, setView] = useState<TemperatureView>(config.initialView ?? config.chart.views?.[0] ?? '24h');
   const tr = (value: Text) => text(locale, value.pt, value.en);
   const label = (value: SeriesLabel) => typeof value === 'string' ? value : tr(value);
+  const mission = useMissionMode();
+  const hazards = config.hazards[locale === 'en' ? 'en' : 'pt'].map(item => DISTANCE_TITLES.includes(item.title) ? { ...item, text: `${item.text} ${tr(MISSION_LATENCY[mission])}` } : item);
   return <div className="health-shell temperature-page" data-theme={theme}><HealthHeader activePage="sleep" onHighlights={onHighlights} onAtlas={onAtlas} onIndicators={onIndicators} onData={onData} theme={theme} onToggleTheme={onToggleTheme} locale={locale} onLocaleChange={onLocaleChange}/><main className="health-main sleep-main"><section className="sleep-heading health-panel"><div><button className="sleep-back" onClick={onBack}><ArrowLeft size={13}/> {text(locale, 'VOLTAR À VISÃO GERAL', 'BACK TO OVERVIEW')}</button><h1>{tr(config.title)}</h1></div></section>
   <TemperatureSleepStyleChart values={config.series.values[view] ?? []} secondaryValues={config.series.secondary?.[view]} view={view} labels={(config.series.labels[view] ?? []).map(label)} locale={locale} onViewChange={setView} config={config.chart}/>
   <VitalStatusPanel latest={config.latest} locale={locale}/>
   <section className="health-panel temperature-about"><div className="sleep-section-heading"><h2>{tr(config.aboutTitle)}</h2></div><p>{tr(config.about)}</p></section>
-  <section className="health-panel temperature-hazards"><div className="sleep-section-heading"><h2>{tr(config.hazardsTitle)}</h2></div><div className="temperature-card-grid">{config.hazards[locale === 'en' ? 'en' : 'pt'].map(item => <TemperatureContext key={item.title} {...item}/>)}</div><p className="temperature-source">{text(locale, 'Fontes:', 'Sources:')} {config.sources} {text(locale, 'Conteúdo demonstrativo, não é orientação médica.', 'Demonstration content, not medical advice.')}</p></section>
+  <section className="health-panel temperature-hazards"><div className="sleep-section-heading"><h2>{tr(config.hazardsTitle)}</h2></div><div className="temperature-card-grid">{hazards.map(item => <TemperatureContext key={item.title} {...item}/>)}</div><p className="temperature-source">{text(locale, 'Fontes:', 'Sources:')} {config.sources} {text(locale, 'Conteúdo demonstrativo, não é orientação médica.', 'Demonstration content, not medical advice.')}</p></section>
   </main></div>;
 }
 

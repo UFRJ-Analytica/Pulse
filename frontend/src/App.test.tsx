@@ -260,6 +260,19 @@ describe('mission workflows', () => {
     expect(screen.getByText(/CENÁRIO DE EMERGÊNCIA SIMULADO/)).toBeVisible();
   });
 
+  it('adds the selected mission latency to the distance hazard card', async () => {
+    const user = userEvent.setup(); render(<App />);
+    try {
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: /Frequência cardíaca/ }));
+      expect(screen.getByText(/latência com a Terra é de cerca de 0,24 s/)).toBeVisible();
+      await user.click(screen.getByRole('tab', { name: /Trânsito a Marte/ }));
+      expect(screen.getByText(/latência chega a 3–22 min/)).toBeVisible();
+    } finally {
+      await user.click(screen.getByRole('tab', { name: /ISS/ }));
+    }
+  });
+
   it('classifies a logged glucose result with the vitals layer and its meal context', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
