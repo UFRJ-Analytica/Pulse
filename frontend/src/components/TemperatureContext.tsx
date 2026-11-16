@@ -1,4 +1,4 @@
-import { useLocale } from '../i18n/locale-context';
+import { useLocale } from '../i18n/locale';
 export function TemperatureContext() {
   const locale = useLocale();
   if (locale === 'en') return <section className="inspection-section" aria-label="Core temperature context">

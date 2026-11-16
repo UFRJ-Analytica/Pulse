@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Area, AreaChart, CartesianGrid, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { ChevronDown, Clock3, Table2 } from 'lucide-react';
 import type { MissionScenario, TimelineEvent, TimelinePoint } from '../data/types';
-import { useLocale, tx } from '../i18n/locale-context';
+import { useLocale, tx } from '../i18n/locale';
 
 type Metric = 'dose' | 'let' | 'score' | 'accumulated';
 const time = (ts: string, locale: 'en' | 'pt-BR') => new Date(ts).toLocaleTimeString(locale === 'en' ? 'en-US' : 'pt-BR', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });

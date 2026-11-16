@@ -72,9 +72,14 @@ describe('mission workflows', () => {
     expect(document.title).toBe('Frequência cardíaca | Pulse Health');
     expect(screen.getByText(/Baseline 63 bpm · repouso 40–100 bpm/)).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Como o ambiente espacial afeta a frequência cardíaca' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Radiação' })).toBeVisible();
+    const table = screen.getByRole('table', { name: 'Gráfico de frequência cardíaca' });
+    expect(within(table).getAllByRole('row')).toHaveLength(4);
+    expect(within(table).getByRole('rowheader', { name: '12:00' })).toBeInTheDocument();
     await user.click(screen.getByRole('tab', { name: '7d' }));
     expect(screen.getByRole('tab', { name: '7d' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByText('09/11')).toBeVisible();
+    // Bar label and the screen-reader table row.
+    expect(screen.getAllByText('09/11')).toHaveLength(2);
     await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
     expect(screen.getByRole('heading', { name: 'Telemetria principal' })).toBeVisible();
   });
@@ -90,6 +95,19 @@ describe('mission workflows', () => {
     await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
     await user.click(screen.getByRole('button', { name: /Prontidão e humor/ }));
     expect(within(screen.getByRole('region', { name: 'Classificação da última leitura' })).getByText('4,1 / 5 · check-in matinal · 15/11')).toBeVisible();
+  });
+
+  it('classifies the latest sleep and temperature readings on their pages', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    expect(screen.getByRole('button', { name: /Temperatura corporal/ }).textContent).toContain('36,80');
+    await user.click(screen.getByRole('button', { name: /Sono total/ }));
+    const sleepPanel = screen.getByRole('region', { name: 'Classificação da última leitura' });
+    expect(within(sleepPanel).getByText('7,2 h · noite do Sol 142')).toBeVisible();
+    expect(within(sleepPanel).getByText('Normal')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
+    await user.click(screen.getByRole('button', { name: /Temperatura corporal/ }));
+    expect(within(screen.getByRole('region', { name: 'Classificação da última leitura' })).getByText('36,80 °C · repouso · 23:00')).toBeVisible();
   });
 
   it('shows systolic and diastolic bars on the blood pressure page', async () => {
@@ -109,7 +127,8 @@ describe('mission workflows', () => {
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
     await user.click(screen.getByRole('button', { name: /Glicemia/ }));
     expect(screen.getByRole('heading', { name: 'Glicemia', level: 1 })).toBeVisible();
-    expect(screen.getByText('14:00 · 2 h pós-refeição')).toBeVisible();
+    // Bar label and the screen-reader table row.
+    expect(screen.getAllByText('14:00 · 2 h pós-refeição')).toHaveLength(2);
     expect(screen.getByText(/100 mg\/dL · início da glicemia de jejum alterada/)).toBeVisible();
   });
 
@@ -120,7 +139,8 @@ describe('mission workflows', () => {
     expect(screen.getByRole('heading', { name: 'Humor e bem-estar', level: 1 })).toBeVisible();
     expect(screen.queryByRole('tab', { name: '24h' })).not.toBeInTheDocument();
     expect(screen.getByText('≥ 3,4')).toBeVisible();
-    expect(screen.getByText('15/11')).toBeVisible();
+    // Bar label and the screen-reader table row.
+    expect(screen.getAllByText('15/11')).toHaveLength(2);
   });
 
   it('saves the glucose context and shows the logged classification in highlights and exam logs', async () => {
@@ -152,12 +172,12 @@ describe('mission workflows', () => {
   it('shows the same demo values in the highlights cards and the correlation alert', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
-    expect(screen.getByRole('button', { name: /Sono total/ }).textContent).toContain('6,5');
+    expect(screen.getByRole('button', { name: /Sono total/ }).textContent).toContain('7,2');
     expect(screen.getByRole('button', { name: /Glicemia/ }).textContent).toContain('82');
     await user.click(screen.getByRole('button', { name: 'Ver evidências e limites' }));
     const dialog = screen.getByRole('dialog');
     expect(within(dialog).getByText('82 mg/dL')).toBeVisible();
-    expect(within(dialog).getByText('6,5 h')).toBeVisible();
+    expect(within(dialog).getByText('7,2 h')).toBeVisible();
   });
 
   it('keeps the selected mission across pages', async () => {
@@ -194,6 +214,29 @@ describe('mission workflows', () => {
     expect(screen.getAllByText('Não conectado · dados sintéticos')).toHaveLength(6);
     await user.click(screen.getByRole('button', { name: /Abrir sinal: Glicosímetro/ }));
     expect(screen.getByRole('heading', { name: 'Glicemia', level: 1 })).toBeVisible();
+  });
+
+  it('saves the check-in score and shows it in highlights, activity history and the mood page', async () => {
+    const user = userEvent.setup(); render(<App />);
+    try {
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: 'Iniciar check-in' }));
+      const dialog = screen.getByRole('dialog', { name: 'CHECK-IN MATINAL' });
+      const groups = within(dialog).getAllByRole('group');
+      await user.click(within(groups[0]).getByRole('button', { name: '2' }));
+      await user.click(within(groups[1]).getByRole('button', { name: '8' }));
+      await user.click(within(groups[2]).getByRole('button', { name: '2' }));
+      await user.click(within(groups[3]).getByRole('button', { name: 'Não restaurador' }));
+      await user.click(within(dialog).getByRole('button', { name: 'Concluir check-in' }));
+      expect(screen.getByRole('button', { name: /Prontidão e humor.*Registrado/ }).textContent).toContain('1,6');
+      await user.click(screen.getByRole('menuitem', { name: 'Histórico de atividades' }));
+      expect(screen.getByText('Score composto 1,6 / 5,0')).toBeVisible();
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: /Prontidão e humor/ }));
+      expect(within(screen.getByRole('region', { name: 'Classificação da última leitura' })).getByText('1,6 / 5 · check-in de hoje · 15/11')).toBeVisible();
+    } finally {
+      for (const key of ['pulse-health-readiness-score', 'pulse-health-readiness-completed', 'pulse-health-readiness-completed-at']) localStorage.removeItem(key);
+    }
   });
 
   it('classifies a logged glucose result with the vitals layer and its meal context', async () => {

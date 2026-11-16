@@ -5,7 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { anatomyNodes, anatomySystems } from '../anatomy/catalog';
 import { packAnatomy, structureVisible, type AtlasViewState } from '../anatomy/viewer-state';
 import { temperatureColor } from '../data/adapters/temperature';
-import { useLocale, tx } from '../i18n/locale-context';
+import { useLocale, tx } from '../i18n/locale';
 
 export interface AtlasCommand { kind: 'zoomIn' | 'zoomOut' | 'focus' | 'export' | 'left' | 'right' | 'up' | 'down' | 'panLeft' | 'panRight' | 'panUp' | 'panDown'; revision: number }
 interface Props {

@@ -2,7 +2,7 @@ import { ArrowUpRight, ShieldCheck, Stethoscope } from 'lucide-react';
 import { VITAL_REFERENCES, VITAL_SOURCES } from '../data/vitals';
 import type { EvidenceKind, Escalation } from '../data/vitals';
 import type { IndicatorRecord } from '../data/types';
-import { useLocale, tx } from '../i18n/locale-context';
+import { useLocale, tx } from '../i18n/locale';
 
 const ESCALATION_LABELS: Record<Escalation, string> = {
   none: 'Não é necessário escalar',

@@ -3,7 +3,7 @@ import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Box, Camera, Check, ChevronR
 import { anatomyNodes, anatomySystems } from '../anatomy/catalog';
 import { initialAtlasState, structureVisible, toggleMember, type AtlasCamera, type AtlasMaterial, type AtlasViewState, type ClipAxis } from '../anatomy/viewer-state';
 import { AnatomyScene, type AtlasCommand } from './AnatomyScene';
-import { useLocale, tx } from '../i18n/locale-context';
+import { useLocale, tx } from '../i18n/locale';
 import { localizeState } from '../data/localization';
 import './atlas.css';
 

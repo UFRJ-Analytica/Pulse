@@ -86,7 +86,7 @@ function buildScenario(config: ScenarioConfig): MissionScenario {
     ['O01', config.delayedBiology ? 0.18 : 0.12, 0.12, 'focos/célula'],
     ['O02', config.delayedBiology ? 2.8 : 2.4, 2.4, 'pg/mL'],
     ['O03', 14.4, 14.5, 'g/dL'], ['O04', 64, 63, 'bpm'],
-    ['O05', 1650, 1700, 'mL/24h'], ['O06', config.vitals === 'sleep-debt' ? 5.6 : 7.4, 7.5, 'h'], ['O07', 54.2, 54.5, 'kg'],
+    ['O05', 1650, 1700, 'mL/24h'], ['O06', config.vitals === 'sleep-debt' ? 5.6 : 7.2, 7.5, 'h'], ['O07', 54.2, 54.5, 'kg'],
   ];
   const bioSamples: BiologicalSample[] = config.invalid || config.id === 'unpaired' ? [] : bioValues.map(([indicatorId, value, baseline, unit]) => ({
     indicatorId, value, baseline, unit, collectionDate: at(config.delayedBiology ? 6 : 18),

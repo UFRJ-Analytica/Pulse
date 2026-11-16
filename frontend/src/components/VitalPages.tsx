@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import type { Locale } from '../i18n/messages';
 import { BLOOD_GLUCOSE_BASELINE, BLOOD_GLUCOSE_SERIES, BLOOD_PRESSURE_SERIES, HEART_RATE_BASELINE, HEART_RATE_SERIES, MOOD_SERIES } from '../data/vitalSeries';
 import type { SeriesLabel, VitalSeries } from '../data/vitalSeries';
 import { DEMO_MOOD } from '../data/fixtures';
+import { moodAssessInput, moodWeek, readCheckInScore } from '../data/checkIn';
 import { GLUCOSE_CONTEXT_LABELS, glucoseLogContext, glucoseLogReading, readGlucoseLog } from '../data/glucoseLog';
-import { assessVital, VITAL_REFERENCES, VITAL_SOURCES } from '../data/vitals';
-import type { AssessOptions, Escalation, VitalId, VitalReading } from '../data/vitals';
-import type { SignalState } from '../data/types';
+import type { VitalReading } from '../data/vitals';
+import { VitalStatusPanel } from './VitalStatusPanel';
+import type { LatestReading } from './VitalStatusPanel';
 import { HealthHeader, TemperatureContext, TemperatureSleepStyleChart } from './SleepDashboard';
 import type { SleepStyleChartConfig, TemperatureView } from './SleepDashboard';
 import './sleep-dashboard.css';
-import './vital-pages.css';
 
 type Text = { pt: string; en: string };
 type HazardCard = { title: string; basis: string; text: string; track: string };
@@ -25,7 +25,7 @@ export type VitalPageConfig = {
   hazards: { pt: HazardCard[]; en: HazardCard[] };
   sources: string;
   // Latest reading of the series, classified by the vitals layer on the page.
-  latest: { vitalId: VitalId; label: Text; reading: VitalReading; options?: AssessOptions };
+  latest: LatestReading;
 };
 type PageProps = {
   onBack: () => void; onAtlas: () => void; onHighlights: () => void; onIndicators: () => void; onData: () => void;
@@ -33,43 +33,6 @@ type PageProps = {
 };
 
 const text = (locale: Locale, pt: string, en: string) => locale === 'en' ? en : pt;
-
-const STATE_LABELS: Record<SignalState, Text> = {
-  normal: { pt: 'Normal', en: 'Normal' },
-  observation: { pt: 'Observação', en: 'Observation' },
-  attention: { pt: 'Atenção', en: 'Attention' },
-  critical: { pt: 'Crítico', en: 'Critical' },
-  'no-data': { pt: 'Sem classificação', en: 'Not classified' },
-};
-const ESCALATION_LABELS: Record<Escalation, Text> = {
-  none: { pt: 'Não é necessário escalar', en: 'No escalation needed' },
-  crew: { pt: 'Avisar a tripulação', en: 'Notify the crew' },
-  'flight-surgeon': { pt: 'Informar o flight surgeon', en: 'Notify the flight surgeon' },
-};
-
-// Classification of the latest reading with the same rules as the inspector (assessVital).
-function VitalStatusPanel({ latest, locale }: { latest: VitalPageConfig['latest']; locale: Locale }) {
-  const tr = (value: Text) => text(locale, value.pt, value.en);
-  const lang = locale === 'en' ? 'en' : 'pt-BR';
-  const assessment = assessVital(latest.vitalId, latest.reading, latest.options);
-  const reference = VITAL_REFERENCES[latest.vitalId];
-  const sourceIds = [...new Set([...assessment.sources, ...reference.sources])];
-  return <section className="health-panel vital-status-panel" aria-label={text(locale, 'Classificação da última leitura', 'Latest reading classification')}>
-    <div className="vital-status-heading"><div><span className="sleep-eyebrow">{text(locale, 'CLASSIFICAÇÃO DA ÚLTIMA LEITURA', 'LATEST READING CLASSIFICATION')}</span><h2>{tr(latest.label)}</h2></div><span className={`vital-status-badge ${assessment.state}`}>{tr(STATE_LABELS[assessment.state])}</span></div>
-    <div className="vital-status-findings">{assessment.reason === 'insufficient-context'
-      ? <p>{text(locale, 'Interpretação indisponível: a leitura precisa de contexto (atividade, jejum ou linha de base) para ser classificada.', 'Interpretation unavailable: this reading needs context (activity, fasting, or baseline) before it can be classified.')}</p>
-      : assessment.findings.length === 0
-        ? <p>{text(locale, 'Dentro da referência para o contexto informado.', 'Within the reference range for the reported context.')}</p>
-        : assessment.findings.map(finding => <p key={finding.label.en}><strong>{finding.label[lang]}.</strong> {finding.action[lang]}</p>)}</div>
-    <dl className="vital-status-facts">
-      <div><dt>{text(locale, 'Referência', 'Reference')}</dt><dd>{reference.reference[lang]}</dd></div>
-      <div><dt>{text(locale, 'Escalonamento', 'Escalation')}</dt><dd>{tr(ESCALATION_LABELS[assessment.escalation])}</dd></div>
-      {assessment.recheck && <div><dt>{text(locale, 'Repetir medição', 'Repeat measurement')}</dt><dd>{assessment.recheck[lang]}</dd></div>}
-    </dl>
-    <p className="vital-status-sources">{text(locale, 'Fontes da classificação:', 'Classification sources:')} {sourceIds.map((id, index) => { const source = VITAL_SOURCES[id]; return <span key={id}>{index > 0 && '; '}{'url' in source ? <a href={source.url} target="_blank" rel="noreferrer">{source.title} <ArrowUpRight size={10}/></a> : source.title}</span>; })}</p>
-    <p className="vital-status-note">{text(locale, 'Referências clínicas terrestres não são limites operacionais aprovados pela NASA. A classificação apoia a decisão, não faz diagnóstico.', 'Terrestrial clinical references are not NASA-approved operational limits. This classification supports decisions; it does not diagnose.')}</p>
-  </section>;
-}
 
 // Last value of the weekly series as the current reading; the earlier days are its history.
 const lastOfWeek = (values: number[] = []) => values[values.length - 1];
@@ -118,15 +81,17 @@ const HEART_RATE_PAGE: VitalPageConfig = {
       { title: 'Isolamento e confinamento', basis: 'Base: saúde comportamental (OCHMO); relação com a FC vem de estudos terrestres', text: 'Isolamento, monotonia e carga de trabalho alta aumentam o estresse, e o estresse eleva a frequência cardíaca. Uma FC de repouso persistentemente acima do padrão pessoal pode refletir sono ruim, estresse ou desidratação, e não só uma alteração do coração.', track: 'FC de repouso junto aos registros de humor e sono.' },
       { title: 'Distância da Terra', basis: 'Base: planejamento de missão', text: 'Além da órbita baixa, a ajuda demora mais para chegar, e a tripulação precisa medir e interpretar os sinais vitais por conta própria. A FC de repouso é simples de medir: pulso por 30 segundos multiplicado por 2, wearable ou ECG de bordo. Os limiares de repouso só valem se a atividade da leitura estiver registrada.', track: 'Medição diária ao acordar, com a atividade registrada.' },
       { title: 'Ambiente fechado ou desafiador', basis: 'Base: NASA-STD-3001 Vol. 2, trajes espaciais', text: 'Na EVA, o traje combina esforço intenso e calor retido. Acima de 140 bpm em EVA está associado à queda de desempenho, e a orientação é reduzir o esforço e avisar a equipe. Calor da cabine e exercício também elevam a FC de forma temporária.', track: 'Picos de FC em EVA e exercício.' },
+      { title: 'Radiação', basis: 'Base: NASA HRP, risco cardiovascular; evidência sobretudo de estudos em animais e populações terrestres', text: 'A radiação espacial é estudada como risco cardiovascular de longo prazo, principalmente em missões além da órbita baixa. Não se espera efeito imediato na frequência cardíaca de uma leitura, e uma mudança na FC não indica exposição.', track: 'Dose acumulada no atlas (dosímetro), avaliada separadamente da FC.' },
     ],
     en: [
       { title: 'Altered gravity', basis: 'Basis: ISS study, 6-month missions', text: 'In weightlessness, body fluids shift toward the head and blood vessels dilate. In long ISS missions, resting heart rate stayed about the same while 24-hour blood pressure fell. After return, deconditioning favors orthostatic intolerance: dizziness and heart rate rising on standing.', track: 'Resting heart rate compared with baseline, and heart rate on standing after landing.' },
       { title: 'Isolation and confinement', basis: 'Basis: OCHMO behavioral health; heart rate link from terrestrial studies', text: 'Isolation, monotony, and heavy workload increase stress, and stress raises heart rate. A resting heart rate persistently above personal pattern can reflect poor sleep, stress, or dehydration, not only a change in the heart.', track: 'Resting heart rate alongside mood and sleep entries.' },
       { title: 'Distance from Earth', basis: 'Basis: mission planning', text: 'Beyond low Earth orbit, help takes longer to arrive, so crews must measure and interpret vital signs on their own. Resting heart rate is simple to measure: pulse for 30 seconds times two, a wearable, or the onboard ECG. Resting thresholds only apply when the activity at the time of the reading is recorded.', track: 'Daily measurement on waking, with activity recorded.' },
       { title: 'Enclosed or challenging environment', basis: 'Basis: NASA-STD-3001 Vol. 2, spacesuits', text: 'During EVA, the suit combines hard exertion and retained heat. Above 140 bpm during EVA is associated with reduced performance, and the guidance is to reduce workload and tell the EVA team. Cabin heat and exercise also raise heart rate temporarily.', track: 'Heart rate peaks during EVA and exercise.' },
+      { title: 'Radiation', basis: 'Basis: NASA HRP, cardiovascular risk; evidence mostly from animal and terrestrial population studies', text: 'Space radiation is studied as a long-term cardiovascular risk, mainly on missions beyond low Earth orbit. No immediate effect on a heart rate reading is expected, and a change in heart rate does not indicate exposure.', track: 'Accumulated dose in the atlas (dosimeter), assessed separately from heart rate.' },
     ],
   },
-  sources: 'Norsk et al., J Physiol 2015; American Heart Association; NASA-STD-3001 Vol. 2; OCHMO-TB-016.',
+  sources: 'Norsk et al., J Physiol 2015; American Heart Association; NASA-STD-3001 Vol. 2; OCHMO-TB-016; NASA Human Research Program (space radiation risks).',
   latest: {
     vitalId: 'heart-rate', label: { pt: `${lastOfWeek(HEART_RATE_SERIES.values['7d'])} bpm · repouso ao acordar · 15/11`, en: `${lastOfWeek(HEART_RATE_SERIES.values['7d'])} bpm · resting, on waking · 15/11` },
     reading: { value: lastOfWeek(HEART_RATE_SERIES.values['7d']), context: { activity: 'rest' } },
@@ -169,15 +134,17 @@ const BLOOD_PRESSURE_PAGE: VitalPageConfig = {
       { title: 'Isolamento e confinamento', basis: 'Base: referência clínica terrestre (AHA/ACC 2025)', text: 'Estresse, sono ruim e calor elevam a pressão de forma aguda. Uma leitura alta isolada não define hipertensão: a referência clínica pede leituras repetidas em dias diferentes antes de classificar.', track: 'Pressão junto aos registros de sono e humor.' },
       { title: 'Distância da Terra', basis: 'Base: planejamento de missão e referência clínica terrestre', text: 'Longe da Terra, a tripulação mede e interpreta a pressão por conta própria. Medir sentado, após 5 minutos de repouso, com o braço apoiado na altura do coração, e repetir a leitura reduz erros de técnica.', track: 'Técnica de medição e leituras repetidas no mesmo horário.' },
       { title: 'Ambiente fechado ou desafiador', basis: 'Base: estudo na ISS e regra do produto', text: 'Exercício e EVA elevam a pressão de forma temporária. Pressão baixa é esperada em voo e só merece escalonamento com sintomas como tontura ou desmaio, quando o flight surgeon deve ser informado.', track: 'Picos em exercício e pressão baixa acompanhada de sintomas.' },
+      { title: 'Radiação', basis: 'Base: NASA HRP, risco cardiovascular; evidência sobretudo de estudos em animais e populações terrestres', text: 'A radiação espacial é estudada como risco de dano vascular de longo prazo, principalmente em missões além da órbita baixa. Não se espera efeito imediato na pressão de uma leitura, e uma pressão alterada não indica exposição.', track: 'Dose acumulada no atlas (dosímetro), avaliada separadamente da pressão.' },
     ],
     en: [
       { title: 'Altered gravity', basis: 'Basis: ISS study, 3–6 month missions', text: 'In weightlessness, fluids shift toward the head, vessels dilate, and 24-hour pressure falls by about 8–10 mmHg. Plasma-volume loss helps explain fainting risk at landing. Terrestrial orthostatic-drop criteria do not apply in microgravity.', track: '24-hour pressure compared with pre-flight, and symptoms on standing after landing.' },
       { title: 'Isolation and confinement', basis: 'Basis: terrestrial clinical reference (AHA/ACC 2025)', text: 'Stress, poor sleep, and heat raise pressure acutely. A single high reading does not define hypertension: the clinical reference asks for repeated readings on different days before classifying.', track: 'Pressure alongside sleep and mood entries.' },
       { title: 'Distance from Earth', basis: 'Basis: mission planning and terrestrial clinical reference', text: 'Far from Earth, crews measure and interpret pressure on their own. Measuring seated after 5 minutes of rest, with the arm supported at heart level, and repeating the reading reduces technique errors.', track: 'Measurement technique and repeated readings at the same time.' },
       { title: 'Enclosed or challenging environment', basis: 'Basis: ISS study and product rule', text: 'Exercise and EVA raise pressure temporarily. Low pressure is expected in flight and only warrants escalation with symptoms such as dizziness or fainting, when the flight surgeon should be told.', track: 'Peaks during exercise, and low pressure with symptoms.' },
+      { title: 'Radiation', basis: 'Basis: NASA HRP, cardiovascular risk; evidence mostly from animal and terrestrial population studies', text: 'Space radiation is studied as a long-term risk of vascular damage, mainly on missions beyond low Earth orbit. No immediate effect on a blood pressure reading is expected, and an altered pressure does not indicate exposure.', track: 'Accumulated dose in the atlas (dosimeter), assessed separately from blood pressure.' },
     ],
   },
-  sources: 'Norsk et al., J Physiol 2015; AHA/ACC High Blood Pressure Guideline 2025.',
+  sources: 'Norsk et al., J Physiol 2015; AHA/ACC High Blood Pressure Guideline 2025; NASA Human Research Program (space radiation risks).',
   latest: {
     vitalId: 'blood-pressure', label: { pt: `${lastOfWeek(BLOOD_PRESSURE_SERIES.values['7d'])}/${lastOfWeek(BLOOD_PRESSURE_SERIES.secondary?.['7d'])} mmHg · leitura matinal · 15/11`, en: `${lastOfWeek(BLOOD_PRESSURE_SERIES.values['7d'])}/${lastOfWeek(BLOOD_PRESSURE_SERIES.secondary?.['7d'])} mmHg · morning reading · 15/11` },
     reading: { value: lastOfWeek(BLOOD_PRESSURE_SERIES.values['7d']), secondary: lastOfWeek(BLOOD_PRESSURE_SERIES.secondary?.['7d']) },
@@ -214,12 +181,14 @@ const BLOOD_GLUCOSE_PAGE: VitalPageConfig = {
       { title: 'Isolamento e confinamento', basis: 'Base: estudos terrestres; não demonstrado no espaço', text: 'Sono curto, estresse e inatividade pioram a regulação da glicose em estudos na Terra. Na missão, esses fatores aparecem juntos e podem pesar nas leituras, mas o efeito no espaço não foi medido isoladamente.', track: 'Glicemia junto aos registros de sono e humor.' },
       { title: 'Distância da Terra', basis: 'Base: planejamento de missão e estudo Suite Ride (Ax-4, preliminar)', text: 'Sem laboratório por perto, a tripulação mede com glicosímetro capilar ou monitor contínuo (CGM), que funcionou em microgravidade em resultados preliminares. Sem o contexto registrado, uma leitura entre 100 e 140 mg/dL não pode ser interpretada.', track: 'Contexto de cada leitura: jejum, pós-refeição ou contínua.' },
       { title: 'Ambiente fechado ou desafiador', basis: 'Base: ADA Standards of Care 2025', text: 'Esforço prolongado, como em EVA, consome glicose. Abaixo de 70 mg/dL, a regra 15-15 orienta ingerir 15 g de carboidrato de ação rápida e medir de novo em 15 minutos. Abaixo de 54 mg/dL, avise a tripulação e o flight surgeon.', track: 'Leitura antes de EVA e sintomas de hipoglicemia.' },
+      { title: 'Radiação', basis: 'Base: análise do projeto', text: 'Não há efeito direto conhecido da radiação espacial sobre a glicemia de leituras de rotina. O app não relaciona dose e glicemia sem pares de dados alinhados da mesma pessoa e período.', track: 'Dose no atlas, avaliada separadamente; correlações só com pares válidos.' },
     ],
     en: [
       { title: 'Altered gravity', basis: 'Basis: ISS study, 9 astronauts', text: 'After 3–5 months on the ISS, insulin resistance increased (HOMA-IR rose from 0.70 to 1.10) while fasting glucose stayed nearly stable. Glucose alone does not show this change: insulin must be measured too.', track: 'Fasting glucose compared with baseline, and fasting insulin for HOMA-IR.' },
       { title: 'Isolation and confinement', basis: 'Basis: terrestrial studies; not shown in space', text: 'Short sleep, stress, and inactivity worsen glucose regulation in studies on Earth. During a mission these factors occur together and may weigh on readings, but the effect in space has not been measured on its own.', track: 'Glucose alongside sleep and mood entries.' },
       { title: 'Distance from Earth', basis: 'Basis: mission planning and the Suite Ride study (Ax-4, preliminary)', text: 'With no laboratory nearby, crews measure with a capillary meter or a continuous glucose monitor (CGM), which worked in microgravity in preliminary results. Without recorded context, a reading between 100 and 140 mg/dL cannot be interpreted.', track: 'Context of each reading: fasting, post-meal, or continuous.' },
       { title: 'Enclosed or challenging environment', basis: 'Basis: ADA Standards of Care 2025', text: 'Prolonged exertion, as in EVA, uses glucose. Below 70 mg/dL, the 15-15 rule is to take 15 g of fast-acting carbohydrate and recheck in 15 minutes. Below 54 mg/dL, alert the crew and the flight surgeon.', track: 'Reading before EVA and hypoglycemia symptoms.' },
+      { title: 'Radiation', basis: 'Basis: project analysis', text: 'There is no known direct effect of space radiation on routine glucose readings. The app does not relate dose and glucose without aligned data pairs from the same person and period.', track: 'Dose in the atlas, assessed separately; correlations only with valid pairs.' },
     ],
   },
   sources: 'Hughson et al., Am J Physiol Heart Circ Physiol 2016; ADA Standards of Care 2025; Suite Ride (Ax-4, preliminary results).',
@@ -260,15 +229,17 @@ const MOOD_PAGE: VitalPageConfig = {
       { title: 'Isolamento e confinamento', basis: 'Base: OCHMO-TB-016 (saúde comportamental)', text: 'Isolamento e confinamento prolongados aumentam o risco de ansiedade e depressão. As contramedidas documentadas incluem conversas psicológicas privadas, contato com a família, privacidade, janelas, plantas e diário.', track: 'Queda persistente em relação ao padrão pessoal (3 check-ins abaixo de 80%).' },
       { title: 'Distância da Terra', basis: 'Base: OCHMO-TB-016 e planejamento de missão', text: 'O atraso de comunicação reduz o apoio em tempo real vindo da Terra, e a tripulação precisa notar mudanças por conta própria. Um registro curto e diário, no mesmo horário, torna a comparação com o padrão pessoal possível.', track: 'Check-in diário no mesmo horário.' },
       { title: 'Ambiente fechado ou desafiador', basis: 'Base: OCHMO-TB-016', text: 'Espaço reduzido, monotonia, ruído, temperatura da cabine e carga de trabalho alta pesam no bem-estar. Qualquer indício de risco à segurança exige resposta humana pelo protocolo da missão, não só um registro.', track: 'Fatores marcados no check-in, como carga de trabalho e ruído da cabine.' },
+      { title: 'Radiação', basis: 'Base: NASA HRP, risco ao sistema nervoso central; evidência sobretudo de estudos em animais', text: 'A radiação é estudada como risco ao sistema nervoso central em missões longas, com possíveis efeitos sobre cognição e comportamento. Não há efeito conhecido sobre o humor do dia a dia, e o check-in não mede exposição.', track: 'Dose acumulada no atlas, avaliada separadamente do check-in.' },
     ],
     en: [
       { title: 'Altered gravity', basis: 'Basis: OCHMO-TB-041 (sleep)', text: 'In flight, average sleep is close to 6 h, below the recommended 7 to 9 h, and the light cycle does not follow the Earth day. Because the check-in includes sleep quality, poor nights pull the composite down.', track: 'Check-in composite alongside sleep hours.' },
       { title: 'Isolation and confinement', basis: 'Basis: OCHMO-TB-016 (behavioral health)', text: 'Prolonged isolation and confinement increase anxiety and depression risk. Documented countermeasures include private psychological conferences, family contact, privacy, windows, plants, and journaling.', track: 'Persistent decline from personal pattern (3 check-ins below 80%).' },
       { title: 'Distance from Earth', basis: 'Basis: OCHMO-TB-016 and mission planning', text: 'Communication delay reduces real-time support from Earth, so crews must notice changes on their own. A short daily entry at the same time makes comparison with the personal pattern possible.', track: 'Daily check-in at the same time.' },
       { title: 'Enclosed or challenging environment', basis: 'Basis: OCHMO-TB-016', text: 'Limited space, monotony, noise, cabin temperature, and heavy workload weigh on well-being. Any sign of a safety risk requires a human response under mission protocol, not just a log entry.', track: 'Factors marked in the check-in, such as workload and cabin noise.' },
+      { title: 'Radiation', basis: 'Basis: NASA HRP, central nervous system risk; evidence mostly from animal studies', text: 'Radiation is studied as a central nervous system risk on long missions, with possible effects on cognition and behavior. There is no known effect on day-to-day mood, and the check-in does not measure exposure.', track: 'Accumulated dose in the atlas, assessed separately from the check-in.' },
     ],
   },
-  sources: 'OCHMO-TB-016 Behavioral Health and Performance; OCHMO-TB-041 Sleep; Analytica Pulse indicator analysis.',
+  sources: 'OCHMO-TB-016 Behavioral Health and Performance; OCHMO-TB-041 Sleep; NASA Human Research Program (space radiation risks); Analytica Pulse indicator analysis.',
   latest: {
     vitalId: 'mood', label: { pt: `${String(lastOfWeek(MOOD_SERIES.values['7d'])).replace('.', ',')} / 5 · check-in matinal · 15/11`, en: `${lastOfWeek(MOOD_SERIES.values['7d'])} / 5 · morning check-in · 15/11` },
     reading: { value: lastOfWeek(MOOD_SERIES.values['7d']) },
@@ -296,5 +267,14 @@ export function BloodGlucoseDashboard(props: PageProps) {
 }
 
 export function MoodDashboard(props: PageProps) {
-  return <VitalDashboard {...props} config={MOOD_PAGE}/>;
+  // Today's check-in replaces the demo value for 15/11 in the chart and the classification.
+  const [score] = useState(readCheckInScore);
+  if (score === null) return <VitalDashboard {...props} config={MOOD_PAGE}/>;
+  const week = moodWeek(score);
+  const latest = {
+    ...MOOD_PAGE.latest,
+    ...moodAssessInput(week),
+    label: { pt: `${String(score).replace('.', ',')} / 5 · check-in de hoje · 15/11`, en: `${score} / 5 · today’s check-in · 15/11` },
+  };
+  return <VitalDashboard {...props} config={{ ...MOOD_PAGE, series: { ...MOOD_PAGE.series, values: { '7d': week } }, latest }}/>;
 }
