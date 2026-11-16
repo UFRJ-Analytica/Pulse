@@ -73,9 +73,13 @@ describe('mission workflows', () => {
     expect(screen.getByText(/Baseline 63 bpm · repouso 40–100 bpm/)).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Como o ambiente espacial afeta a frequência cardíaca' })).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Radiação' })).toBeVisible();
+    const table = screen.getByRole('table', { name: 'Gráfico de frequência cardíaca' });
+    expect(within(table).getAllByRole('row')).toHaveLength(4);
+    expect(within(table).getByRole('rowheader', { name: '12:00' })).toBeInTheDocument();
     await user.click(screen.getByRole('tab', { name: '7d' }));
     expect(screen.getByRole('tab', { name: '7d' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByText('09/11')).toBeVisible();
+    // Bar label and the screen-reader table row.
+    expect(screen.getAllByText('09/11')).toHaveLength(2);
     await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
     expect(screen.getByRole('heading', { name: 'Telemetria principal' })).toBeVisible();
   });
@@ -123,7 +127,8 @@ describe('mission workflows', () => {
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
     await user.click(screen.getByRole('button', { name: /Glicemia/ }));
     expect(screen.getByRole('heading', { name: 'Glicemia', level: 1 })).toBeVisible();
-    expect(screen.getByText('14:00 · 2 h pós-refeição')).toBeVisible();
+    // Bar label and the screen-reader table row.
+    expect(screen.getAllByText('14:00 · 2 h pós-refeição')).toHaveLength(2);
     expect(screen.getByText(/100 mg\/dL · início da glicemia de jejum alterada/)).toBeVisible();
   });
 
@@ -134,7 +139,8 @@ describe('mission workflows', () => {
     expect(screen.getByRole('heading', { name: 'Humor e bem-estar', level: 1 })).toBeVisible();
     expect(screen.queryByRole('tab', { name: '24h' })).not.toBeInTheDocument();
     expect(screen.getByText('≥ 3,4')).toBeVisible();
-    expect(screen.getByText('15/11')).toBeVisible();
+    // Bar label and the screen-reader table row.
+    expect(screen.getAllByText('15/11')).toHaveLength(2);
   });
 
   it('saves the glucose context and shows the logged classification in highlights and exam logs', async () => {
