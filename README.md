@@ -45,61 +45,33 @@ The same pages are available in Brazilian Portuguese by changing the language co
 
 ## Screenshots
 
-Store PNG captures in `screenshots/`. Each slot below names the route, the recommended framing, and the filename; the captures below show the English interface in its demonstration state.
+Captured from the deployed application at a full desktop viewport. All scenarios and health readings shown are demonstrations, not live telemetry.
 
 ### 1. Highlights overview
-
-**Capture:** `/en/highlights`, at the top of the page, showing the evidence journey, anatomy reference, and core biomarker cards.
-
-**Save as:** `screenshots/01-highlights-overview.png`
 
 ![PulseHealth Highlights overview](screenshots/01-highlights-overview.png)
 
 ### 2. Simulated response flow
 
-**Capture:** `/en/highlights`, with **View simulated response flow** open on the critical example. Keep the synthetic-scenario and no-notification explanation visible.
-
-**Save as:** `screenshots/02-simulated-response-flow.png`
-
 ![Simulated response flow](screenshots/02-simulated-response-flow.png)
 
 ### 3. Mission Atlas
-
-**Capture:** `/en/mission-atlas`, showing a selected signal, its evidence inspector, and the timeline. Choose a state that makes source and uncertainty legible.
-
-**Save as:** `screenshots/03-mission-atlas.png`
 
 ![PulseHealth Mission Atlas](screenshots/03-mission-atlas.png)
 
 ### 4. Indicator library
 
-**Capture:** `/en/indicators`, with the indicator categories and cards visible. Include source and status details if the viewport allows.
-
-**Save as:** `screenshots/04-indicator-library.png`
-
 ![PulseHealth indicator library](screenshots/04-indicator-library.png)
 
 ### 5. Sleep Hours
-
-**Capture:** `/en/highlights/biomarkers/sleep-hours`, with the time-series chart, period, and reference visible.
-
-**Save as:** `screenshots/05-sleep-hours.png`
 
 ![PulseHealth Sleep Hours](screenshots/05-sleep-hours.png)
 
 ### 6. Body Temperature
 
-**Capture:** `/en/highlights/biomarkers/body-temperature`, showing the example temperature series and its explanatory context.
-
-**Save as:** `screenshots/06-body-temperature.png`
-
 ![PulseHealth Body Temperature](screenshots/06-body-temperature.png)
 
 ### 7. Data sources and limitations
-
-**Capture:** `/en/data-sources`, showing source provenance and the scientific limitations of the prototype.
-
-**Save as:** `screenshots/07-data-sources.png`
 
 ![PulseHealth data sources and limitations](screenshots/07-data-sources.png)
 
