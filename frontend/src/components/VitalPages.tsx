@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import type { Locale } from '../i18n/messages';
 import { BLOOD_GLUCOSE_BASELINE, BLOOD_GLUCOSE_SERIES, BLOOD_PRESSURE_SERIES, HEART_RATE_BASELINE, HEART_RATE_SERIES, MOOD_SERIES } from '../data/vitalSeries';
 import type { SeriesLabel, VitalSeries } from '../data/vitalSeries';
 import { DEMO_MOOD } from '../data/fixtures';
+import { GLUCOSE_CONTEXT_LABELS, glucoseLogContext, glucoseLogReading, readGlucoseLog } from '../data/glucoseLog';
+import { assessVital, VITAL_REFERENCES, VITAL_SOURCES } from '../data/vitals';
+import type { AssessOptions, Escalation, VitalId, VitalReading } from '../data/vitals';
+import type { SignalState } from '../data/types';
 import { HealthHeader, TemperatureContext, TemperatureSleepStyleChart } from './SleepDashboard';
 import type { MissionMode, SleepStyleChartConfig, TemperatureView } from './SleepDashboard';
 import './sleep-dashboard.css';
+import './vital-pages.css';
 
 type Text = { pt: string; en: string };
 type HazardCard = { title: string; basis: string; text: string; track: string };
@@ -19,6 +24,8 @@ export type VitalPageConfig = {
   hazardsTitle: Text;
   hazards: { pt: HazardCard[]; en: HazardCard[] };
   sources: string;
+  // Latest reading of the series, classified by the vitals layer on the page.
+  latest: { vitalId: VitalId; label: Text; reading: VitalReading; options?: AssessOptions };
 };
 type PageProps = {
   onBack: () => void; onAtlas: () => void; onHighlights: () => void; onIndicators: () => void; onData: () => void;
@@ -28,6 +35,47 @@ type PageProps = {
 
 const text = (locale: Locale, pt: string, en: string) => locale === 'en' ? en : pt;
 
+const STATE_LABELS: Record<SignalState, Text> = {
+  normal: { pt: 'Normal', en: 'Normal' },
+  observation: { pt: 'Observação', en: 'Observation' },
+  attention: { pt: 'Atenção', en: 'Attention' },
+  critical: { pt: 'Crítico', en: 'Critical' },
+  'no-data': { pt: 'Sem classificação', en: 'Not classified' },
+};
+const ESCALATION_LABELS: Record<Escalation, Text> = {
+  none: { pt: 'Não é necessário escalar', en: 'No escalation needed' },
+  crew: { pt: 'Avisar a tripulação', en: 'Notify the crew' },
+  'flight-surgeon': { pt: 'Informar o flight surgeon', en: 'Notify the flight surgeon' },
+};
+
+// Classification of the latest reading with the same rules as the inspector (assessVital).
+function VitalStatusPanel({ latest, locale }: { latest: VitalPageConfig['latest']; locale: Locale }) {
+  const tr = (value: Text) => text(locale, value.pt, value.en);
+  const lang = locale === 'en' ? 'en' : 'pt-BR';
+  const assessment = assessVital(latest.vitalId, latest.reading, latest.options);
+  const reference = VITAL_REFERENCES[latest.vitalId];
+  const sourceIds = [...new Set([...assessment.sources, ...reference.sources])];
+  return <section className="health-panel vital-status-panel" aria-label={text(locale, 'Classificação da última leitura', 'Latest reading classification')}>
+    <div className="vital-status-heading"><div><span className="sleep-eyebrow">{text(locale, 'CLASSIFICAÇÃO DA ÚLTIMA LEITURA', 'LATEST READING CLASSIFICATION')}</span><h2>{tr(latest.label)}</h2></div><span className={`vital-status-badge ${assessment.state}`}>{tr(STATE_LABELS[assessment.state])}</span></div>
+    <div className="vital-status-findings">{assessment.reason === 'insufficient-context'
+      ? <p>{text(locale, 'Interpretação indisponível: a leitura precisa de contexto (atividade, jejum ou linha de base) para ser classificada.', 'Interpretation unavailable: this reading needs context (activity, fasting, or baseline) before it can be classified.')}</p>
+      : assessment.findings.length === 0
+        ? <p>{text(locale, 'Dentro da referência para o contexto informado.', 'Within the reference range for the reported context.')}</p>
+        : assessment.findings.map(finding => <p key={finding.label.en}><strong>{finding.label[lang]}.</strong> {finding.action[lang]}</p>)}</div>
+    <dl className="vital-status-facts">
+      <div><dt>{text(locale, 'Referência', 'Reference')}</dt><dd>{reference.reference[lang]}</dd></div>
+      <div><dt>{text(locale, 'Escalonamento', 'Escalation')}</dt><dd>{tr(ESCALATION_LABELS[assessment.escalation])}</dd></div>
+      {assessment.recheck && <div><dt>{text(locale, 'Repetir medição', 'Repeat measurement')}</dt><dd>{assessment.recheck[lang]}</dd></div>}
+    </dl>
+    <p className="vital-status-sources">{text(locale, 'Fontes da classificação:', 'Classification sources:')} {sourceIds.map((id, index) => { const source = VITAL_SOURCES[id]; return <span key={id}>{index > 0 && '; '}{'url' in source ? <a href={source.url} target="_blank" rel="noreferrer">{source.title} <ArrowUpRight size={10}/></a> : source.title}</span>; })}</p>
+    <p className="vital-status-note">{text(locale, 'Referências clínicas terrestres não são limites operacionais aprovados pela NASA. A classificação apoia a decisão, não faz diagnóstico.', 'Terrestrial clinical references are not NASA-approved operational limits. This classification supports decisions; it does not diagnose.')}</p>
+  </section>;
+}
+
+// Last value of the weekly series as the current reading; the earlier days are its history.
+const lastOfWeek = (values: number[] = []) => values[values.length - 1];
+const weekHistory = (values: number[] = [], context?: VitalReading['context']) => values.slice(0, -1).map(value => ({ value, context }));
+
 // Generic vital page with the same structure and CSS classes as the body temperature page.
 export function VitalDashboard({ config, onBack, onAtlas, onHighlights, onIndicators, onData, theme, onToggleTheme, locale, onLocaleChange, missionMode, onMissionModeChange }: PageProps & { config: VitalPageConfig }) {
   const [view, setView] = useState<TemperatureView>(config.chart.views?.[0] ?? '24h');
@@ -35,6 +83,7 @@ export function VitalDashboard({ config, onBack, onAtlas, onHighlights, onIndica
   const label = (value: SeriesLabel) => typeof value === 'string' ? value : tr(value);
   return <div className="health-shell temperature-page" data-theme={theme}><HealthHeader activePage="sleep" onHighlights={onHighlights} onAtlas={onAtlas} onIndicators={onIndicators} onData={onData} theme={theme} onToggleTheme={onToggleTheme} locale={locale} onLocaleChange={onLocaleChange} missionMode={missionMode ?? 'ISS'} onMissionModeChange={onMissionModeChange ?? (() => {})}/><main className="health-main sleep-main"><section className="sleep-heading health-panel"><div><button className="sleep-back" onClick={onBack}><ArrowLeft size={13}/> {text(locale, 'VOLTAR À VISÃO GERAL', 'BACK TO OVERVIEW')}</button><h1>{tr(config.title)}</h1></div></section>
   <TemperatureSleepStyleChart values={config.series.values[view] ?? []} secondaryValues={config.series.secondary?.[view]} view={view} labels={(config.series.labels[view] ?? []).map(label)} locale={locale} onViewChange={setView} config={config.chart}/>
+  <VitalStatusPanel latest={config.latest} locale={locale}/>
   <section className="health-panel temperature-about"><div className="sleep-section-heading"><h2>{tr(config.aboutTitle)}</h2></div><p>{tr(config.about)}</p></section>
   <section className="health-panel temperature-hazards"><div className="sleep-section-heading"><h2>{tr(config.hazardsTitle)}</h2></div><div className="temperature-card-grid">{config.hazards[locale === 'en' ? 'en' : 'pt'].map(item => <TemperatureContext key={item.title} {...item}/>)}</div><p className="temperature-source">{text(locale, 'Fontes:', 'Sources:')} {config.sources} {text(locale, 'Conteúdo demonstrativo, não é orientação médica.', 'Demonstration content, not medical advice.')}</p></section>
   </main></div>;
@@ -79,6 +128,11 @@ const HEART_RATE_PAGE: VitalPageConfig = {
     ],
   },
   sources: 'Norsk et al., J Physiol 2015; American Heart Association; NASA-STD-3001 Vol. 2; OCHMO-TB-016.',
+  latest: {
+    vitalId: 'heart-rate', label: { pt: `${lastOfWeek(HEART_RATE_SERIES.values['7d'])} bpm · repouso ao acordar · 15/11`, en: `${lastOfWeek(HEART_RATE_SERIES.values['7d'])} bpm · resting, on waking · 15/11` },
+    reading: { value: lastOfWeek(HEART_RATE_SERIES.values['7d']), context: { activity: 'rest' } },
+    options: { baseline: HEART_RATE_BASELINE, history: weekHistory(HEART_RATE_SERIES.values['7d'], { activity: 'rest' }) },
+  },
 };
 
 export function HeartRateDashboard(props: PageProps) {
@@ -125,6 +179,10 @@ const BLOOD_PRESSURE_PAGE: VitalPageConfig = {
     ],
   },
   sources: 'Norsk et al., J Physiol 2015; AHA/ACC High Blood Pressure Guideline 2025.',
+  latest: {
+    vitalId: 'blood-pressure', label: { pt: `${lastOfWeek(BLOOD_PRESSURE_SERIES.values['7d'])}/${lastOfWeek(BLOOD_PRESSURE_SERIES.secondary?.['7d'])} mmHg · leitura matinal · 15/11`, en: `${lastOfWeek(BLOOD_PRESSURE_SERIES.values['7d'])}/${lastOfWeek(BLOOD_PRESSURE_SERIES.secondary?.['7d'])} mmHg · morning reading · 15/11` },
+    reading: { value: lastOfWeek(BLOOD_PRESSURE_SERIES.values['7d']), secondary: lastOfWeek(BLOOD_PRESSURE_SERIES.secondary?.['7d']) },
+  },
 };
 
 const BLOOD_GLUCOSE_PAGE: VitalPageConfig = {
@@ -166,6 +224,11 @@ const BLOOD_GLUCOSE_PAGE: VitalPageConfig = {
     ],
   },
   sources: 'Hughson et al., Am J Physiol Heart Circ Physiol 2016; ADA Standards of Care 2025; Suite Ride (Ax-4, preliminary results).',
+  latest: {
+    vitalId: 'blood-glucose', label: { pt: `${lastOfWeek(BLOOD_GLUCOSE_SERIES.values['7d'])} mg/dL · jejum matinal · 15/11`, en: `${lastOfWeek(BLOOD_GLUCOSE_SERIES.values['7d'])} mg/dL · morning fasting · 15/11` },
+    reading: { value: lastOfWeek(BLOOD_GLUCOSE_SERIES.values['7d']), context: { meal: 'fasting' } },
+    options: { baseline: BLOOD_GLUCOSE_BASELINE, history: weekHistory(BLOOD_GLUCOSE_SERIES.values['7d'], { meal: 'fasting' }) },
+  },
 };
 
 const MOOD_PAGE: VitalPageConfig = {
@@ -207,6 +270,11 @@ const MOOD_PAGE: VitalPageConfig = {
     ],
   },
   sources: 'OCHMO-TB-016 Behavioral Health and Performance; OCHMO-TB-041 Sleep; Analytica Pulse indicator analysis.',
+  latest: {
+    vitalId: 'mood', label: { pt: `${String(lastOfWeek(MOOD_SERIES.values['7d'])).replace('.', ',')} / 5 · check-in matinal · 15/11`, en: `${lastOfWeek(MOOD_SERIES.values['7d'])} / 5 · morning check-in · 15/11` },
+    reading: { value: lastOfWeek(MOOD_SERIES.values['7d']) },
+    options: { baseline: DEMO_MOOD.baseline, history: weekHistory(MOOD_SERIES.values['7d']) },
+  },
 };
 
 export function BloodPressureDashboard(props: PageProps) {
@@ -214,7 +282,18 @@ export function BloodPressureDashboard(props: PageProps) {
 }
 
 export function BloodGlucoseDashboard(props: PageProps) {
-  return <VitalDashboard {...props} config={BLOOD_GLUCOSE_PAGE}/>;
+  // A result logged from the Highlights modal is the latest reading, as on the Highlights card.
+  const [log] = useState(readGlucoseLog);
+  if (!log) return <VitalDashboard {...props} config={BLOOD_GLUCOSE_PAGE}/>;
+  const context = GLUCOSE_CONTEXT_LABELS[glucoseLogContext(log)].short;
+  const value = Math.round(log.value);
+  const time = log.loggedAt.slice(0, 5);
+  const latest = {
+    ...BLOOD_GLUCOSE_PAGE.latest,
+    label: { pt: `${value} mg/dL · ${context.pt} · registro manual ${time} UTC`, en: `${value} mg/dL · ${context.en} · manual log ${time} UTC` },
+    reading: glucoseLogReading(log),
+  };
+  return <VitalDashboard {...props} config={{ ...BLOOD_GLUCOSE_PAGE, latest }}/>;
 }
 
 export function MoodDashboard(props: PageProps) {

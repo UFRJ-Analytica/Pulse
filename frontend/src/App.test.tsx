@@ -79,6 +79,19 @@ describe('mission workflows', () => {
     expect(screen.getByRole('heading', { name: 'Telemetria principal' })).toBeVisible();
   });
 
+  it('classifies the latest reading on each vital page with the vitals layer', async () => {
+    const user = userEvent.setup(); render(<App />);
+    await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+    await user.click(screen.getByRole('button', { name: /Frequência cardíaca/ }));
+    const panel = screen.getByRole('region', { name: 'Classificação da última leitura' });
+    expect(within(panel).getByText('64 bpm · repouso ao acordar · 15/11')).toBeVisible();
+    expect(within(panel).getByText('Normal')).toBeVisible();
+    expect(within(panel).getByText('Não é necessário escalar')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /VOLTAR À VISÃO GERAL/ }));
+    await user.click(screen.getByRole('button', { name: /Prontidão e humor/ }));
+    expect(within(screen.getByRole('region', { name: 'Classificação da última leitura' })).getByText('4,1 / 5 · check-in matinal · 15/11')).toBeVisible();
+  });
+
   it('shows systolic and diastolic bars on the blood pressure page', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
@@ -126,6 +139,11 @@ describe('mission workflows', () => {
       await user.click(screen.getByRole('menuitem', { name: 'Registros de exames' }));
       expect(screen.getByRole('heading', { name: 'Glicemia pós-refeição' })).toBeVisible();
       expect(screen.getByText('Hipoglicemia nível 1')).toBeVisible();
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: /Glicemia.*Registrado/ }));
+      const panel = screen.getByRole('region', { name: 'Classificação da última leitura' });
+      expect(within(panel).getByText(/62 mg\/dL · pós-refeição · registro manual/)).toBeVisible();
+      expect(within(panel).getByText('Atenção')).toBeVisible();
     } finally {
       localStorage.removeItem('pulse-health-glucose-result');
     }
