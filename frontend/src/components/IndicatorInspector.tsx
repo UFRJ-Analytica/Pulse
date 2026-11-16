@@ -5,7 +5,7 @@ import { DataNote, StatusBadge } from './SignalUI';
 import { TemperatureContext } from './TemperatureContext';
 import { SleepContext } from './SleepContext';
 import { BloodPressureContext, GlucoseContext, HeartRateContext, MoodContext, VitalAssessmentSection } from './VitalContext';
-import { useLocale, tx } from '../i18n/locale-context';
+import { useLocale, tx } from '../i18n/locale';
 import { localizeSource, localizeState, localizeUnit } from '../data/localization';
 
 export function IndicatorInspector({ definition, record, scenario, onSelect, groupLabels }: { definition: IndicatorDefinition; record: IndicatorRecord; scenario: MissionScenario; onSelect: (id: string) => void; groupLabels: Record<IndicatorDefinition['group'], string> }) {

@@ -1,7 +1,7 @@
 import { ArrowUpRight, Check, CircleHelp, Database, Minus, TriangleAlert } from 'lucide-react';
 import { DATA_STATUS_LABELS, STATE_LABELS, formatTimestamp, formatValue } from '../data';
 import type { IndicatorDefinition, IndicatorRecord, SignalState } from '../data/types';
-import { useLocale, tx } from '../i18n/locale-context';
+import { useLocale, tx } from '../i18n/locale';
 import { localizeSource, localizeState, localizeUnit } from '../data/localization';
 
 export function StatusBadge({ state, compact = false }: { state: SignalState; compact?: boolean }) {

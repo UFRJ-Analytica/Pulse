@@ -1,5 +1,5 @@
 import type { IndicatorRecord } from '../data/types';
-import { useLocale } from '../i18n/locale-context';
+import { useLocale } from '../i18n/locale';
 
 export function SleepContext({ record }: { record: IndicatorRecord }) {
   const locale = useLocale();

@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, useLocation, useNavigate } from 'react-router';
 import { localeFromPath, localeToPath, messages, routeFromPath } from './i18n/messages';
 import { LocaleProvider } from './i18n/locale-context';
-import { tx } from './i18n/locale-context';
+import { tx } from './i18n/locale';
 import { localizeIndicator, localizeScenario, localizeState } from './data/localization';
 import type { Locale } from './i18n/messages';
 import { useEffect, useMemo, useRef, useState } from 'react';

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
-import { useLocale, tx } from '../i18n/locale-context';
+import { useLocale, tx } from '../i18n/locale';
 
 export function Modal({ title, children, onClose, className = '' }: { title: string; children: React.ReactNode; onClose: () => void; className?: string }) {
   const locale = useLocale();

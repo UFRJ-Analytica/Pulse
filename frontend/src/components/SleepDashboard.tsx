@@ -4,7 +4,7 @@ import { Modal } from './Modal';
 import { AtlasViewer } from './AtlasViewer';
 import type { Locale } from '../i18n/messages';
 import { useNavigate } from 'react-router';
-import { useLocale } from '../i18n/locale-context';
+import { useLocale } from '../i18n/locale';
 import { localeToPath } from '../i18n/messages';
 import { MISSION_MODES, setMissionMode, useMissionMode } from './missionMode';
 import type { MissionMode } from './missionMode';

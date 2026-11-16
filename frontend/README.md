@@ -29,6 +29,26 @@ npm run preview
 
 `dist/` contém o site de produção e todos os assets locais. Sirva essa pasta por HTTP; abrir o HTML diretamente com `file://` não carrega módulos ou GLB corretamente. O endereço padrão do preview é `http://127.0.0.1:4173`.
 
+## Rotas
+
+Todas as rotas começam com o idioma: `/pt-br/...` ou `/en/...`. O roteamento é feito no navegador (React Router); em produção, o servidor deve devolver o `index.html` para qualquer caminho fora de `/api`.
+
+| Rota | Página |
+|---|---|
+| `/highlights` | Visão geral |
+| `/highlights/biomarkers/heart-rate` | Frequência cardíaca |
+| `/highlights/biomarkers/blood-pressure` | Pressão arterial |
+| `/highlights/biomarkers/blood-glucose` | Glicemia |
+| `/highlights/biomarkers/mood` | Humor e bem-estar |
+| `/highlights/biomarkers/sleep-hours` | Horas de sono |
+| `/highlights/biomarkers/body-temperature` | Temperatura corporal |
+| `/indicators` | Todos os biomarcadores |
+| `/mission-atlas` | Atlas da missão |
+| `/activity-history` | Histórico de atividades |
+| `/exam-logs` | Registros de exames |
+| `/sensors` | Wearables e sensores |
+| `/data-sources` | Sobre os dados (abre sobre o atlas) |
+
 ## Experiência
 
 - Layout com sinais à esquerda, anatomia ao centro, inspeção à direita e linha do tempo abaixo.
