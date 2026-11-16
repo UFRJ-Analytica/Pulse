@@ -110,6 +110,27 @@ describe('mission workflows', () => {
     expect(screen.getByText('15/11')).toBeVisible();
   });
 
+  it('saves the glucose context and shows the logged classification in highlights and exam logs', async () => {
+    const user = userEvent.setup(); render(<App />);
+    try {
+      await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
+      await user.click(screen.getByRole('button', { name: 'Registrar resultado do exame' }));
+      const dialog = screen.getByRole('dialog', { name: /GLICEMIA CAPILAR/ });
+      await user.type(within(dialog).getByLabelText('Valor de glicemia'), '62');
+      await user.click(within(dialog).getByRole('button', { name: /Post-Meal/ }));
+      await user.click(within(dialog).getByRole('button', { name: /Salvar e atualizar/ }));
+      const card = await screen.findByRole('button', { name: /Glicemia.*Registrado/ }, { timeout: 2000 });
+      expect(card.textContent).toContain('62');
+      expect(card.textContent).toContain('pós-refeição');
+      expect(card.textContent).toContain('Hipoglicemia nível 1');
+      await user.click(screen.getByRole('menuitem', { name: 'Registros de exames' }));
+      expect(screen.getByRole('heading', { name: 'Glicemia pós-refeição' })).toBeVisible();
+      expect(screen.getByText('Hipoglicemia nível 1')).toBeVisible();
+    } finally {
+      localStorage.removeItem('pulse-health-glucose-result');
+    }
+  });
+
   it('shows the same demo values in the highlights cards and the correlation alert', async () => {
     const user = userEvent.setup(); render(<App />);
     await user.click(screen.getByRole('menuitem', { name: 'Visão geral' }));
