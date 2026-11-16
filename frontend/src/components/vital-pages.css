@@ -29,3 +29,5 @@
 .health-shell[data-theme=light] .vital-status-badge.critical{border-color:#e9a3b0;background:#fde2e6;color:#a61e37}
 .health-shell[data-theme=light] .vital-status-badge.no-data{border-color:#cfd8dc;background:#eef2f4;color:#536f7c}
 @media(max-width:700px){.vital-status-panel{padding:16px}.vital-status-heading{flex-direction:column;gap:10px}}
+/* A fifth hazard card spans the full width instead of sitting alone in a column. */
+.temperature-card-grid>:last-child:nth-child(odd){grid-column:1/-1}
