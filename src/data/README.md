@@ -1,6 +1,6 @@
 # Contratos, adaptadores e fixtures
 
-Fonte semântica: `notebooks/eda_donki/indicadores_radiacao.md`. As 25 definições vivem em `catalog.ts`; metadados por observação usam `IndicatorRecord` em `types.ts`.
+As definições vivem em `catalog.ts` (a exploração das fontes está em `research/`, na raiz do repositório); metadados por observação usam `IndicatorRecord` em `types.ts`.
 
 Todos os valores desta demonstração são sintéticos e determinísticos. A referência temporal é `2026-11-05T14:00:00Z`, com 25 amostras em intervalos de duas horas. `missionId = demo-ares-01`; não é uma missão NASA real.
 

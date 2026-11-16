@@ -1,6 +1,13 @@
 # Pulse Health
 
-Atlas anatômico 3D e painel de evidências para o NASA Space Apps 2026. Implementado a partir de [Design.md](./Design.md) e da especificação de [indicadores de radiação](../notebooks/eda_donki/indicadores_radiacao.md).
+Atlas anatômico 3D e painel de evidências para o NASA Space Apps 2026. Os indicadores estão definidos em [src/data/catalog.ts](./src/data/catalog.ts); a exploração das fontes NASA que os fundamenta está em [research/](./research).
+
+## Estrutura
+
+```text
+/             aplicação web (React + Vite): src/, public/, index.html, package.json
+research/     notebooks de exploração das fontes NASA (DONKI, NTRS, OSDR, RAD, NLSP), em inglês
+```
 
 React 19 + TypeScript + Vite + Three.js + Recharts. A demonstração é estática, funciona sem credenciais e não requer backend. Os dados de missão são **sintéticos**; as geometrias anatômicas são reais, do Human Reference Atlas / HuBMAP.
 
@@ -9,7 +16,6 @@ React 19 + TypeScript + Vite + Three.js + Recharts. A demonstração é estátic
 Requisitos: Node.js 22.12 ou superior; npm 11 recomendado.
 
 ```bash
-cd frontend
 npm ci
 npm run dev
 ```
@@ -115,7 +121,7 @@ A interface consome contratos normalizados; a normalização e as fórmulas não
 
 As fontes têm semânticas diferentes: DONKI descreve ambiente; RAD mede a exposição no rover e não pode ser apresentado como dosímetro humano; OSDR é evidência de experimentos, não telemetria clínica. A fixture usa um dosímetro hipotético de habitat no **esquema** do RAD, sem transferir medições reais de Marte para uma pessoa.
 
-Integrações autenticadas futuras devem usar um backend (por exemplo NestJS/TypeScript em `../backend`), sem inserir segredos em variáveis `VITE_*`. Nenhum backend foi necessário para este escopo. A versão inicial é em português; textos de catálogo estão separados dos componentes e há um dicionário inicial para expansão de locale. Uma tradução completa ainda precisa extrair os textos de apresentação restantes.
+Integrações autenticadas futuras devem usar um backend (por exemplo NestJS/TypeScript), sem inserir segredos em variáveis `VITE_*`. Nenhum backend foi necessário para este escopo. A versão inicial é em português; textos de catálogo estão separados dos componentes e há um dicionário inicial para expansão de locale. Uma tradução completa ainda precisa extrair os textos de apresentação restantes.
 
 ### Limites científicos deliberados
 
